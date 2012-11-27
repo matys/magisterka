@@ -20,6 +20,7 @@ abstract class AbstractAgent extends AbstractHandler {
 //		response.setContentType("text/html");
 //		response.setStatus(HttpServletResponse.SC_OK);
 //		response.getWriter().println("<h1>Hello</h1>");
+
 		((Request) request).setHandled(true);
 	}
 
