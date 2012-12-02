@@ -1,47 +1,55 @@
 package pl.edu.agh.mabics.platform
 
-import java.util.List;
-
 import groovy.json.JsonSlurper
 
+import pl.edu.agh.mabics.platform.converters.Point2DConverter
+import pl.edu.agh.mabics.platform.converters.VectorConverter
+import pl.edu.agh.mabics.platform.converters.ConverterUtil
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.annotation.Autowired
+import pl.edu.agh.mabics.platform.converters.MoveConverter
+
+@Service
 class JSONParser {
 
-	static def parseList(list, Class clazz){
-		def parsedList = new ArrayList();
-		for (element in list){
-			parsedList.add(clazz.newInstance(element));
-		}
-		return parsedList;
-	}
-	
-	static Request parse(String content){
-		def jsonObj = new JsonSlurper().parseText(content)
-		jsonObj.each{id,data -> println id + data}
-		def request = new Request();
-		request.setId(jsonObj.id);
-		request.setSpeed(jsonObj.speed);
-		request.setVelocity(new java.util.Vector(jsonObj.velocity));
-		request.setPosition(new Point2D(jsonObj.position));
-		request.setRobots(parseList(jsonObj.robots, Point2D.class));
-		return request;
-//		List<AllowableMove> allowedMoves;
-//		List<Point2D> destination;
-		
-		
-//		ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
-//		Request request = null;
-//		try {
-//			request = mapper.readValue(content, Request.class);
-//		} catch (JsonParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (JsonMappingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return request;
-	}
+    private Point2DConverter point2DConverter;
+    private VectorConverter vectorConverter;
+    private ConverterUtil converterUtil;
+    private MoveConverter moveConverter;
+
+    @Autowired
+    void setPoint2DConverter(Point2DConverter point2DConverter) {
+        this.point2DConverter = point2DConverter
+    }
+
+    @Autowired
+    void setVectorConverter(VectorConverter vectorConverter) {
+        this.vectorConverter = vectorConverter
+    }
+
+    @Autowired
+    void setMoveConverter(MoveConverter moveConverter) {
+        this.moveConverter = moveConverter
+    }
+
+    @Autowired
+    void setConverterUtil(ConverterUtil converterUtil) {
+        this.converterUtil = converterUtil
+    }
+
+    public PlatformRequest parseRequest(String content) {
+        def jsonObj = new JsonSlurper().parseText(content)
+        jsonObj.each {id, data -> println id + data}
+        def request = new PlatformRequest();
+        request.setId(jsonObj.id);
+        request.setSpeed(jsonObj.speed);
+        request.setVelocity(vectorConverter.convert(jsonObj.velocity));
+        request.setPosition(point2DConverter.convert(jsonObj.position));
+        request.setRobots(converterUtil.convertList(jsonObj.robots, point2DConverter));
+        request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))
+        request.setDestination(converterUtil.convertList(jsonObj.destination, point2DConverter))
+
+
+        return request;
+    }
 }
