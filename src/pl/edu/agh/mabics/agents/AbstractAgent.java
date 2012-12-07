@@ -6,10 +6,8 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.AbstractHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.mabics.platform.JSONParser;
-import pl.edu.agh.mabics.platform.Move;
-import pl.edu.agh.mabics.platform.PlatformRequest;
-import pl.edu.agh.mabics.platform.PlatformResponse;
+import pl.edu.agh.mabics.platform.*;
+import pl.edu.agh.mabics.platform.converters.MoveReverseConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +18,21 @@ import java.io.IOException;
 abstract class AbstractAgent extends AbstractHandler {
 
     private JSONParser jsonParser;
-    private PlatformResponse platformResponse = new PlatformResponse();
+    private PlatformResponse platformResponse;
+    private MoveReverseConverter moveReverseConverter;
+
+
+    @Autowired
+    public void setMoveReverseConverter(MoveReverseConverter moveReverseConverter) {
+        this.moveReverseConverter = moveReverseConverter;
+    }
 
     @Autowired
     public void setJsonParser(JSONParser jsonParser) {
         this.jsonParser = jsonParser;
     }
 
-    public abstract Move getNextMove(Request request);
+    public abstract PlatformResponse getNextMove(PlatformRequest request);
 
     public void handle(String target, HttpServletRequest request,
 			HttpServletResponse response, int dispatch) throws IOException,
@@ -40,7 +45,7 @@ abstract class AbstractAgent extends AbstractHandler {
 		response.setStatus(HttpServletResponse.SC_OK);
         //response.setContentLength(21);
         Response r = (Response) response;
-        response.getOutputStream().print((new PlatformResponse()).getJSON());
+        response.getOutputStream().print(getNextMove(parsedRequest).getJSON(moveReverseConverter));
 //        response.getOutputStream().flush();
 //        response.getOutputStream().close();
 //        response.flushBuffer();
