@@ -1,21 +1,25 @@
 package pl.edu.agh.mabics.platform
 
 import groovy.json.JsonSlurper
-
-import pl.edu.agh.mabics.platform.converters.Point2DConverter
-import pl.edu.agh.mabics.platform.converters.VectorConverter
-import pl.edu.agh.mabics.platform.converters.ConverterUtil
-import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
-import pl.edu.agh.mabics.platform.converters.MoveConverter
+import org.springframework.stereotype.Service
+import pl.edu.agh.mabics.platform.model.PlatformRequest
+import pl.edu.agh.mabics.platform.model.PlatformResponse
+import pl.edu.agh.mabics.platform.converters.*
 
 @Service
-class JSONParser {
+class JSONHelper {
 
     private Point2DConverter point2DConverter;
     private VectorConverter vectorConverter;
     private ConverterUtil converterUtil;
     private MoveConverter moveConverter;
+    private MoveReverseConverter moveReverseConverter;
+
+    @Autowired
+    void setMoveReverseConverter(MoveReverseConverter moveReverseConverter) {
+        this.moveReverseConverter = moveReverseConverter
+    }
 
     @Autowired
     void setPoint2DConverter(Point2DConverter point2DConverter) {
@@ -48,8 +52,20 @@ class JSONParser {
         request.setRobots(converterUtil.convertList(jsonObj.robots, point2DConverter));
         request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))
         request.setDestination(converterUtil.convertList(jsonObj.destination, point2DConverter))
-
-
         return request;
+    }
+
+    public String responseToJSON(PlatformResponse response) {
+
+        def builder = new groovy.json.JsonBuilder()
+        def jsonMove = moveReverseConverter.convert(response.getMove());
+
+        builder {
+            move jsonMove.get(0).get(0), jsonMove.get(0).get(1)
+            speed response.getSpeed()
+            velocity jsonMove.get(1).get(0), jsonMove.get(1).get(1)
+        }
+        print builder.toString()
+        return builder.toString();
     }
 }

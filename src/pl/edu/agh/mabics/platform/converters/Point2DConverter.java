@@ -1,7 +1,7 @@
 package pl.edu.agh.mabics.platform.converters;
 
 import org.springframework.stereotype.Service;
-import pl.edu.agh.mabics.platform.Point2D;
+import pl.edu.agh.mabics.platform.model.Point2D;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import java.util.List;
  * User: Mateusz
  * Date: 01.12.12
  * Time: 16:41
- * To change this template use File | Settings | File Templates.
  */
 @Service
 public class Point2DConverter implements IConverter<Point2D, List<Integer>> {

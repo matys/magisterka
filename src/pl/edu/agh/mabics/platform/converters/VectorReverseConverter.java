@@ -1,7 +1,7 @@
 package pl.edu.agh.mabics.platform.converters;
 
 import org.springframework.stereotype.Service;
-import pl.edu.agh.mabics.platform.Vector;
+import pl.edu.agh.mabics.platform.model.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,9 @@ import java.util.List;
  * User: Mateusz
  * Date: 07.12.12
  * Time: 16:48
- * To change this template use File | Settings | File Templates.
  */
 @Service
-public class VectorReverseConverter implements IConverter<List<Integer>, Vector>  {
+public class VectorReverseConverter implements IConverter<List<Integer>, Vector> {
 
     @Override
     public List<Integer> convert(Vector input) {

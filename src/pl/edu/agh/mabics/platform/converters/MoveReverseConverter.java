@@ -2,7 +2,7 @@ package pl.edu.agh.mabics.platform.converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.mabics.platform.Move;
+import pl.edu.agh.mabics.platform.model.Move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.List;
  * User: Mateusz
  * Date: 07.12.12
  * Time: 16:56
- * To change this template use File | Settings | File Templates.
  */
 @Service
 public class MoveReverseConverter implements IConverter<List<List<Integer>>, Move> {

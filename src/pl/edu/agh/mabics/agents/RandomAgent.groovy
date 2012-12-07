@@ -1,10 +1,8 @@
 package pl.edu.agh.mabics.agents
 
 import org.springframework.stereotype.Service
-import pl.edu.agh.mabics.platform.Move
-import org.mortbay.jetty.Request
-import pl.edu.agh.mabics.platform.PlatformRequest
-import pl.edu.agh.mabics.platform.PlatformResponse
+import pl.edu.agh.mabics.platform.model.PlatformRequest
+import pl.edu.agh.mabics.platform.model.PlatformResponse
 
 @Service
 class RandomAgent extends AbstractAgent {
