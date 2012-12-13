@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Service
-abstract class AbstractAgent extends AbstractHandler {
+public abstract class AbstractAgent extends AbstractHandler {
 
     private JSONHelper jsonHelper;
 
@@ -44,14 +44,13 @@ abstract class AbstractAgent extends AbstractHandler {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public AbstractAgent() {
-
-        Server server = new Server(8080);
+    public void startAgent(Integer port) {
+        Server server = new Server(port);
         server.setHandler(this);
         try {
+            System.out.println("Starting server on port: " + port.toString());
             server.start();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

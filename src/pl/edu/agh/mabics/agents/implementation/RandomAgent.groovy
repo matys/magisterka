@@ -1,6 +1,7 @@
-package pl.edu.agh.mabics.agents
+package pl.edu.agh.mabics.agents.implementation
 
 import org.springframework.stereotype.Service
+import pl.edu.agh.mabics.agents.AbstractAgent
 import pl.edu.agh.mabics.platform.model.PlatformRequest
 import pl.edu.agh.mabics.platform.model.PlatformResponse
 
