@@ -5,6 +5,7 @@ import pl.edu.agh.mabics.agents.AbstractAgent
 import pl.edu.agh.mabics.platform.model.PlatformRequest
 import pl.edu.agh.mabics.platform.model.PlatformResponse
 
+//TODO shouldn't it be Bean instead of Service?
 @Service
 class RandomAgent extends AbstractAgent {
 
