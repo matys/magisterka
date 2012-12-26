@@ -14,6 +14,6 @@ public class CoordinatesReverseConverter implements IConverter<String, Coordinat
 
     @Override
     public String convert(Coordinates input) {
-        return "(" + input.getX().toString() + "," + input.getY() + ")";
+        return "(" + input.getX().toString() + "," + input.getY().toString() + ")";
     }
 }
