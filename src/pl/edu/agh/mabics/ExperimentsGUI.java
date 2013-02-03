@@ -89,11 +89,11 @@ public class ExperimentsGUI {
     }
 
     private void initFileChooser() {
-        fc.setFileFilter(new FileNameExtensionFilter(INTERSECTION_FILE_DESCRIPTION, INTERSECTION_FILE_EXTENSIONS));
-//        fc.setCurrentDirectory(new File(INTERSECTION_FILE_DEFAULT_DIRECTORY));
         IntersectionFileChooseButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                fc.setFileFilter(new FileNameExtensionFilter(INTERSECTION_FILE_DESCRIPTION, INTERSECTION_FILE_EXTENSIONS));
+                fc.setCurrentDirectory(new File(INTERSECTION_FILE_DEFAULT_DIRECTORY));
                 int returnVal = fc.showOpenDialog(tabbedPane1);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();

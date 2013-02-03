@@ -43,11 +43,16 @@ public class AgentFactory implements BeanFactoryAware {
         AbstractAgent newAgent = (AbstractAgent) beanFactory.getBean("randomAgent");
         newAgent.startAgent(portCounter);
         try {
-            confFileOut.write("\n" + portCounter.toString() + " " + "(2,0)" + "[(5,1)]" + " localhost:" + portCounter.toString());
+            confFileOut.write(line());
+            System.out.println(line());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return newAgent;
+    }
+
+    private String line() {
+        return "\n" + portCounter.toString() + " " + "(" + (portCounter % 3) * 2 + ",0) " + "[(5,1)]" + " localhost:" + portCounter.toString();
     }
 
     public void finishAgentCreation() {
