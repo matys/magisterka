@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="pl.edu.agh.mabics.ExperimentsGUI">
   <grid id="27dc6" binding="Main" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="598" height="542"/>
+      <xy x="20" y="20" width="598" height="714"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -282,14 +282,6 @@
                           <text value="Starting area:"/>
                         </properties>
                       </component>
-                      <component id="279b5" class="javax.swing.JLabel">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Left"/>
-                        </properties>
-                      </component>
                       <component id="c8293" class="javax.swing.JTextField" binding="LeftTopCornerDownTextField">
                         <constraints>
                           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -336,132 +328,6 @@
                           <text value="Generate Random"/>
                         </properties>
                       </component>
-                      <grid id="4c946" binding="agentsPanelDown" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                        <margin top="0" left="0" bottom="0" right="0"/>
-                        <constraints>
-                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <autoscrolls value="true"/>
-                        </properties>
-                        <border type="none"/>
-                        <children>
-                          <component id="875f9" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent7"/>
-                            </properties>
-                          </component>
-                          <component id="634ad" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="a6be1" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent8"/>
-                            </properties>
-                          </component>
-                          <component id="c28c7" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="8e067" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent9"/>
-                            </properties>
-                          </component>
-                          <component id="a6fed" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="35b85" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent10"/>
-                            </properties>
-                          </component>
-                          <component id="7ef5b" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="c9c7a" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent11"/>
-                            </properties>
-                          </component>
-                          <component id="73eba" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="3bbd8" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent12"/>
-                            </properties>
-                          </component>
-                          <component id="325bc" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                        </children>
-                      </grid>
                       <component id="7859b" class="javax.swing.JComboBox" binding="agentImplementationLeftComboBox">
                         <constraints>
                           <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -574,132 +440,6 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <grid id="67777" binding="agentsPanelLeft" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                        <margin top="0" left="0" bottom="0" right="0"/>
-                        <constraints>
-                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <autoscrolls value="true"/>
-                        </properties>
-                        <border type="none"/>
-                        <children>
-                          <component id="75a42" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent1"/>
-                            </properties>
-                          </component>
-                          <component id="38c1f" class="javax.swing.JTextField" binding="xYTextField4" default-binding="true">
-                            <constraints>
-                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="99309" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent2"/>
-                            </properties>
-                          </component>
-                          <component id="8edc8" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="da155" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent3"/>
-                            </properties>
-                          </component>
-                          <component id="734a9" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="bc653" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent4"/>
-                            </properties>
-                          </component>
-                          <component id="2bf64" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="facda" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent5"/>
-                            </properties>
-                          </component>
-                          <component id="abb6b" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                          <component id="a2e10" class="javax.swing.JLabel">
-                            <constraints>
-                              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                            </constraints>
-                            <properties>
-                              <text value="agent6"/>
-                            </properties>
-                          </component>
-                          <component id="8b6ea" class="javax.swing.JTextField" default-binding="true">
-                            <constraints>
-                              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                <minimum-size width="30" height="-1"/>
-                                <maximum-size width="30" height="-1"/>
-                              </grid>
-                            </constraints>
-                            <properties>
-                              <text value="(x,y)"/>
-                            </properties>
-                          </component>
-                        </children>
-                      </grid>
                       <component id="4dfc8" class="javax.swing.JCheckBox" binding="performParametrsSearchCheckBox" default-binding="true">
                         <constraints>
                           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -725,6 +465,82 @@
                           <text value="Generate for every game"/>
                         </properties>
                       </component>
+                      <component id="279b5" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Left"/>
+                        </properties>
+                      </component>
+                      <scrollpane id="d59fe">
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="-1" height="400"/>
+                            <preferred-size width="-1" height="400"/>
+                            <maximum-size width="-1" height="400"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="18396" binding="agentsPanelLeftWrapper" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints/>
+                            <properties>
+                              <autoscrolls value="true"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <grid id="67777" binding="agentsPanelLeft" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <autoscrolls value="true"/>
+                                </properties>
+                                <border type="none"/>
+                                <children/>
+                              </grid>
+                            </children>
+                          </grid>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="ec9f1">
+                        <constraints>
+                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="-1" height="400"/>
+                            <preferred-size width="-1" height="400"/>
+                            <maximum-size width="-1" height="400"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="f06de" binding="agentsPanelDownWrapper" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints/>
+                            <properties>
+                              <autoscrolls value="true"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <grid id="4c946" binding="agentsPanelDown" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <autoscrolls value="true"/>
+                                </properties>
+                                <border type="none"/>
+                                <children/>
+                              </grid>
+                            </children>
+                          </grid>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                 </children>

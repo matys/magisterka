@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.AgentFactory;
-import pl.edu.agh.mabics.util.CommandLineHelper;
 
 import javax.swing.*;
 
@@ -25,8 +24,8 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
-        CommandLineHelper commandLineHelper = (CommandLineHelper) factory.getBean("commandLineHelper");
-        String[] commands = {"cd ..\\trunk\\src\\runner\\", "start python runner.py -c config3 -v True"};
-        commandLineHelper.runCommand(commands);
+        //        CommandLineHelper commandLineHelper = (CommandLineHelper) factory.getBean("commandLineHelper");
+        //        String[] commands = {"cd ..\\trunk\\src\\runner\\", "start python runner.py -c config3 -v True"};
+        //        commandLineHelper.runCommand(commands);
     }
 }
