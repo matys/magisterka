@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.ui.datamodel;
+package pl.edu.agh.mabics.ui.datamodel.beans;
 
 /**
  * Created with IntelliJ IDEA.

@@ -2,6 +2,7 @@ package pl.edu.agh.mabics.ui.listeners;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import pl.edu.agh.mabics.ui.listeners.util.AgentListenersHelper;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -17,6 +18,7 @@ import java.awt.*;
 public class NumberOfAgentsChangeListener implements DocumentListener {
     private JPanel agentsPanel;
     private JTextField numberOfAgentsTextField;
+
 
     public NumberOfAgentsChangeListener(JPanel agentsPanel, JTextField numberOfAgentsTextField) {
         this.agentsPanel = agentsPanel;
@@ -56,12 +58,11 @@ public class NumberOfAgentsChangeListener implements DocumentListener {
         return rowsNumber;
     }
 
-    private void addRowToAgentPanel(JPanel agentsPanel, int rowId) {
-        final JLabel label = new JLabel();
-        label.setText("agent" + rowId);
+    private void addRowToAgentPanel(JPanel agentsPanel, Integer rowId) {
+        final JLabel label = AgentListenersHelper.createAgentName(rowId.toString());
         agentsPanel.add(label, new GridConstraints(rowId, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        JTextField textField = new JTextField();
-        textField.setText("(x,y)");
+        JTextField textField = AgentListenersHelper.generateBlankAgentPosition();
         agentsPanel.add(textField, new GridConstraints(rowId, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(30, -1), null, new Dimension(30, -1), 0, false));
     }
+
 }

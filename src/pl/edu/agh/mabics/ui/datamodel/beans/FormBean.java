@@ -1,7 +1,9 @@
-package pl.edu.agh.mabics.ui.datamodel;
+package pl.edu.agh.mabics.ui.datamodel.beans;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesConverter;
+import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesReverseConverter;
 
 @Component
 public class FormBean {

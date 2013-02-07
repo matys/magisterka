@@ -2,18 +2,10 @@ package pl.edu.agh.mabics;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import pl.edu.agh.mabics.ui.datamodel.FormBean;
-import pl.edu.agh.mabics.ui.listeners.NumberOfAgentsChangeListener;
+import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,11 +13,8 @@ import java.io.IOException;
  * Date: 13.12.12
  * Time: 19:04
  */
-public class ExperimentsGUI {
+public class MabicsGUI {
 
-    private static final String INTERSECTION_FILE_DESCRIPTION = ".bmp - bitmap with intersection";
-    private static final String INTERSECTION_FILE_EXTENSIONS = "bmp";
-    private static final String INTERSECTION_FILE_DEFAULT_DIRECTORY = "C:\\Users\\Mateusz\\Desktop\\nauka\\Studia";
     private JTabbedPane tabbedPane1;
     private JTextField numberOfSeriesTextField;
     private JPanel IntersectionImage;
@@ -38,8 +27,8 @@ public class ExperimentsGUI {
     private JTextField numberOfAgentsDownTextField;
     private JTextField LeftTopCornerDownTextField;
     private JTextField RightDownCornerDownTextField;
-    private JButton generateRandomButton;
-    private JButton generateRandomButton1;
+    private JButton generateRandomButtonLeft;
+    private JButton generateRandomButtonDown;
     private final JFileChooser fc = new JFileChooser();
 
     public JPanel Main;
@@ -67,54 +56,13 @@ public class ExperimentsGUI {
     private JPanel agentsPanelDownWrapper = new JPanel();
 
 
-    public ExperimentsGUI() {
+    public MabicsGUI() {
         $$$setupUI$$$();
-        initIntersectionFileChooser();
-        initIntersectionFileShowButton();
-        numberOfAgentsLeftTextField.getDocument().addDocumentListener(new NumberOfAgentsChangeListener(agentsPanelLeft, numberOfAgentsLeftTextField));
-        numberOfAgentsDownTextField.getDocument().addDocumentListener(new NumberOfAgentsChangeListener(agentsPanelDown, numberOfAgentsDownTextField));
-    }
-
-
-    private void initIntersectionFileShowButton() {
-        IntersectionFileShowButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String filePath = intersectionFilePath.getText();
-                //run python image creation script, find created file etc...
-                BufferedImage myPicture = null;
-                try {
-                    myPicture = ImageIO.read(new File(filePath));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-                IntersectionImage.removeAll();
-                IntersectionImage.add(picLabel, new GridConstraints());
-                IntersectionImage.revalidate();
-
-            }
-        });
-    }
-
-    private void initIntersectionFileChooser() {
-        IntersectionFileChooseButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                fc.setFileFilter(new FileNameExtensionFilter(INTERSECTION_FILE_DESCRIPTION, INTERSECTION_FILE_EXTENSIONS));
-                fc.setCurrentDirectory(new File(INTERSECTION_FILE_DEFAULT_DIRECTORY));
-                int returnVal = fc.showOpenDialog(tabbedPane1);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    intersectionFilePath.setText(file.getPath());
-                }
-            }
-        });
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("ExperimentsGUI");
-        frame.setContentPane(new ExperimentsGUI().Main);
+        JFrame frame = new JFrame("MabicsGUI");
+        frame.setContentPane(new MabicsGUI().Main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -198,6 +146,54 @@ public class ExperimentsGUI {
         if (performParametrsSearchCheckBox.isSelected() != data.isPerformParametersSearch()) return true;
         if (generateForEveryGameCheckBox.isSelected() != data.isGenerateForEveryGame()) return true;
         return false;
+    }
+
+    public JPanel getIntersectionImage() {
+        return IntersectionImage;
+    }
+
+    public JButton getIntersectionFileChooseButton() {
+        return IntersectionFileChooseButton;
+    }
+
+    public JTextField getIntersectionFilePath() {
+        return intersectionFilePath;
+    }
+
+    public JTextField getNumberOfAgentsLeftTextField() {
+        return numberOfAgentsLeftTextField;
+    }
+
+    public JTextField getNumberOfAgentsDownTextField() {
+        return numberOfAgentsDownTextField;
+    }
+
+    public JButton getGenerateRandomButtonLeft() {
+        return generateRandomButtonLeft;
+    }
+
+    public JButton getGenerateRandomButtonDown() {
+        return generateRandomButtonDown;
+    }
+
+    public JFileChooser getFc() {
+        return fc;
+    }
+
+    public JPanel getAgentsPanelDown() {
+        return agentsPanelDown;
+    }
+
+    public JPanel getAgentsPanelLeft() {
+        return agentsPanelLeft;
+    }
+
+    public JButton getIntersectionFileShowButton() {
+        return IntersectionFileShowButton;
+    }
+
+    public Component getParent() {
+        return tabbedPane1;
     }
 
     /**
@@ -312,12 +308,12 @@ public class ExperimentsGUI {
         final JLabel label9 = new JLabel();
         label9.setText("Down");
         panel8.add(label9, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        generateRandomButton = new JButton();
-        generateRandomButton.setText("Generate Random");
-        panel8.add(generateRandomButton, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        generateRandomButton1 = new JButton();
-        generateRandomButton1.setText("Generate Random");
-        panel8.add(generateRandomButton1, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        generateRandomButtonLeft = new JButton();
+        generateRandomButtonLeft.setText("Generate Random");
+        panel8.add(generateRandomButtonLeft, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        generateRandomButtonDown = new JButton();
+        generateRandomButtonDown.setText("Generate Random");
+        panel8.add(generateRandomButtonDown, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         agentImplementationLeftComboBox = new JComboBox();
         panel8.add(agentImplementationLeftComboBox, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label10 = new JLabel();

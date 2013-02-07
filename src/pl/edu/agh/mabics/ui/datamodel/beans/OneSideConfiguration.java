@@ -1,4 +1,6 @@
-package pl.edu.agh.mabics.ui.datamodel;
+package pl.edu.agh.mabics.ui.datamodel.beans;
+
+import pl.edu.agh.mabics.ui.datamodel.Coordinates;
 
 /**
  * Created with IntelliJ IDEA.
