@@ -1,8 +1,8 @@
-package pl.edu.agh.mabics.ui.listeners;
+package pl.edu.agh.mabics.ui.listeners.implementation;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import pl.edu.agh.mabics.ui.listeners.util.AgentListenersHelper;
+import pl.edu.agh.mabics.ui.listeners.helpers.AgentListenersHelper;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

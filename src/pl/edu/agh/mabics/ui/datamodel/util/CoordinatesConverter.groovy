@@ -3,7 +3,8 @@ package pl.edu.agh.mabics.ui.datamodel.util;
 
 import org.springframework.stereotype.Service
 import pl.edu.agh.mabics.platform.converters.IConverter
-import pl.edu.agh.mabics.ui.datamodel.Coordinates
+
+import javax.swing.JTextField
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,5 +21,13 @@ public class CoordinatesConverter implements IConverter<Coordinates, String> {
         def matcher = (input =~ CoordinatesPatter)
         return new Coordinates(new Integer(matcher[0][1]), new Integer(matcher[0][2]))
     }
+
+    //TODO refactor
+    public static Coordinates convert(JTextField input) {
+        def coordinatesPatter = ~/\(\s*(\d+)\s*,\s*(\d+)\s*\)/
+        def matcher = (input.getText() =~ coordinatesPatter)
+        return new Coordinates(new Integer(matcher[0][1]), new Integer(matcher[0][2]))
+    }
+
 
 }

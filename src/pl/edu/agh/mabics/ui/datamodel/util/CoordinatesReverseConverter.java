@@ -2,7 +2,6 @@ package pl.edu.agh.mabics.ui.datamodel.util;
 
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.platform.converters.IConverter;
-import pl.edu.agh.mabics.ui.datamodel.Coordinates;
 
 /**
  * Created with IntelliJ IDEA.

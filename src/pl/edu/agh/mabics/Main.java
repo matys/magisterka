@@ -16,8 +16,8 @@ public class Main {
         AbstractAgent agent3 = agentFactory.createAgent();
         agentFactory.finishAgentCreation();
 
-        //        CommandLineHelper commandLineHelper = (CommandLineHelper) factory.getBean("commandLineHelper");
-        //        String[] commands = {"cd ..\\trunk\\src\\runner\\", "start python runner.py -c config3 -v True"};
-        //        commandLineHelper.runCommand(commands);
+//        CommandLineHelper commandLineHelper = (CommandLineHelper) factory.getBean("commandLineHelper");
+//        String[] commands = {"cd ..\\trunk\\src\\runner\\", "start python runner.py -c config3 -v True"};
+//        commandLineHelper.runCommand(commands);
     }
 }

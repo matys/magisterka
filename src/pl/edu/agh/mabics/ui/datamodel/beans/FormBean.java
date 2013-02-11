@@ -1,30 +1,34 @@
 package pl.edu.agh.mabics.ui.datamodel.beans;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.mabics.platform.converters.ConverterUtil;
+import pl.edu.agh.mabics.ui.datamodel.util.AgentDataConverter;
+import pl.edu.agh.mabics.ui.datamodel.util.AgentDataReverseConverter;
 import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesConverter;
 import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesReverseConverter;
+
+import javax.swing.*;
+import java.util.List;
 
 @Component
 public class FormBean {
 
     private CoordinatesConverter coordinatesConverter;
     private CoordinatesReverseConverter coordinatesReverseConverter;
+    private AgentDataConverter agentDataConverter;
+    private AgentDataReverseConverter agentDataReverseConverter;
+    private ConverterUtil converterUtil;
 
-    private ExperimentConfiguration experimentConfiguration = new ExperimentConfiguration();
-    private IntersectionConfiguration intersectionConfiguration = new IntersectionConfiguration();
+    private ExperimentConfiguration experimentConfiguration;
+    private IntersectionConfiguration intersectionConfiguration;
 
-    private AgentsConfiguration agentsConfiguration = new AgentsConfiguration();
+    private AgentsConfiguration agentsConfiguration;
 
-    public FormBean() {
-    }
 
-    @Autowired
     public void setCoordinatesConverter(CoordinatesConverter coordinatesConverter) {
         this.coordinatesConverter = coordinatesConverter;
     }
 
-    @Autowired
     public void setCoordinatesReverseConverter(CoordinatesReverseConverter coordinatesReverseConverter) {
         this.coordinatesReverseConverter = coordinatesReverseConverter;
     }
@@ -197,6 +201,29 @@ public class FormBean {
         }
     }
 
+    public void setLeftAgentsData(final JPanel agents) {
+        List<AgentData> agentsData = agentDataConverter.convert(agents);
+        agentsConfiguration.getLeftSideConfiguration().setAgents(agentsData);
+    }
+
+
+    public void setDownAgentsData(final JPanel agents) {
+        List<AgentData> agentsData = agentDataConverter.convert(agents);
+        agentsConfiguration.getDownSideConfiguration().setAgents(agentsData);
+    }
+
+
+    //it must be copied, not new returned
+    public JPanel getLeftAgentsData() {
+        return agentDataReverseConverter.convert(agentsConfiguration.getLeftSideConfiguration().getAgents());
+    }
+
+
+    //it must be copied, not new returned
+    public JPanel getDownAgentsData() {
+        return agentDataReverseConverter.convert(agentsConfiguration.getDownSideConfiguration().getAgents());
+    }
+
     public boolean isPerformParametersSearch() {
         return agentsConfiguration.isPerformParametersSearch();
     }
@@ -211,5 +238,41 @@ public class FormBean {
 
     public void setGenerateForEveryGame(final boolean generateForEveryGame) {
         agentsConfiguration.setGenerateForEveryGame(generateForEveryGame);
+    }
+
+    public void setExperimentConfiguration(ExperimentConfiguration experimentConfiguration) {
+        this.experimentConfiguration = experimentConfiguration;
+    }
+
+    public void setIntersectionConfiguration(IntersectionConfiguration intersectionConfiguration) {
+        this.intersectionConfiguration = intersectionConfiguration;
+    }
+
+    public void setAgentsConfiguration(AgentsConfiguration agentsConfiguration) {
+        this.agentsConfiguration = agentsConfiguration;
+    }
+
+    public void setAgentDataConverter(AgentDataConverter agentDataConverter) {
+        this.agentDataConverter = agentDataConverter;
+    }
+
+    public void setAgentDataReverseConverter(AgentDataReverseConverter agentDataReverseConverter) {
+        this.agentDataReverseConverter = agentDataReverseConverter;
+    }
+
+    public void setConverterUtil(ConverterUtil converterUtil) {
+        this.converterUtil = converterUtil;
+    }
+
+    public ExperimentConfiguration getExperimentConfiguration() {
+        return experimentConfiguration;
+    }
+
+    public IntersectionConfiguration getIntersectionConfiguration() {
+        return intersectionConfiguration;
+    }
+
+    public AgentsConfiguration getAgentsConfiguration() {
+        return agentsConfiguration;
     }
 }

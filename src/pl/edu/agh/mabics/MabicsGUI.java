@@ -60,6 +60,7 @@ public class MabicsGUI {
         $$$setupUI$$$();
     }
 
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("MabicsGUI");
         frame.setContentPane(new MabicsGUI().Main);
@@ -92,6 +93,13 @@ public class MabicsGUI {
         numberOfAgentsDownTextField.setText(data.getNumberOfAgentsDown());
         performParametrsSearchCheckBox.setSelected(data.isPerformParametersSearch());
         generateForEveryGameCheckBox.setSelected(data.isGenerateForEveryGame());
+
+        agentsPanelDownWrapper.removeAll();
+        agentsPanelLeftWrapper.removeAll();
+        agentsPanelDownWrapper.add(data.getDownAgentsData(), new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        agentsPanelLeftWrapper.add(data.getLeftAgentsData(), new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        agentsPanelLeftWrapper.revalidate();
+        agentsPanelDownWrapper.revalidate();
     }
 
     public void getData(FormBean data) {
@@ -112,6 +120,8 @@ public class MabicsGUI {
         data.setNumberOfAgentsDown(numberOfAgentsDownTextField.getText());
         data.setPerformParametersSearch(performParametrsSearchCheckBox.isSelected());
         data.setGenerateForEveryGame(generateForEveryGameCheckBox.isSelected());
+        data.setLeftAgentsData(agentsPanelLeft);
+        data.setDownAgentsData(agentsPanelDown);
     }
 
     public boolean isModified(FormBean data) {
@@ -194,6 +204,27 @@ public class MabicsGUI {
 
     public Component getParent() {
         return tabbedPane1;
+    }
+
+
+    public JTextField getLeftTopCornerLeftTextField() {
+        return LeftTopCornerLeftTextField;
+    }
+
+    public JTextField getRightDownCornerLeftTextField() {
+        return RightDownCornerLeftTextField;
+    }
+
+    public JTextField getRightDownCornerDownTextField() {
+        return RightDownCornerDownTextField;
+    }
+
+    public JTextField getLeftTopCornerDownTextField() {
+        return LeftTopCornerDownTextField;
+    }
+
+    public JButton getWriteToFileButton() {
+        return writeToFileButton;
     }
 
     /**
