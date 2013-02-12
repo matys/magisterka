@@ -24,7 +24,6 @@ public class AgentsConfiguration {
     }
 
     public boolean isPerformParametersSearch() {
-
         return performParametersSearch;
     }
 
@@ -46,5 +45,12 @@ public class AgentsConfiguration {
 
     public void setDownSideConfiguration(OneSideConfiguration downSideConfiguration) {
         this.downSideConfiguration = downSideConfiguration;
+    }
+
+    public void copyDataTo(AgentsConfiguration agentsConfiguration) {
+        agentsConfiguration.setGenerateForEveryGame(isGenerateForEveryGame());
+        agentsConfiguration.setPerformParametersSearch(isPerformParametersSearch());
+        leftSideConfiguration.copyDataTo(agentsConfiguration.getLeftSideConfiguration());
+        downSideConfiguration.copyDataTo(agentsConfiguration.getDownSideConfiguration());
     }
 }

@@ -28,14 +28,20 @@ public class FormBeanSerializer extends XMLSerializer {
         mapping.put("coordinates", Coordinates.class);
     }
 
-    public void serialize(final FormBean form, String fileName) {
-        serializeObject(form, fileName);
+    public void serialize(final FormBean form, String filePath) {
+        serializeObject(form, filePath);
+    }
+
+    public FormBean deserialize(String filePath) {
+        return (FormBean) deserializeObject(filePath);
     }
 
     @Override
     protected Map<String, Class> getMapping() {
         return mapping;
     }
+
+
 }
 
 

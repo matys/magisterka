@@ -32,14 +32,6 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         initListeners();
     }
 
-    public void renderForm() {
-        mabicsGUI.setData(formBean);
-    }
-
-    public void executeForm() {
-        mabicsGUI.getData(formBean);
-    }
-
     private void initListeners() {
         mabicsGUI.getIntersectionFileChooseButton().addMouseListener(new IntersectionImageChoiceListener(mabicsGUI.getFc(), mabicsGUI.getParent(), this));
         mabicsGUI.getIntersectionFileShowButton().addMouseListener(new ShowIntersectionListener(this));
@@ -48,6 +40,7 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         mabicsGUI.getGenerateRandomButtonLeft().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getLeftTopCornerLeftTextField(), mabicsGUI.getRightDownCornerLeftTextField()));
         mabicsGUI.getGenerateRandomButtonDown().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getLeftTopCornerDownTextField(), mabicsGUI.getRightDownCornerDownTextField()));
         mabicsGUI.getWriteToFileButton().addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
+        mabicsGUI.getReadFromFileButton().addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
     }
 
     private void initGUI() {
@@ -69,8 +62,16 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         this.formBeanSerializer = formBeanSerializer;
     }
 
-    public void serializeFormBean(String fileName) {
-        formBeanSerializer.serialize(formBean, fileName);
+    public void serializeFormBean(String filePath) {
+        formBeanSerializer.serialize(mabicsGUI.getData(formBean), filePath);
+    }
+
+    @Override
+    public void deserializeFormBean(String filePath) {
+        FormBean formBean = formBeanSerializer.deserialize(filePath);
+        formBean.copyDataTo(this.formBean);
+        mabicsGUI.setData(this.formBean);
+        initListeners();
     }
 
     @Override

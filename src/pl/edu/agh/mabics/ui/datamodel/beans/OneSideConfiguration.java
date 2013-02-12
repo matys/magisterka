@@ -58,4 +58,12 @@ public class OneSideConfiguration {
     public void setAgents(List<AgentData> agents) {
         this.agents = agents;
     }
+
+    public void copyDataTo(OneSideConfiguration anotherConfiguration) {
+        anotherConfiguration.setLeftTopCornerCoordinates(getLeftTopCornerCoordinates());
+        anotherConfiguration.setRightDownCornerCoordinates(getRightDownCornerCoordinates());
+        anotherConfiguration.setNumberOfAgents(getNumberOfAgents());
+        anotherConfiguration.setEndLine(getEndLine());
+        anotherConfiguration.setAgents(getAgents());
+    }
 }

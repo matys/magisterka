@@ -16,5 +16,9 @@ public class IntersectionConfiguration {
     public void setIntersectionFilePath(String intersectionFilePath) {
         this.intersectionFilePath = intersectionFilePath;
     }
+
+    public void copyDataTo(IntersectionConfiguration intersectionConfiguration) {
+        intersectionConfiguration.setIntersectionFilePath(getIntersectionFilePath());
+    }
 }
 

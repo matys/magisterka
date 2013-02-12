@@ -30,7 +30,7 @@ public class AgentDataReverseConverter implements IConverter<JPanel, List<AgentD
     @Override
     public JPanel convert(List<AgentData> input) {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel.setLayout(new GridLayoutManager(input.size(), 2, new Insets(0, 0, 0, 0), -1, -1));
         panel.setAutoscrolls(true);
         int rowId = 0;
         for (AgentData agentData : input) {

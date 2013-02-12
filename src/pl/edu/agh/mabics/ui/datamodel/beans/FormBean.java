@@ -275,4 +275,10 @@ public class FormBean {
     public AgentsConfiguration getAgentsConfiguration() {
         return agentsConfiguration;
     }
+
+    public void copyDataTo(FormBean formBean) {
+        experimentConfiguration.copyDataTo(formBean.getExperimentConfiguration());
+        intersectionConfiguration.copyDataTo(formBean.getIntersectionConfiguration());
+        agentsConfiguration.copyDataTo(formBean.getAgentsConfiguration());
+    }
 }

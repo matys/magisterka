@@ -65,5 +65,14 @@ public class ExperimentConfiguration {
     public void setNumberOfGames(Integer numberOfGames) {
         this.numberOfGames = numberOfGames;
     }
+
+    public void copyDataTo(ExperimentConfiguration experimentConfiguration) {
+        experimentConfiguration.setNumberOfGames(getNumberOfGames());
+        experimentConfiguration.setNumberOfSeries(getNumberOfSeries());
+        experimentConfiguration.setPlotNumberOfCollision(isPlotNumberOfCollision());
+        experimentConfiguration.setPlotTimeOfIntersection(isPlotTimeOfIntersection());
+        experimentConfiguration.setPlotTimeOfIntersectionCrossingAverage(isPlotTimeOfIntersectionCrossingAverage());
+        experimentConfiguration.setSamplingFrequency(getSamplingFrequency());
+    }
 }
 

@@ -96,13 +96,15 @@ public class MabicsGUI {
 
         agentsPanelDownWrapper.removeAll();
         agentsPanelLeftWrapper.removeAll();
-        agentsPanelDownWrapper.add(data.getDownAgentsData(), new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        agentsPanelLeftWrapper.add(data.getLeftAgentsData(), new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        agentsPanelDown = data.getDownAgentsData();
+        agentsPanelLeft = data.getLeftAgentsData();
+        agentsPanelDownWrapper.add(agentsPanelDown, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        agentsPanelLeftWrapper.add(agentsPanelLeft, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         agentsPanelLeftWrapper.revalidate();
         agentsPanelDownWrapper.revalidate();
     }
 
-    public void getData(FormBean data) {
+    public FormBean getData(FormBean data) {
         data.setPlotTimeOfIntersectionCrossingAverage(plotTimeOfIntersectionCrossingAverageCheckBox.isSelected());
         data.setPlotNumberOfCollision(plotNumberOfCollisionsCheckBox.isSelected());
         data.setNumberOfSeries(numberOfSeriesTextField.getText());
@@ -122,6 +124,7 @@ public class MabicsGUI {
         data.setGenerateForEveryGame(generateForEveryGameCheckBox.isSelected());
         data.setLeftAgentsData(agentsPanelLeft);
         data.setDownAgentsData(agentsPanelDown);
+        return data;
     }
 
     public boolean isModified(FormBean data) {
@@ -225,6 +228,11 @@ public class MabicsGUI {
 
     public JButton getWriteToFileButton() {
         return writeToFileButton;
+    }
+
+
+    public JButton getReadFromFileButton() {
+        return readFromFileButton;
     }
 
     /**
@@ -436,4 +444,5 @@ public class MabicsGUI {
     public JComponent $$$getRootComponent$$$() {
         return Main;
     }
+
 }

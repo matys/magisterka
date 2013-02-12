@@ -7,7 +7,7 @@ package pl.edu.agh.mabics.ui.listeners.helpers;
  * Time: 14:25
  */
 public interface ISerializationHelper {
-    void executeForm();
+    void serializeFormBean(String filePath);
 
-    void serializeFormBean(String path);
+    void deserializeFormBean(String filePath);
 }
