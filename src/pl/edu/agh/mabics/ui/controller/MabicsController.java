@@ -4,7 +4,9 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.MabicsGUI;
+import pl.edu.agh.mabics.experiment.controllers.ExperimentRunner;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
+import pl.edu.agh.mabics.ui.listeners.helpers.IExperimentRunnerHelper;
 import pl.edu.agh.mabics.ui.listeners.helpers.IIntersectionConfigurationHelper;
 import pl.edu.agh.mabics.ui.listeners.helpers.ISerializationHelper;
 import pl.edu.agh.mabics.ui.listeners.implementation.*;
@@ -19,12 +21,13 @@ import javax.swing.*;
  * Time: 17:32
  */
 @Controller
-public class MabicsController implements ISerializationHelper, IIntersectionConfigurationHelper {
+public class MabicsController implements ISerializationHelper, IIntersectionConfigurationHelper, IExperimentRunnerHelper {
 
     private FormBeanSerializer formBeanSerializer;
     private FormBean formBean;
     private JFrame frame;
     private MabicsGUI mabicsGUI;
+    private ExperimentRunner experimentRunner;
 
 
     public MabicsController() {
@@ -41,6 +44,7 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         mabicsGUI.getGenerateRandomButtonDown().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getLeftTopCornerDownTextField(), mabicsGUI.getRightDownCornerDownTextField()));
         mabicsGUI.getWriteToFileButton().addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
         mabicsGUI.getReadFromFileButton().addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
+        mabicsGUI.getRunButton().addActionListener(new StartExperimentListener(this, experimentRunner));
     }
 
     private void initGUI() {
@@ -89,6 +93,17 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
     @Override
     public void setIntersectionFilePath(String path) {
         mabicsGUI.getIntersectionFilePath().setText(path);
+    }
+
+    @Autowired
+    public void setExperimentRunner(ExperimentRunner experimentRunner) {
+        this.experimentRunner = experimentRunner;
+    }
+
+    @Override
+    public FormBean getDataFromForm() {
+        mabicsGUI.getData(formBean);
+        return formBean;
     }
 }
 

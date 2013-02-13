@@ -445,4 +445,7 @@ public class MabicsGUI {
         return Main;
     }
 
+    public JButton getRunButton() {
+        return runButton;
+    }
 }
