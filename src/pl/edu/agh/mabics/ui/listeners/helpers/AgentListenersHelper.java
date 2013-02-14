@@ -57,9 +57,9 @@ public class AgentListenersHelper {
         return textField;
     }
 
-    public static JLabel createAgentName(String rowId) {
+    public static JLabel createAgentName(String rowId, String type) {
         final JLabel label = new JLabel();
-        label.setText("agent" + rowId);
+        label.setText("agent" + type + rowId);
         return label;
     }
 }

@@ -38,8 +38,8 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
     private void initListeners() {
         mabicsGUI.getIntersectionFileChooseButton().addMouseListener(new IntersectionImageChoiceListener(mabicsGUI.getFc(), mabicsGUI.getParent(), this));
         mabicsGUI.getIntersectionFileShowButton().addMouseListener(new ShowIntersectionListener(this));
-        mabicsGUI.getNumberOfAgentsLeftTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getNumberOfAgentsLeftTextField()));
-        mabicsGUI.getNumberOfAgentsDownTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getNumberOfAgentsDownTextField()));
+        mabicsGUI.getNumberOfAgentsLeftTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getNumberOfAgentsLeftTextField(), "Left"));
+        mabicsGUI.getNumberOfAgentsDownTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getNumberOfAgentsDownTextField(), "Down"));
         mabicsGUI.getGenerateRandomButtonLeft().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getLeftTopCornerLeftTextField(), mabicsGUI.getRightDownCornerLeftTextField()));
         mabicsGUI.getGenerateRandomButtonDown().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getLeftTopCornerDownTextField(), mabicsGUI.getRightDownCornerDownTextField()));
         mabicsGUI.getWriteToFileButton().addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));

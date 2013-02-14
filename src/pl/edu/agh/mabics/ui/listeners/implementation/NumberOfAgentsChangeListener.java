@@ -18,11 +18,13 @@ import java.awt.*;
 public class NumberOfAgentsChangeListener implements DocumentListener {
     private JPanel agentsPanel;
     private JTextField numberOfAgentsTextField;
+    private String type;
 
 
-    public NumberOfAgentsChangeListener(JPanel agentsPanel, JTextField numberOfAgentsTextField) {
+    public NumberOfAgentsChangeListener(JPanel agentsPanel, JTextField numberOfAgentsTextField, String type) {
         this.agentsPanel = agentsPanel;
         this.numberOfAgentsTextField = numberOfAgentsTextField;
+        this.type = type;
     }
 
     public void changedUpdate(DocumentEvent e) {
@@ -59,7 +61,7 @@ public class NumberOfAgentsChangeListener implements DocumentListener {
     }
 
     private void addRowToAgentPanel(JPanel agentsPanel, Integer rowId) {
-        final JLabel label = AgentListenersHelper.createAgentName(rowId.toString());
+        final JLabel label = AgentListenersHelper.createAgentName(rowId.toString(), type);
         agentsPanel.add(label, new GridConstraints(rowId, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         JTextField textField = AgentListenersHelper.generateBlankAgentPosition();
         agentsPanel.add(textField, new GridConstraints(rowId, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, new Dimension(30, -1), null, new Dimension(30, -1), 0, false));

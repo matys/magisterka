@@ -31,4 +31,11 @@ public class Coordinates {
     public void setY(Integer y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
+
+
 }

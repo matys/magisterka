@@ -18,6 +18,7 @@ import java.io.IOException;
 public abstract class AbstractAgent extends AbstractHandler {
 
     private JSONHelper jsonHelper;
+    private int port;
 
     @Autowired
     public void setJsonHelper(JSONHelper jsonHelper) {
@@ -45,6 +46,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     }
 
     public void startAgent(Integer port) {
+        this.port = port;
         Server server = new Server(port);
         server.setHandler(this);
         try {
@@ -53,5 +55,9 @@ public abstract class AbstractAgent extends AbstractHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getPort() {
+        return port;
     }
 }
