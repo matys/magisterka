@@ -13,6 +13,8 @@ import pl.edu.agh.mabics.ui.listeners.implementation.*;
 import pl.edu.agh.mabics.ui.util.serialization.FormBeanSerializer;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +34,11 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
 
     public MabicsController() {
         initGUI();
+        refreshListeners();
+    }
+
+    private void refreshListeners() {
+        removeOldListeners();
         initListeners();
     }
 
@@ -45,6 +52,32 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         mabicsGUI.getWriteToFileButton().addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
         mabicsGUI.getReadFromFileButton().addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
         mabicsGUI.getRunButton().addActionListener(new StartExperimentListener(this, experimentRunner));
+    }
+
+    private void removeOldListeners() {
+        removeOldMouseListeners(mabicsGUI.getIntersectionFileChooseButton(), IntersectionImageChoiceListener.class);
+        removeOldActionListeners(mabicsGUI.getRunButton(), StartExperimentListener.class);
+        removeOldMouseListeners(mabicsGUI.getIntersectionFileShowButton(), ShowIntersectionListener.class);
+        removeOldMouseListeners(mabicsGUI.getGenerateRandomButtonDown(), GenerateRandomAgentsListener.class);
+        removeOldMouseListeners(mabicsGUI.getGenerateRandomButtonLeft(), GenerateRandomAgentsListener.class);
+        removeOldActionListeners(mabicsGUI.getWriteToFileButton(), WriteToFileListener.class);
+        removeOldActionListeners(mabicsGUI.getReadFromFileButton(), ReadFromFileListener.class);
+    }
+
+    private void removeOldActionListeners(JButton button, Class listenerClass) {
+        ActionListener[] listeners = button.getActionListeners();
+        for (ActionListener listener : listeners) {
+            if (listenerClass.isInstance(listener))
+                button.removeActionListener(listener);
+        }
+    }
+
+    private void removeOldMouseListeners(JButton button, Class listenerClass) {
+        MouseListener[] listeners = button.getMouseListeners();
+        for (MouseListener listener : listeners) {
+            if (listenerClass.isInstance(listener))
+                button.removeMouseListener(listener);
+        }
     }
 
     private void initGUI() {
@@ -75,7 +108,7 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
         FormBean formBean = formBeanSerializer.deserialize(filePath);
         formBean.copyDataTo(this.formBean);
         mabicsGUI.setData(this.formBean);
-        initListeners();
+        refreshListeners();
     }
 
     @Override

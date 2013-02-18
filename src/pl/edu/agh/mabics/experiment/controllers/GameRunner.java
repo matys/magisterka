@@ -40,8 +40,14 @@ public class GameRunner {
 
     private void startPlatform(FormBean data) {
         buildConfigurationFile(data);
+        String visualisationCommand = getVisualizationEnabledCommand(data);
         String[] commands = {"cd " + CONFIG_FILE_PATH, "start python runner.py -c " + configurationFileBuilder.getFile() + " -v True"};
         commandLineHelper.runCommand(commands);
+    }
+
+    private String getVisualizationEnabledCommand(FormBean data) {
+//        data.getExperimentConfiguration().
+        return "";
     }
 
     private void buildConfigurationFile(FormBean data) {
@@ -54,7 +60,7 @@ public class GameRunner {
     private void buildAgentData(OneSideConfiguration data) {
         for (AgentData agentData : data.getAgents()) {
             AbstractAgent agent = agents.get(agentData.getName());
-            Coordinates endLine = new Coordinates(data.getEndLine(), 0);
+            Coordinates endLine = new Coordinates(data.getEndLine(), 26);   //TODO fix
             configurationFileBuilder.writeAgentData(agentData, endLine, agent.getPort());
         }
     }

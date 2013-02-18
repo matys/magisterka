@@ -14,7 +14,7 @@ class RandomAgent extends AbstractAgent {
     @Override
     PlatformResponse getNextMove(PlatformRequest request) {
         def move = request.getAllowedMoves().get(Math.abs(random.nextInt()) % request.getAllowedMoves().size());
-        Thread.currentThread().sleep(1000);
+        Thread.currentThread().sleep(100);
         return new PlatformResponse(move, 1);
     }
 }
