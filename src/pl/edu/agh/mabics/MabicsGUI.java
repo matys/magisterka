@@ -2,6 +2,7 @@ package pl.edu.agh.mabics;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import pl.edu.agh.mabics.agents.implementation.AgentType;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 
 import javax.swing.*;
@@ -58,6 +59,9 @@ public class MabicsGUI {
 
     public MabicsGUI() {
         $$$setupUI$$$();
+        agentImplementationDownComboBox.setModel(new DefaultComboBoxModel(AgentType.values()));
+        agentImplementationLeftComboBox.setModel(new DefaultComboBoxModel(AgentType.values()));
+
     }
 
 
@@ -93,6 +97,8 @@ public class MabicsGUI {
         numberOfAgentsDownTextField.setText(data.getNumberOfAgentsDown());
         performParametrsSearchCheckBox.setSelected(data.isPerformParametersSearch());
         generateForEveryGameCheckBox.setSelected(data.isGenerateForEveryGame());
+        agentImplementationDownComboBox.setSelectedItem(data.getImplementationAgentDown());
+        agentImplementationLeftComboBox.setSelectedItem(data.getImplementationAgentLeft());
 
         agentsPanelDownWrapper.removeAll();
         agentsPanelLeftWrapper.removeAll();
@@ -120,6 +126,8 @@ public class MabicsGUI {
         data.setEndLineDown(EndLineDownTextField.getText());
         data.setNumberOfAgentsLeft(numberOfAgentsLeftTextField.getText());
         data.setNumberOfAgentsDown(numberOfAgentsDownTextField.getText());
+        data.setImplementationAgentLeft((AgentType) agentImplementationLeftComboBox.getSelectedItem());
+        data.setImplementationAgentDown((AgentType) agentImplementationDownComboBox.getSelectedItem());
         data.setPerformParametersSearch(performParametrsSearchCheckBox.isSelected());
         data.setGenerateForEveryGame(generateForEveryGameCheckBox.isSelected());
         data.setLeftAgentsData(agentsPanelLeft);
@@ -127,6 +135,7 @@ public class MabicsGUI {
         return data;
     }
 
+    //TODO not all data checked
     public boolean isModified(FormBean data) {
         if (plotTimeOfIntersectionCrossingAverageCheckBox.isSelected() != data.isPlotTimeOfIntersectionCrossingAverage())
             return true;

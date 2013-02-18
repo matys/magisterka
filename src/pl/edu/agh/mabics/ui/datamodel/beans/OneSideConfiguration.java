@@ -1,6 +1,7 @@
 package pl.edu.agh.mabics.ui.datamodel.beans;
 
 import org.springframework.stereotype.Component;
+import pl.edu.agh.mabics.agents.implementation.AgentType;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class OneSideConfiguration {
     private Integer endLine;
     private Integer numberOfAgents;
     private List<AgentData> agents;
+    private AgentType agentImplementation;
 
     public Coordinates getLeftTopCornerCoordinates() {
         return leftTopCornerCoordinates;
@@ -55,6 +57,15 @@ public class OneSideConfiguration {
         return agents;
     }
 
+
+    public void setAgentImplementation(AgentType type) {
+        this.agentImplementation = type;
+    }
+
+    public AgentType getAgentImplementation() {
+        return agentImplementation;
+    }
+
     public void setAgents(List<AgentData> agents) {
         this.agents = agents;
     }
@@ -65,5 +76,7 @@ public class OneSideConfiguration {
         anotherConfiguration.setNumberOfAgents(getNumberOfAgents());
         anotherConfiguration.setEndLine(getEndLine());
         anotherConfiguration.setAgents(getAgents());
+        anotherConfiguration.setAgentImplementation(getAgentImplementation());
     }
+
 }

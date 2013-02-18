@@ -8,6 +8,7 @@ import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,9 +40,9 @@ public class ConfigurationFileBuilder {
         }
     }
 
-    public void writeAgentData(AgentData agentData, Coordinates stopPoint, int port) {
+    public void writeAgentData(AgentData agentData, List<Coordinates> stopPoints, int port) {
         try {
-            String line = buildLine(agentData, stopPoint, port);
+            String line = buildLine(agentData, stopPoints, port);
             bufferedWriter.write(line);
             System.out.println(line);
         } catch (IOException e) {
@@ -49,9 +50,18 @@ public class ConfigurationFileBuilder {
         }
     }
 
-    private String buildLine(AgentData agentData, Coordinates stopPoint, int port) {
-        return "\n" + agentData.getName() + " " + "(" + agentData.getLocation().getX() + "," + agentData.getLocation().getY() + ") " + "[" + stopPoint.toString() + "]" + " localhost:" + port;
+    private String buildLine(AgentData agentData, List<Coordinates> stopPoints, int port) {
+        return "\n" + agentData.getName() + " " + "(" + agentData.getLocation().getX() + "," + agentData.getLocation().getY() + ") " + "[" + listToString(stopPoints) + "]" + " localhost:" + port;
     }
+
+    private String listToString(List<Coordinates> stopPoints) {
+        String returnValue = "";
+        for (Coordinates point : stopPoints) {
+            returnValue = returnValue + point.toString() + ",";
+        }
+        return returnValue.substring(0, returnValue.length() - 1);
+    }
+
 
     public String getFile() {
         try {

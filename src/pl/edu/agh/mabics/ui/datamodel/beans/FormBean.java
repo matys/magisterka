@@ -1,6 +1,7 @@
 package pl.edu.agh.mabics.ui.datamodel.beans;
 
 import org.springframework.stereotype.Component;
+import pl.edu.agh.mabics.agents.implementation.AgentType;
 import pl.edu.agh.mabics.platform.converters.ConverterUtil;
 import pl.edu.agh.mabics.ui.datamodel.util.AgentDataConverter;
 import pl.edu.agh.mabics.ui.datamodel.util.AgentDataReverseConverter;
@@ -240,6 +241,23 @@ public class FormBean {
         agentsConfiguration.setGenerateForEveryGame(generateForEveryGame);
     }
 
+
+    public void setImplementationAgentLeft(AgentType selectedItem) {
+        agentsConfiguration.getLeftSideConfiguration().setAgentImplementation(selectedItem);
+    }
+
+    public void setImplementationAgentDown(AgentType selectedItem) {
+        agentsConfiguration.getDownSideConfiguration().setAgentImplementation(selectedItem);
+    }
+
+    public AgentType getImplementationAgentDown() {
+        return agentsConfiguration.getDownSideConfiguration().getAgentImplementation();
+    }
+
+    public AgentType getImplementationAgentLeft() {
+        return agentsConfiguration.getLeftSideConfiguration().getAgentImplementation();
+    }
+
     public void setExperimentConfiguration(ExperimentConfiguration experimentConfiguration) {
         this.experimentConfiguration = experimentConfiguration;
     }
@@ -281,4 +299,5 @@ public class FormBean {
         intersectionConfiguration.copyDataTo(formBean.getIntersectionConfiguration());
         agentsConfiguration.copyDataTo(formBean.getAgentsConfiguration());
     }
+
 }

@@ -11,24 +11,28 @@ public class PlatformResponse {
     private Move move;
     private int speed;
 
+    public PlatformResponse() {
+    }
+
+
     public PlatformResponse(Move move, int speed) {
         this.move = move;
         this.speed = speed;
     }
 
-    Move getMove() {
+    public Move getMove() {
         return move;
     }
 
-    void setMove(Move move) {
+    public void setMove(Move move) {
         this.move = move;
     }
 
-    int getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
-    void setSpeed(int speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 

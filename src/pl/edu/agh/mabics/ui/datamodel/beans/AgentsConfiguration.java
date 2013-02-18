@@ -53,4 +53,5 @@ public class AgentsConfiguration {
         leftSideConfiguration.copyDataTo(agentsConfiguration.getLeftSideConfiguration());
         downSideConfiguration.copyDataTo(agentsConfiguration.getDownSideConfiguration());
     }
+
 }
