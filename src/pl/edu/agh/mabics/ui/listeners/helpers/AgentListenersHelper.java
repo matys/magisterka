@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -61,5 +62,28 @@ public class AgentListenersHelper {
         final JLabel label = new JLabel();
         label.setText("agent" + type + rowId);
         return label;
+    }
+
+    public static boolean agentAlreadyCreated(JTextField newAgent, List<JTextField> oldAgents) {
+        for (JTextField oldAgent : oldAgents) {
+            if (oldAgent.getText().compareTo(newAgent.getText()) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static JTextField createUniqueRandomAgent(List<JTextField> alreadyAddedAgents, Coordinates leftTopCoordinates, Coordinates rightDownCoordinates) {
+        int counter = 0;
+        while (true) {
+            JTextField randomAgent = generateRandomAgentPosition(leftTopCoordinates, rightDownCoordinates);
+            if (!AgentListenersHelper.agentAlreadyCreated(randomAgent, alreadyAddedAgents)) {
+                return randomAgent;
+            }
+            counter++;
+            if (counter > 200) {
+                throw new IllegalArgumentException("to less space for agents");
+            }
+        }
     }
 }

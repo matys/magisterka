@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,10 +31,13 @@ public class GenerateRandomAgentsListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         Coordinates leftTopCoordinates = CoordinatesConverter.convert(leftTopCornerField);
-        Coordinates rightTopCoordinates = CoordinatesConverter.convert(rightDownCornerField);
+        Coordinates rightDownCoordinates = CoordinatesConverter.convert(rightDownCornerField);
+        java.util.List<JTextField> alreadyAddedAgents = new ArrayList<JTextField>();
         for (Component agent : agentsPanel.getComponents()) {
             if (agent instanceof JTextField) {
-                ((JTextField) agent).setText(AgentListenersHelper.generateRandomAgentPosition(leftTopCoordinates, rightTopCoordinates).getText());
+                JTextField randomAgent = AgentListenersHelper.createUniqueRandomAgent(alreadyAddedAgents, leftTopCoordinates, rightDownCoordinates);
+                alreadyAddedAgents.add(randomAgent);
+                ((JTextField) agent).setText(randomAgent.getText());
             }
         }
     }
