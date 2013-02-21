@@ -35,12 +35,19 @@ public class GameRunner {
     private AgentFactory agentFactory;
     private AgentDataHelper agentDataHelper;
     private ConfigurationFileBuilder configurationFileBuilder;
+    private CollisionController collisionController;
     private Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
 
     public GameResult runGame(int gameNumber, FormBean data) {
         //restartAgents(); perhaps not needed, perhaps it will restart some agent data that shouldn't be known between series
+        initCollisionController();
         startPlatform(data);
         return new GameResult();
+    }
+
+    private void initCollisionController() {
+        collisionController.nextStep(agents.size());
+        collisionController.start();
     }
 
     private void startPlatform(FormBean data) {
@@ -87,7 +94,7 @@ public class GameRunner {
 
     private void initOneSide(OneSideConfiguration data) {
         for (AgentData agentData : data.getAgents()) {
-            AbstractAgent agent = agentFactory.createAgent(data.getAgentImplementation());
+            AbstractAgent agent = agentFactory.createAgent(agentData.getName(), data.getAgentImplementation());
             agents.put(agentData.getName(), agent);
         }
     }
@@ -110,5 +117,10 @@ public class GameRunner {
     @Autowired
     public void setAgentDataHelper(AgentDataHelper agentDataHelper) {
         this.agentDataHelper = agentDataHelper;
+    }
+
+    @Autowired
+    public void setCollisionController(CollisionController collisionController) {
+        this.collisionController = collisionController;
     }
 }

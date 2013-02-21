@@ -23,10 +23,10 @@ public class AgentFactory implements BeanFactoryAware {
         this.beanFactory = beanFactory;
     }
 
-    public AbstractAgent createAgent(AgentType type) {
+    public AbstractAgent createAgent(String id, AgentType type) {
         portCounter++;
         AbstractAgent newAgent = (AbstractAgent) beanFactory.getBean(type.getBeanName());
-        newAgent.startAgent(portCounter);
+        newAgent.startAgent(portCounter, id);
         return newAgent;
     }
 

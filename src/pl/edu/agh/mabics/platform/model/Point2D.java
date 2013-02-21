@@ -17,5 +17,17 @@ public class Point2D {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Point2D) {
+            Point2D anotherPoint = (Point2D) o;
+            if (anotherPoint.x == x && anotherPoint.y == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
