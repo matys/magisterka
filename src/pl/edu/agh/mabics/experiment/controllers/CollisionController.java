@@ -67,7 +67,7 @@ public class CollisionController extends Thread {
         chosenMoves.put(agentName, move);
     }
 
-    public void nextStep(int numberOfAgents) {
+    public void init(int numberOfAgents) {
         this.numberOfAgents = numberOfAgents;
         chosenMoves.clear();
     }

@@ -6,6 +6,9 @@ import org.mortbay.jetty.handler.AbstractHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.experiment.controllers.CollisionController;
+import pl.edu.agh.mabics.experiment.controllers.EndGameController;
+import pl.edu.agh.mabics.experiment.controllers.IGameRunner;
+import pl.edu.agh.mabics.experiment.datamodel.Statistics;
 import pl.edu.agh.mabics.platform.JSONHelper;
 import pl.edu.agh.mabics.platform.model.MoveState;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
@@ -21,20 +24,16 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     private JSONHelper jsonHelper;
     private CollisionController collisionController;
+    private EndGameController endPointController;
+    private IGameRunner gameRunner;
     private int port;
     private String id;
-
-    @Autowired
-    public void setJsonHelper(JSONHelper jsonHelper) {
-        this.jsonHelper = jsonHelper;
-    }
-
-    @Autowired
-    public void setCollisionController(CollisionController collisionController) {
-        this.collisionController = collisionController;
-    }
+    private Statistics statistics = new Statistics();
+    private boolean collision = false;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
+
+    public abstract void onComplete();
 
     public void handle(String target, HttpServletRequest request,
                        HttpServletResponse response, int dispatch) throws IOException,
@@ -42,7 +41,28 @@ public abstract class AbstractAgent extends AbstractHandler {
         String content = request.getReader().readLine();
         PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
         prepareResponseToSend(response);
+        if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition(), parsedRequest.getDestination())) {
+            onComplete();
+        }
         makeMove((Request) request, response, parsedRequest);
+        afterStep();
+    }
+
+    private void afterStep() {
+        updateStatistics();
+        informController();
+    }
+
+    private void informController() {
+        gameRunner.afterAgentStep(statistics);
+    }
+
+    private void updateStatistics() {
+        if (collision) {
+            statistics.numberOfCollisions++;
+        }
+        statistics.numberOfSteps++;
+        collision = false;
     }
 
     private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest) throws IOException {
@@ -51,10 +71,12 @@ public abstract class AbstractAgent extends AbstractHandler {
 //        while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
 //            sleep();
 //        }
-        if (!nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
+        if (!nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {    //FIX: remove "!"
+            collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
         } else {
+            collision = true;
             removeMove(parsedRequest, nextMove);
             makeMove(request, response, parsedRequest);
         }
@@ -94,5 +116,25 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public int getPort() {
         return port;
+    }
+
+    @Autowired
+    public void setJsonHelper(JSONHelper jsonHelper) {
+        this.jsonHelper = jsonHelper;
+    }
+
+    @Autowired
+    public void setCollisionController(CollisionController collisionController) {
+        this.collisionController = collisionController;
+    }
+
+    @Autowired
+    public void setEndPointController(EndGameController endPointController) {
+        this.endPointController = endPointController;
+    }
+
+    @Autowired
+    public void setGameRunner(IGameRunner gameRunner) {
+        this.gameRunner = gameRunner;
     }
 }

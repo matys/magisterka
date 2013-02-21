@@ -37,5 +37,15 @@ public class Coordinates {
         return "(" + x + "," + y + ")";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Coordinates) {
+            Coordinates anotherCoordinates = (Coordinates) o;
+            if (anotherCoordinates.x.equals(x) && anotherCoordinates.y.equals(y)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

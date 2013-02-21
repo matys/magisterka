@@ -1,5 +1,7 @@
 package pl.edu.agh.mabics.platform.model;
 
+import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
+
 import java.util.List;
 
 public class PlatformRequest {
@@ -7,10 +9,10 @@ public class PlatformRequest {
     private int speed;
     private Vector velocity;
     private String id;
-    private Point2D position;
-    private List<Point2D> robots;
+    private Coordinates position;
+    private List<Coordinates> robots;
     private List<Move> allowedMoves;
-    private List<Point2D> destination;
+    private List<Coordinates> destination;
 
     public int getSpeed() {
         return speed;
@@ -36,19 +38,19 @@ public class PlatformRequest {
         this.id = id;
     }
 
-    public Point2D getPosition() {
+    public Coordinates getPosition() {
         return position;
     }
 
-    public void setPosition(Point2D position) {
+    public void setPosition(Coordinates position) {
         this.position = position;
     }
 
-    public List<Point2D> getRobots() {
+    public List<Coordinates> getRobots() {
         return robots;
     }
 
-    public void setRobots(List<Point2D> robots) {
+    public void setRobots(List<Coordinates> robots) {
         this.robots = robots;
     }
 
@@ -60,11 +62,11 @@ public class PlatformRequest {
         this.allowedMoves = allowedMoves;
     }
 
-    public List<Point2D> getDestination() {
+    public List<Coordinates> getDestination() {
         return destination;
     }
 
-    public void setDestination(List<Point2D> destination) {
+    public void setDestination(List<Coordinates> destination) {
         this.destination = destination;
     }
 

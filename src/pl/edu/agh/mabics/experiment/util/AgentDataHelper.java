@@ -1,6 +1,7 @@
 package pl.edu.agh.mabics.experiment.util;
 
 import org.springframework.stereotype.Service;
+import pl.edu.agh.mabics.ui.datamodel.beans.OneSideConfiguration;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.ArrayList;
@@ -31,4 +32,11 @@ public class AgentDataHelper {
         return points;
     }
 
+    public Collection<Coordinates> generateDownEndlinePoints(OneSideConfiguration data) {
+        return generateHorizontalEndlinePoints(data.getEndLine(), data.getLeftTopCornerCoordinates().getX(), data.getRightDownCornerCoordinates().getX());
+    }
+
+    public Collection<? extends Coordinates> generateLeftEndlinePoints(OneSideConfiguration data) {
+        return generateVerticalEndlinePoints(data.getEndLine(), data.getRightDownCornerCoordinates().getY(), data.getLeftTopCornerCoordinates().getY());
+    }
 }

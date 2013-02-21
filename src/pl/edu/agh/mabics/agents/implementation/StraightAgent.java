@@ -5,7 +5,7 @@ import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.platform.model.Move;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
-import pl.edu.agh.mabics.platform.model.Point2D;
+import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class StraightAgent extends AbstractAgent {
     public PlatformResponse getNextMove(PlatformRequest request) {
         PlatformResponse response = new PlatformResponse();
         response.setSpeed(1);
-        Point2D position = request.getPosition();
+        Coordinates position = request.getPosition();
         Direction direction = getDirection(request.getDestination());
         for (Move move : request.getAllowedMoves()) {
             if (checkIfMoveInGoodDirection(direction, move, position)) {
@@ -34,7 +34,13 @@ public class StraightAgent extends AbstractAgent {
         return response;
     }
 
-    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Point2D position) {
+    //TODO implement
+    @Override
+    public void onComplete() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Coordinates position) {
         int x = position.getX();
         int y = position.getY();
         switch (direction) {
@@ -47,7 +53,7 @@ public class StraightAgent extends AbstractAgent {
         return false;
     }
 
-    private Direction getDirection(List<Point2D> destination) {
+    private Direction getDirection(List<Coordinates> destination) {
         int dx = destination.get(0).getX() - destination.get(1).getX();
         int dy = destination.get(0).getY() - destination.get(1).getY();
         if (dx == 0) {

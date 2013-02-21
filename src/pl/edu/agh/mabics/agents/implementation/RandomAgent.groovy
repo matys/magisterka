@@ -17,4 +17,10 @@ class RandomAgent extends AbstractAgent {
         Thread.currentThread().sleep(100);
         return new PlatformResponse(move, 1);
     }
+
+    @Override
+    void onComplete() {
+        //TODO complete
+
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.AgentFactory;
 import pl.edu.agh.mabics.experiment.datamodel.GameResult;
+import pl.edu.agh.mabics.experiment.datamodel.Statistics;
 import pl.edu.agh.mabics.experiment.util.AgentDataHelper;
 import pl.edu.agh.mabics.experiment.util.ConfigurationFileBuilder;
 import pl.edu.agh.mabics.ui.datamodel.beans.AgentData;
@@ -26,7 +27,7 @@ import java.util.Map;
  * Time: 18:26
  */
 @Controller
-public class GameRunner {
+public class GameRunner implements IGameRunner {
 
     private static final String CONFIG_FILE_PATH = "..\\trunk\\src\\runner\\";
     private static final String CONFIG_FILE_NAME = "config3";
@@ -36,17 +37,41 @@ public class GameRunner {
     private AgentDataHelper agentDataHelper;
     private ConfigurationFileBuilder configurationFileBuilder;
     private CollisionController collisionController;
+    private EndGameController endGameController;
     private Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
 
     public GameResult runGame(int gameNumber, FormBean data) {
         //restartAgents(); perhaps not needed, perhaps it will restart some agent data that shouldn't be known between series
         initCollisionController();
+        initEndGameController(data);
         startPlatform(data);
         return new GameResult();
     }
 
+    private void initEndGameController(FormBean data) {
+        HashMap<String, List<Coordinates>> agentsDestination = new HashMap<String, List<Coordinates>>();
+        addOneSideAgents(data.getAgentsConfiguration().getDownSideConfiguration(), agentsDestination, AgentSite.DOWN);
+        addOneSideAgents(data.getAgentsConfiguration().getLeftSideConfiguration(), agentsDestination, AgentSite.LEFT);
+        endGameController.init(agentsDestination);
+    }
+
+    private void addOneSideAgents(OneSideConfiguration data, HashMap<String, List<Coordinates>> agentsDestination, AgentSite site) {
+        List<Coordinates> destinationCoordinates = new ArrayList<Coordinates>();
+        switch (site) {
+            case DOWN:
+                destinationCoordinates.addAll(agentDataHelper.generateDownEndlinePoints(data));
+                break;
+            case LEFT:
+                destinationCoordinates.addAll(agentDataHelper.generateLeftEndlinePoints(data));
+                break;
+        }
+        for (AgentData agent : data.getAgents()) {
+            agentsDestination.put(agent.getName(), destinationCoordinates);
+        }
+    }
+
     private void initCollisionController() {
-        collisionController.nextStep(agents.size());
+        collisionController.init(agents.size());
         collisionController.start();
     }
 
@@ -76,10 +101,10 @@ public class GameRunner {
             List<Coordinates> endLine = new ArrayList<Coordinates>();
             switch (site) {
                 case DOWN:
-                    endLine.addAll(agentDataHelper.generateHorizontalEndlinePoints(data.getEndLine(), data.getLeftTopCornerCoordinates().getX(), data.getRightDownCornerCoordinates().getX()));
+                    endLine.addAll(agentDataHelper.generateDownEndlinePoints(data));
                     break;
                 case LEFT:
-                    endLine.addAll(agentDataHelper.generateVerticalEndlinePoints(data.getEndLine(), data.getRightDownCornerCoordinates().getY(), data.getLeftTopCornerCoordinates().getY()));
+                    endLine.addAll(agentDataHelper.generateLeftEndlinePoints(data));
                     break;
             }
             configurationFileBuilder.writeAgentData(agentData, endLine, agent.getPort());
@@ -122,5 +147,17 @@ public class GameRunner {
     @Autowired
     public void setCollisionController(CollisionController collisionController) {
         this.collisionController = collisionController;
+    }
+
+    @Autowired
+    public void setEndGameController(EndGameController endGameController) {
+        this.endGameController = endGameController;
+    }
+
+    @Override
+    public void afterAgentStep(Statistics statistics) {
+        if (endGameController.isAllAgentFinished()) {
+            System.out.println("FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
     }
 }
