@@ -40,12 +40,21 @@ public class GameRunner implements IGameRunner {
     private EndGameController endGameController;
     private Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
     private Process platformThread;
+    private boolean finished;
 
     public GameResult runGame(int gameNumber, FormBean data) {
         //restartAgents(); perhaps not needed, perhaps it will restart some agent data that shouldn't be known between series
         initCollisionController();
         initEndGameController(data);
         startPlatform(data);
+        finished = false;
+        while (!finished) {
+            try {
+                Thread.currentThread().sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
         return new GameResult();
     }
 
@@ -167,7 +176,18 @@ public class GameRunner implements IGameRunner {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                createStatistics();
             }
+        }
+    }
+
+    private void createStatistics() {
+        finished = true;
+    }
+
+    public void restartAgents() {
+        for (AbstractAgent agent : agents.values()) {
+            agent.startAgent(agent.getPort(), agent.getId());
         }
     }
 }

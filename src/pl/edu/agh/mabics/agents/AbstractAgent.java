@@ -148,4 +148,8 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void setGameRunner(IGameRunner gameRunner) {
         this.gameRunner = gameRunner;
     }
+
+    public String getId() {
+        return id;
+    }
 }

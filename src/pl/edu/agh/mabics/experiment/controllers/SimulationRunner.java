@@ -28,6 +28,8 @@ public class SimulationRunner {
         gameRunner.initAgents(data);
         for (int gameNumber = 0; gameNumber < gamesNumber; gameNumber++) {
             gamesResults.add(gameRunner.runGame(gameNumber, data));
+            if (gameNumber < gamesNumber - 1)
+                gameRunner.restartAgents();
         }
         result.setGameResults(gamesResults);
         return result;
