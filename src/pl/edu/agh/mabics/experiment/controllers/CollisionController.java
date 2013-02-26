@@ -23,9 +23,9 @@ public class CollisionController extends Thread {
     //TODO turn on as only platform changed
     @Override
     public void run() {
-//        while (true) {
+        while (true) {
 //            while (chosenMoves.size() < numberOfAgents) {
-//                sleep();
+            sleep();
 //                System.out.println("waiting for decision of agents");
 //            }
 //            Map<String, Move> duplicatedMoves = getDuplicatedMoves();
@@ -36,7 +36,7 @@ public class CollisionController extends Thread {
 //                System.out.println("wrong moves");
 //                rejectDuplicatedMoves(duplicatedMoves);
 //            }
-//        }
+        }
     }
 
     private void rejectDuplicatedMoves(Map<String, Move> duplicatedMoves) {

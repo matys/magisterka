@@ -15,26 +15,31 @@ import java.io.InputStreamReader;
 @Service
 public class CommandLineHelper {
 
-    public void runCommand(String[] commands) {
+    public Process runCommand(String[] commands, boolean waitForProcess) {
         CommandBuilder builder = new CommandBuilder();
         for (String command : commands) {
             builder = builder.addCommand(command);
         }
+        Process p = null;
         try {
             System.out.println(builder.getCommand());
-            Process p = Runtime.getRuntime().exec(builder.getCommand());
-            p.waitFor();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = reader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = reader.readLine();
+            p = Runtime.getRuntime().exec(builder.getCommand());
+            if (waitForProcess) {
+                p.waitFor();
             }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                System.out.println(line);
+//                line = reader.readLine();
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+        } finally {
+            return p;
         }
     }
 

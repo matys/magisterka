@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.AgentFactory;
+import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 import pl.edu.agh.mabics.experiment.datamodel.GameResult;
-import pl.edu.agh.mabics.experiment.datamodel.Statistics;
 import pl.edu.agh.mabics.experiment.util.AgentDataHelper;
 import pl.edu.agh.mabics.experiment.util.ConfigurationFileBuilder;
 import pl.edu.agh.mabics.ui.datamodel.beans.AgentData;
@@ -39,6 +39,7 @@ public class GameRunner implements IGameRunner {
     private CollisionController collisionController;
     private EndGameController endGameController;
     private Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
+    private Process platformThread;
 
     public GameResult runGame(int gameNumber, FormBean data) {
         //restartAgents(); perhaps not needed, perhaps it will restart some agent data that shouldn't be known between series
@@ -72,14 +73,16 @@ public class GameRunner implements IGameRunner {
 
     private void initCollisionController() {
         collisionController.init(agents.size());
-        collisionController.start();
+        if (!collisionController.isAlive()) {
+            collisionController.start();
+        }
     }
 
     private void startPlatform(FormBean data) {
         buildConfigurationFile(data);
         String visualisationCommand = getVisualizationEnabledCommand(data);
         String[] commands = {"cd " + CONFIG_FILE_PATH, "start python runner.py -c " + configurationFileBuilder.getFile() + " -v True"};
-        commandLineHelper.runCommand(commands);
+        platformThread = commandLineHelper.runCommand(commands, false);
     }
 
     //TODO implement
@@ -155,9 +158,16 @@ public class GameRunner implements IGameRunner {
     }
 
     @Override
-    public void afterAgentStep(Statistics statistics) {
+    public void afterAgentStep(AgentStatistics statistics) {
         if (endGameController.isAllAgentFinished()) {
             System.out.println("FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            for (AbstractAgent agent : agents.values()) {
+                try {
+                    agent.stopAgent();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.experiment.controllers.CollisionController;
 import pl.edu.agh.mabics.experiment.controllers.EndGameController;
 import pl.edu.agh.mabics.experiment.controllers.IGameRunner;
-import pl.edu.agh.mabics.experiment.datamodel.Statistics;
+import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 import pl.edu.agh.mabics.platform.JSONHelper;
 import pl.edu.agh.mabics.platform.model.MoveState;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
@@ -28,8 +28,9 @@ public abstract class AbstractAgent extends AbstractHandler {
     private IGameRunner gameRunner;
     private int port;
     private String id;
-    private Statistics statistics = new Statistics();
+    private AgentStatistics statistics = new AgentStatistics();
     private boolean collision = false;
+    private Server server;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -104,7 +105,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void startAgent(Integer port, String id) {
         this.port = port;
         this.id = id;
-        Server server = new Server(port);
+        server = new Server(port);
         server.setHandler(this);
         try {
             System.out.println("Starting server on port: " + port.toString());
@@ -122,6 +123,16 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void setJsonHelper(JSONHelper jsonHelper) {
         this.jsonHelper = jsonHelper;
     }
+
+    public void stopAgent() {
+        try {
+            server.stop();
+            super.stop();
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
 
     @Autowired
     public void setCollisionController(CollisionController collisionController) {

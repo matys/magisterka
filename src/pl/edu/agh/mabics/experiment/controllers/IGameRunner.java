@@ -1,6 +1,6 @@
 package pl.edu.agh.mabics.experiment.controllers;
 
-import pl.edu.agh.mabics.experiment.datamodel.Statistics;
+import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +10,5 @@ import pl.edu.agh.mabics.experiment.datamodel.Statistics;
  */
 public interface IGameRunner {
 
-    void afterAgentStep(Statistics statistics);
+    void afterAgentStep(AgentStatistics statistics);
 }

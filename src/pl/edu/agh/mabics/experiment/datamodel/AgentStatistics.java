@@ -6,7 +6,7 @@ package pl.edu.agh.mabics.experiment.datamodel;
  * Date: 21.02.13
  * Time: 15:50
  */
-public class Statistics {
+public class AgentStatistics {
 
     public int numberOfSteps;
     public int numberOfCollisions;
