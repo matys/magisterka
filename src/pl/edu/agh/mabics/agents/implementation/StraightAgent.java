@@ -8,6 +8,7 @@ import pl.edu.agh.mabics.platform.model.PlatformResponse;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,10 +19,12 @@ import java.util.List;
 @Service
 public class StraightAgent extends AbstractAgent {
 
+    private Random random = new Random();
+
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
         PlatformResponse response = new PlatformResponse();
-        response.setSpeed(1);
+        response.setSpeed(randomNewSpeed(request.getSpeed()));
         Coordinates position = request.getPosition();
         Direction direction = getDirection(request.getDestination());
         for (Move move : request.getAllowedMoves()) {
@@ -32,6 +35,17 @@ public class StraightAgent extends AbstractAgent {
         }
         response.setMove(request.getAllowedMoves().get(0));
         return response;
+    }
+
+    private int randomNewSpeed(int speed) {
+        int change = (random.nextInt() % 2);
+        int newSpeed = speed + change;
+        if (newSpeed > 2) {
+            newSpeed = 2;
+        } else if (newSpeed < 0) {
+            newSpeed = 0;
+        }
+        return newSpeed;
     }
 
     //TODO implement

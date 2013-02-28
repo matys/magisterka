@@ -1,12 +1,12 @@
 package pl.edu.agh.mabics.experiment.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.ui.datamodel.beans.AgentData;
 import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,17 +19,13 @@ import java.util.List;
 @Service
 public class ConfigurationFileBuilder {
 
+    private FileHelper fileHelper;
     private BufferedWriter bufferedWriter;
     private String fileName;
 
     public void createNewConfigurationFile(String configFilePath, String fileName) {
-        try {
-            this.fileName = fileName;
-            FileWriter writer = new FileWriter(configFilePath + fileName);
-            this.bufferedWriter = new BufferedWriter(writer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.bufferedWriter = fileHelper.createBufferedReader(configFilePath + fileName);
+        this.fileName = fileName;
     }
 
     public void writeIntersectionData(IntersectionConfiguration configuration) {
@@ -72,4 +68,8 @@ public class ConfigurationFileBuilder {
         return fileName;
     }
 
+    @Autowired
+    public void setFileHelper(FileHelper fileHelper) {
+        this.fileHelper = fileHelper;
+    }
 }

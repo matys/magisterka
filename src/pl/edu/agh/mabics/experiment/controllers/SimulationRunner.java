@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.experiment.datamodel.GameResult;
 import pl.edu.agh.mabics.experiment.datamodel.SimulationResult;
+import pl.edu.agh.mabics.experiment.util.StatisticsHelper;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class SimulationRunner {
 
     private GameRunner gameRunner;
+    private StatisticsHelper statisticsHelper;
 
     public SimulationResult startSimulation(int repetitionNumber, FormBean data) {
         SimulationResult result = new SimulationResult();
@@ -32,11 +35,21 @@ public class SimulationRunner {
                 gameRunner.restartAgents();
         }
         result.setGameResults(gamesResults);
+        try {
+            statisticsHelper.saveSimulationResults(repetitionNumber, result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
     @Autowired
     public void setGameRunner(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
+    }
+
+    @Autowired
+    public void setStatisticsHelper(StatisticsHelper statisticsHelper) {
+        this.statisticsHelper = statisticsHelper;
     }
 }

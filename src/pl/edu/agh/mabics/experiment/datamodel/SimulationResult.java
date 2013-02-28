@@ -11,7 +11,7 @@ import java.util.List;
 public class SimulationResult {
 
     private String dirName;        //directory where stats files are placed
-    List<GameResult> gameResults;
+    private List<GameResult> gameResults;
 
     public void setDirName(String dirName) {
         this.dirName = dirName;
@@ -19,5 +19,9 @@ public class SimulationResult {
 
     public void setGameResults(List<GameResult> gameResults) {
         this.gameResults = gameResults;
+    }
+
+    public List<GameResult> getGameResults() {
+        return gameResults;
     }
 }

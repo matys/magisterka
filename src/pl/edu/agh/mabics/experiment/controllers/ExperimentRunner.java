@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.experiment.datamodel.SimulationResult;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +23,7 @@ public class ExperimentRunner {
 
     public void startExperiment(FormBean data) {
         int repetitionsQuantity = data.getExperimentConfiguration().getNumberOfSeries();
-        List<SimulationResult> simulationResults = new ArrayList<SimulationResult>(repetitionsQuantity);
+        Set<SimulationResult> simulationResults = new HashSet<SimulationResult>(repetitionsQuantity);
         for (int repetitionNumber = 0; repetitionNumber < repetitionsQuantity; repetitionNumber++) {
             simulationResults.add(simulationRunner.startSimulation(repetitionNumber, data));
         }

@@ -52,10 +52,26 @@ public class GameRunner implements IGameRunner {
             try {
                 Thread.currentThread().sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
-        return new GameResult();
+        GameResult result = createResult();
+        return result;
+    }
+
+    private GameResult createResult() {
+        int sumOfCollisions = 0;
+        int timeOfLast = 0;
+        float averageTime = 0.0f;
+        for (AbstractAgent agent : agents.values()) {
+            sumOfCollisions += agent.getStatistics().numberOfCollisions;
+            int agentSteps = agent.getStatistics().numberOfSteps;
+            if (agentSteps > timeOfLast) {
+                timeOfLast = agentSteps;
+            }
+            averageTime += agentSteps / agents.size();
+        }
+        return new GameResult(sumOfCollisions, timeOfLast, averageTime);
     }
 
     private void initEndGameController(FormBean data) {
@@ -176,12 +192,12 @@ public class GameRunner implements IGameRunner {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                createStatistics();
+                finishGame();
             }
         }
     }
 
-    private void createStatistics() {
+    private void finishGame() {
         finished = true;
     }
 

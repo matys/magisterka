@@ -31,6 +31,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     private AgentStatistics statistics = new AgentStatistics();
     private boolean collision = false;
     private Server server;
+    private boolean finished;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -43,6 +44,7 @@ public abstract class AbstractAgent extends AbstractHandler {
         PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
         prepareResponseToSend(response);
         if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition(), parsedRequest.getDestination())) {
+            finished = true;
             onComplete();
         }
         makeMove((Request) request, response, parsedRequest);
@@ -59,11 +61,13 @@ public abstract class AbstractAgent extends AbstractHandler {
     }
 
     private void updateStatistics() {
-        if (collision) {
-            statistics.numberOfCollisions++;
+        if (!finished) {
+            if (collision) {
+                statistics.numberOfCollisions++;
+            }
+            statistics.numberOfSteps++;
+            collision = false;
         }
-        statistics.numberOfSteps++;
-        collision = false;
     }
 
     private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest) throws IOException {
@@ -105,6 +109,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void startAgent(Integer port, String id) {
         this.port = port;
         this.id = id;
+        this.finished = false;
         server = new Server(port);
         server.setHandler(this);
         try {
@@ -113,7 +118,13 @@ public abstract class AbstractAgent extends AbstractHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        restartStatistics();
     }
+
+    protected void restartStatistics() {
+        statistics = new AgentStatistics();
+    }
+
 
     public int getPort() {
         return port;
@@ -151,5 +162,9 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public String getId() {
         return id;
+    }
+
+    public AgentStatistics getStatistics() {
+        return statistics;
     }
 }
