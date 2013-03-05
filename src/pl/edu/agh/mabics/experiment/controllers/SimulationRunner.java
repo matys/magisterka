@@ -36,7 +36,7 @@ public class SimulationRunner {
         }
         result.setGameResults(gamesResults);
         try {
-            statisticsHelper.saveSimulationResults(repetitionNumber, result);
+            statisticsHelper.saveSerieResults(repetitionNumber, result);
         } catch (IOException e) {
             e.printStackTrace();
         }

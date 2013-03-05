@@ -300,4 +300,11 @@ public class FormBean {
         agentsConfiguration.copyDataTo(formBean.getAgentsConfiguration());
     }
 
+    public String getOutputDirName() {
+        return experimentConfiguration.getOutputDirName();
+    }
+
+    public void setOutputDirName(String dirName) {
+        experimentConfiguration.setOutputDirName(dirName);
+    }
 }

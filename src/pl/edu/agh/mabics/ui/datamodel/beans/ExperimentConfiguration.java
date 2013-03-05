@@ -17,6 +17,7 @@ public class ExperimentConfiguration {
     private Integer numberOfSeries;
     private Integer samplingFrequency;
     private Integer numberOfGames;
+    private String outputDirName;
 
     public boolean isPlotTimeOfIntersectionCrossingAverage() {
         return plotTimeOfIntersectionCrossingAverage;
@@ -66,6 +67,14 @@ public class ExperimentConfiguration {
         this.numberOfGames = numberOfGames;
     }
 
+    public String getOutputDirName() {
+        return outputDirName;
+    }
+
+    public void setOutputDirName(String outputDirName) {
+        this.outputDirName = outputDirName;
+    }
+
     public void copyDataTo(ExperimentConfiguration experimentConfiguration) {
         experimentConfiguration.setNumberOfGames(getNumberOfGames());
         experimentConfiguration.setNumberOfSeries(getNumberOfSeries());
@@ -73,6 +82,7 @@ public class ExperimentConfiguration {
         experimentConfiguration.setPlotTimeOfIntersection(isPlotTimeOfIntersection());
         experimentConfiguration.setPlotTimeOfIntersectionCrossingAverage(isPlotTimeOfIntersectionCrossingAverage());
         experimentConfiguration.setSamplingFrequency(getSamplingFrequency());
+        experimentConfiguration.setOutputDirName(getOutputDirName());
     }
 }
 

@@ -24,4 +24,8 @@ public class SimulationResult {
     public List<GameResult> getGameResults() {
         return gameResults;
     }
+
+    public String getDirName() {
+        return dirName;
+    }
 }

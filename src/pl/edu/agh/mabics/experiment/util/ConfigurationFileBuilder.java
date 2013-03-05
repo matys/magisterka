@@ -24,7 +24,7 @@ public class ConfigurationFileBuilder {
     private String fileName;
 
     public void createNewConfigurationFile(String configFilePath, String fileName) {
-        this.bufferedWriter = fileHelper.createBufferedReader(configFilePath + fileName);
+        this.bufferedWriter = fileHelper.createBufferedWriter(configFilePath + fileName);
         this.fileName = fileName;
     }
 
