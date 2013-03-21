@@ -40,6 +40,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void handle(String target, HttpServletRequest request,
                        HttpServletResponse response, int dispatch) throws IOException,
             ServletException {
+        System.out.println("agent " + id + " got request");
         String content = request.getReader().readLine();
         PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
         prepareResponseToSend(response);
@@ -73,10 +74,10 @@ public abstract class AbstractAgent extends AbstractHandler {
     private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest) throws IOException {
         PlatformResponse nextMove = getNextMove(parsedRequest);
         collisionController.acceptMove(id, nextMove.getMove());
-//        while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
-//            sleep();
-//        }
-        if (!nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {    //FIX: remove "!"
+        while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
+            sleep();
+        }
+        if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {    //FIX: remove "!"
             collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);

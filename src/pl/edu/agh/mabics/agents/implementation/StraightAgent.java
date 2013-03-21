@@ -59,9 +59,9 @@ public class StraightAgent extends AbstractAgent {
         int y = position.getY();
         switch (direction) {
             case TOP:
-                return (move.getPoint().getX() == x && move.getPoint().getY() != y);
+                return (move.getPoint().getX() == x && move.getPoint().getY() > y);
             case RIGHT:
-                return (move.getPoint().getX() != x && move.getPoint().getY() == y);
+                return (move.getPoint().getX() > x && move.getPoint().getY() == y);
 
         }
         return false;

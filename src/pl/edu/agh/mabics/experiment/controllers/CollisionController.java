@@ -24,18 +24,18 @@ public class CollisionController extends Thread {
     @Override
     public void run() {
         while (true) {
-//            while (chosenMoves.size() < numberOfAgents) {
-            sleep();
-//                System.out.println("waiting for decision of agents");
-//            }
-//            Map<String, Move> duplicatedMoves = getDuplicatedMoves();
-//            if (duplicatedMoves.isEmpty()) {
-//                System.out.println("all moves ok");
-//                acceptAllMoves();
-//            } else {
-//                System.out.println("wrong moves");
-//                rejectDuplicatedMoves(duplicatedMoves);
-//            }
+            while (chosenMoves.size() < numberOfAgents) {
+                sleep();
+                // System.out.println("waiting for decision of agents");
+            }
+            Map<String, Move> duplicatedMoves = getDuplicatedMoves();
+            if (duplicatedMoves.isEmpty()) {
+                System.out.println("all moves ok");
+                acceptAllMoves();
+            } else {
+                System.out.println("wrong moves");
+                rejectDuplicatedMoves(duplicatedMoves);
+            }
         }
     }
 

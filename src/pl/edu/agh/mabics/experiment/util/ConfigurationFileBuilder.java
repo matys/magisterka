@@ -47,7 +47,7 @@ public class ConfigurationFileBuilder {
     }
 
     private String buildLine(AgentData agentData, List<Coordinates> stopPoints, int port) {
-        return "\n" + agentData.getName() + " " + "(" + agentData.getLocation().getX() + "," + agentData.getLocation().getY() + ") " + "[" + listToString(stopPoints) + "]" + " localhost:" + port;
+        return "\n" + agentData.getName() + " " + "((" + agentData.getLocation().getX() + "," + agentData.getLocation().getY() + "),1,(0,1)) " + "[" + listToString(stopPoints) + "]" + " localhost:" + port;
     }
 
     private String listToString(List<Coordinates> stopPoints) {

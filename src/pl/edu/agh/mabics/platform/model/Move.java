@@ -4,7 +4,7 @@ import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 public class Move {
     Coordinates point;
-    Vector velocity;
+    public Vector velocity;
     MoveState state = MoveState.NOT_PROCESSED;
 
     //states notProcessed, Failed, Accepted

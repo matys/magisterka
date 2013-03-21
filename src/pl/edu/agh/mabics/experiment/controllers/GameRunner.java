@@ -106,7 +106,7 @@ public class GameRunner implements IGameRunner {
     private void startPlatform(FormBean data) {
         buildConfigurationFile(data);
         String visualisationCommand = getVisualizationEnabledCommand(data);
-        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python runner.py -c " + configurationFileBuilder.getFile() + " -v False"};
+        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python physicsRunner.py -c " + configurationFileBuilder.getFile() + " -v"};
         platformThread = commandLineHelper.runCommand(commands, false);
     }
 

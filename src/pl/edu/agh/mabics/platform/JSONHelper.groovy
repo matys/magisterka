@@ -65,7 +65,7 @@ class JSONHelper {
             speed response.getSpeed()
             velocity jsonMove.get(1).get(0), jsonMove.get(1).get(1)
         }
-        print builder.toString()
+        print builder.toString() + "\n"
         return builder.toString();
     }
 }
