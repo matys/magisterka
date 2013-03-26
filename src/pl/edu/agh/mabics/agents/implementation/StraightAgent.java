@@ -5,6 +5,7 @@ import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.platform.model.Move;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
+import pl.edu.agh.mabics.platform.model.Vector;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public class StraightAgent extends AbstractAgent {
         Coordinates position = request.getPosition();
         Direction direction = getDirection(request.getDestination());
         for (Move move : request.getAllowedMoves()) {
-            if (checkIfMoveInGoodDirection(direction, move, position)) {
+            if (checkIfMoveInGoodDirection(direction, move, position, request.getSpeed())) {
+                move.velocity = new Vector(1, 0);
                 response.setMove(move);
                 return response;
             }
@@ -54,14 +56,14 @@ public class StraightAgent extends AbstractAgent {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Coordinates position) {
+    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Coordinates position, int speed) {
         int x = position.getX();
         int y = position.getY();
         switch (direction) {
             case TOP:
-                return (move.getPoint().getX() == x && move.getPoint().getY() > y);
+                return (move.getPoint().getX() == x && move.getPoint().getY() > y && move.getPoint().getY() - y == speed);
             case RIGHT:
-                return (move.getPoint().getX() > x && move.getPoint().getY() == y);
+                return (move.getPoint().getX() > x && move.getPoint().getY() == y && move.getPoint().getX() - x == speed);
 
         }
         return false;
