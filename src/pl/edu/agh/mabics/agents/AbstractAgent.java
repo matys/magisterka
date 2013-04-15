@@ -10,9 +10,8 @@ import pl.edu.agh.mabics.experiment.controllers.EndGameController;
 import pl.edu.agh.mabics.experiment.controllers.IGameRunner;
 import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 import pl.edu.agh.mabics.platform.JSONHelper;
-import pl.edu.agh.mabics.platform.model.MoveState;
-import pl.edu.agh.mabics.platform.model.PlatformRequest;
-import pl.edu.agh.mabics.platform.model.PlatformResponse;
+import pl.edu.agh.mabics.platform.model.*;
+import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +36,10 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public abstract void onComplete();
 
-    public void handle(String target, HttpServletRequest request,
-                       HttpServletResponse response, int dispatch) throws IOException,
-            ServletException {
+    public abstract void onCollision();
+
+    public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
+            throws IOException, ServletException {
         System.out.println("agent " + id + " got request");
         String content = request.getReader().readLine();
         PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
@@ -71,8 +71,28 @@ public abstract class AbstractAgent extends AbstractHandler {
         }
     }
 
-    private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest) throws IOException {
+    private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest)
+            throws IOException {
         PlatformResponse nextMove = getNextMove(parsedRequest);
+        collisionController.acceptMove(id, nextMove.getMove());
+        while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
+            sleep();
+        }
+        if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
+            collision = false;
+            response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
+            request.setHandled(true);
+        } else {
+            collision = true;
+            onCollision();
+            removeMove(parsedRequest, nextMove);
+            nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove()));
+            sendFinalMove(nextMove, response, request);
+        }
+    }
+
+    private void sendFinalMove(PlatformResponse nextMove, HttpServletResponse response, Request request)
+            throws IOException {
         collisionController.acceptMove(id, nextMove.getMove());
         while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
             sleep();
@@ -81,12 +101,9 @@ public abstract class AbstractAgent extends AbstractHandler {
             collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
-        } else {
-            collision = true;
-            removeMove(parsedRequest, nextMove);
-            makeMove(request, response, parsedRequest);
         }
     }
+
 
     private void removeMove(PlatformRequest parsedRequest, PlatformResponse nextMove) {
         parsedRequest.getAllowedMoves().remove(nextMove.getMove()); //TODO: check!
@@ -96,7 +113,7 @@ public abstract class AbstractAgent extends AbstractHandler {
         try {
             Thread.currentThread().sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new IllegalStateException();
         }
     }
 
@@ -108,6 +125,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     }
 
     public void startAgent(Integer port, String id) {
+        onNextGame();
         this.port = port;
         this.id = id;
         this.finished = false;
@@ -122,6 +140,8 @@ public abstract class AbstractAgent extends AbstractHandler {
         restartStatistics();
     }
 
+    protected abstract void onNextGame();
+
     protected void restartStatistics() {
         statistics = new AgentStatistics();
     }
@@ -129,6 +149,11 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public int getPort() {
         return port;
+    }
+
+
+    protected Move getStayInPlaceMove(Coordinates position) {
+        return new Move(position, new Vector(0, 0));
     }
 
     @Autowired
@@ -141,7 +166,7 @@ public abstract class AbstractAgent extends AbstractHandler {
             server.stop();
             super.stop();
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

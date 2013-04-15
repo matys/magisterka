@@ -25,17 +25,22 @@ public class StraightAgent extends AbstractAgent {
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
         PlatformResponse response = new PlatformResponse();
-        response.setSpeed(randomNewSpeed(request.getSpeed()));
+        //response.setSpeed(randomNewSpeed(request.getSpeed()));
+        response.setSpeed(2);
         Coordinates position = request.getPosition();
         Direction direction = getDirection(request.getDestination());
         for (Move move : request.getAllowedMoves()) {
-            if (checkIfMoveInGoodDirection(direction, move, position, request.getSpeed())) {
-                move.velocity = new Vector(1, 0);
+            if (checkIfMoveInGoodDirection(direction, move, position)) {
+                if (direction.equals(Direction.RIGHT)) move.velocity = new Vector(1, 0);
+                else if (direction.equals(Direction.TOP)) move.velocity = new Vector(0, 1);
                 response.setMove(move);
                 return response;
             }
         }
-        response.setMove(request.getAllowedMoves().get(0));
+        if (request.getAllowedMoves().size() == 0) {
+            response.setMove(getStayInPlaceMove(position));
+            response.setSpeed(0);
+        } else response.setMove(request.getAllowedMoves().get(0));
         return response;
     }
 
@@ -53,17 +58,25 @@ public class StraightAgent extends AbstractAgent {
     //TODO implement
     @Override
     public void onComplete() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Coordinates position, int speed) {
+    @Override
+    public void onCollision() {
+    }
+
+    @Override
+    protected void onNextGame() {
+
+    }
+
+    private boolean checkIfMoveInGoodDirection(Direction direction, Move move, Coordinates position) {
         int x = position.getX();
         int y = position.getY();
         switch (direction) {
             case TOP:
-                return (move.getPoint().getX() == x && move.getPoint().getY() > y && move.getPoint().getY() - y == speed);
+                return (move.getPoint().getX() == x && move.getPoint().getY() <= y);
             case RIGHT:
-                return (move.getPoint().getX() > x && move.getPoint().getY() == y && move.getPoint().getX() - x == speed);
+                return (move.getPoint().getX() >= x && move.getPoint().getY() == y);
 
         }
         return false;

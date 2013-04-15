@@ -23,4 +23,14 @@ class RandomAgent extends AbstractAgent {
         //TODO complete
 
     }
+
+    @Override
+    void onCollision() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onNextGame() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

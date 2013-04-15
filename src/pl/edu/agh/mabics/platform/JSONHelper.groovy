@@ -15,6 +15,9 @@ class JSONHelper {
     private ConverterUtil converterUtil;
     private MoveConverter moveConverter;
     private MoveReverseConverter moveReverseConverter;
+    private RobotConverter robotConverter;
+
+
 
     @Autowired
     void setMoveReverseConverter(MoveReverseConverter moveReverseConverter) {
@@ -43,14 +46,15 @@ class JSONHelper {
 
     public PlatformRequest parseRequest(String content) {
         def jsonObj = new JsonSlurper().parseText(content)
-        jsonObj.each {id, data -> println id + data}
+//        jsonObj.each {id, data -> println id + data}
         def request = new PlatformRequest();
         request.setId(jsonObj.id);
         request.setSpeed(jsonObj.speed);
         request.setVelocity(vectorConverter.convert(jsonObj.velocity));
         request.setPosition(point2DConverter.convert(jsonObj.position));
-        request.setRobots(converterUtil.convertList(jsonObj.robots, point2DConverter));
-        request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))
+        request.setRobots(converterUtil.convertList(jsonObj.robots, robotConverter));
+        request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))         //TODO brakuje
+        // speed?
         request.setDestination(converterUtil.convertList(jsonObj.destination, point2DConverter))
         return request;
     }
@@ -67,5 +71,10 @@ class JSONHelper {
         }
         print builder.toString() + "\n"
         return builder.toString();
+    }
+
+    @Autowired
+    void setRobotConverter(RobotConverter robotConverter) {
+        this.robotConverter = robotConverter
     }
 }

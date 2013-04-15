@@ -9,7 +9,8 @@ package pl.edu.agh.mabics.agents.implementation;
 public enum AgentType {
 
     RANDOM("randomly choose move", "randomAgent"),
-    STRAIGHT("going straight forward", "straightAgent");
+    STRAIGHT("going straight forward", "straightAgent"),
+    AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent");
 
 
     private String description;

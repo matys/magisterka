@@ -1,5 +1,7 @@
 package pl.edu.agh.mabics.ui.datamodel.util;
 
+import pl.edu.agh.mabics.platform.model.DistanceType;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mateusz
@@ -47,5 +49,18 @@ public class Coordinates {
         }
         return false;
     }
+
+    public Integer distance(Coordinates position, DistanceType type) {
+        Integer first, second;
+        if (type.equals(DistanceType.HORIZONTAL)) {
+            first = position.getX();
+            second = getX();
+        } else {
+            first = position.getY();
+            second = getY();
+        }
+        return Math.abs(second - first);
+    }
+
 
 }

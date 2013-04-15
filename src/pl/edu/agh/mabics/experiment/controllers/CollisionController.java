@@ -88,4 +88,22 @@ public class CollisionController extends Thread {
         }
         return duplicatedMoves;
     }
+
+    //TODO: improve it. now it's look for first possible move increasing y coordinate all the time
+    public Move getPossibleMove(Move wantedMove) {
+        while (hasMove(chosenMoves, wantedMove)) {
+            wantedMove.getPoint().setY(wantedMove.getPoint().getY() + 1);
+        }
+        return wantedMove;
+    }
+
+    private boolean hasMove(Map<String, Move> chosenMoves, Move moveToCheck) {
+        for (String moveId : chosenMoves.keySet()) {
+            Move move = chosenMoves.get(moveId);
+            if (move.getPoint().equals(moveToCheck.getPoint())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

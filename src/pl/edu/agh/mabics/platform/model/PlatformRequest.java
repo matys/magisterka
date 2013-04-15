@@ -10,7 +10,7 @@ public class PlatformRequest {
     private Vector velocity;
     private String id;
     private Coordinates position;
-    private List<Coordinates> robots;
+    private List<Robot> robots;
     private List<Move> allowedMoves;
     private List<Coordinates> destination;
 
@@ -46,11 +46,11 @@ public class PlatformRequest {
         this.position = position;
     }
 
-    public List<Coordinates> getRobots() {
+    public List<Robot> getRobots() {
         return robots;
     }
 
-    public void setRobots(List<Coordinates> robots) {
+    public void setRobots(List<Robot> robots) {
         this.robots = robots;
     }
 

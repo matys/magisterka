@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="rlpark">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/rlpark.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/rlpark.jar!/" />
+    </SOURCES>
+  </library>
+</component>

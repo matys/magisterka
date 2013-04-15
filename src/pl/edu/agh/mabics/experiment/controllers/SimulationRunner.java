@@ -31,8 +31,14 @@ public class SimulationRunner {
         gameRunner.initAgents(data);
         for (int gameNumber = 0; gameNumber < gamesNumber; gameNumber++) {
             gamesResults.add(gameRunner.runGame(gameNumber, data));
-            if (gameNumber < gamesNumber - 1)
+            if (gameNumber < gamesNumber - 1) {
+                try {
+                    Thread.currentThread().sleep(6000); //wait for external platform to stop
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 gameRunner.restartAgents();
+            }
         }
         result.setGameResults(gamesResults);
         try {

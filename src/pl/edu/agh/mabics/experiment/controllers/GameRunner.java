@@ -81,7 +81,8 @@ public class GameRunner implements IGameRunner {
         endGameController.init(agentsDestination);
     }
 
-    private void addOneSideAgents(OneSideConfiguration data, HashMap<String, List<Coordinates>> agentsDestination, AgentSite site) {
+    private void addOneSideAgents(OneSideConfiguration data, HashMap<String, List<Coordinates>> agentsDestination,
+                                  AgentSite site) {
         List<Coordinates> destinationCoordinates = new ArrayList<Coordinates>();
         switch (site) {
             case DOWN:
@@ -106,7 +107,8 @@ public class GameRunner implements IGameRunner {
     private void startPlatform(FormBean data) {
         buildConfigurationFile(data);
         String visualisationCommand = getVisualizationEnabledCommand(data);
-        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python physicsRunner.py -c " + configurationFileBuilder.getFile() + " -v"};
+        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python physicsRunner.py " + "-r p.txt " + "-c " +
+                configurationFileBuilder.getFile()};
         platformThread = commandLineHelper.runCommand(commands, false);
     }
 
@@ -184,7 +186,8 @@ public class GameRunner implements IGameRunner {
 
     @Override
     public void afterAgentStep(AgentStatistics statistics) {
-        if (endGameController.isAllAgentFinished()) {
+        if (!finished && endGameController.isAllAgentFinished()) {
+            finishGame();
             System.out.println("FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             for (AbstractAgent agent : agents.values()) {
                 try {
@@ -192,7 +195,6 @@ public class GameRunner implements IGameRunner {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                finishGame();
             }
         }
     }
