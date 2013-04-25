@@ -1,6 +1,5 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoiding2;
+package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
-import org.springframework.stereotype.Service;
 import rlpark.plugin.rltoys.agents.rl.LearnerAgentFA;
 import rlpark.plugin.rltoys.algorithms.control.ControlLearner;
 import rlpark.plugin.rltoys.algorithms.control.acting.EpsilonGreedy;
@@ -26,11 +25,10 @@ import java.util.Random;
  * Date: 25.03.13
  * Time: 11:12
  */
-@Service
-public class CollisionAvoidingProblemController2 implements Runnable {
-    private CollisionAvoidingProblem2 problem = null;
+public class TargetAndSpeedProblemController implements Runnable {
+    private TargetAndSpeedProblem problem = null;
     private ControlLearner control;
-    private Clock clock = new Clock("CollisionAvoidingProblemController");
+    private Clock clock = new Clock("TargetAndSpeedProblemController");
     private Projector projector;
     private PVector occupancy;
     private LearnerAgentFA agent;
@@ -42,8 +40,8 @@ public class CollisionAvoidingProblemController2 implements Runnable {
 
 
     public void init() {
-        problem = new CollisionAvoidingProblem2();
-        problem.setCurrentState(new CollisionAvoidingState2());
+        problem = new TargetAndSpeedProblem();
+        problem.setCurrentState(new TargetAndSpeedState());
         problem.initialize();
         projector = problem.getMarkovProjector();
         occupancy = new PVector(projector.vectorSize());
@@ -79,7 +77,7 @@ public class CollisionAvoidingProblemController2 implements Runnable {
 
     private void printTheta() {
         System.out.println("Action -1");
-        int agentRange = CollisionAvoidingProblem2.AGENT_RANGE;
+        int agentRange = TargetAndSpeedProblem.AGENT_RANGE;
         for (int i = 0; i < agentRange; i++) {
             System.out.println(qlearning.theta().getEntry(i));
         }
@@ -94,8 +92,8 @@ public class CollisionAvoidingProblemController2 implements Runnable {
         }
     }
 
-    public void setCurrentState(CollisionAvoidingState2 collisionAvoidingState) {
-        problem.setCurrentState(collisionAvoidingState);
+    public void setCurrentState(TargetAndSpeedState targetAndSpeedState) {
+        problem.setCurrentState(targetAndSpeedState);
     }
 
     public void onAgentGetsToTarget() {

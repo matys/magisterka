@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoiding2;
+package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
 /**
  * Created with IntelliJ IDEA.

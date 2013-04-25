@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoiding2;
+package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
 import pl.edu.agh.mabics.platform.model.DistanceType;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
@@ -15,14 +15,14 @@ import java.util.List;
  * Date: 11.04.13
  * Time: 16:10
  */
-public class CollisionAvoidingState2 {
+public class TargetAndSpeedState {
     public static final int INITIAL_STATE_REWARD = 0;
     private int agentDistanceToCollisionPoint;
     private int collisionAgentDistanceToCollisionPoint;
     private int distanceToTarget;
     private int reward;
 
-    public CollisionAvoidingState2(PlatformRequest request, int reward) {
+    public TargetAndSpeedState(PlatformRequest request, int reward) {
         calculateCollisionDistances(request);
         calculateDistanceToTarget(request);
         this.reward = reward;
@@ -110,7 +110,7 @@ public class CollisionAvoidingState2 {
         return null;
     }
 
-    public CollisionAvoidingState2() {
+    public TargetAndSpeedState() {
         agentDistanceToCollisionPoint = -1;
         collisionAgentDistanceToCollisionPoint = -1;
         reward = INITIAL_STATE_REWARD;

@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoiding2;
+package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
 import rlpark.plugin.rltoys.algorithms.functions.states.Projector;
 import rlpark.plugin.rltoys.envio.actions.Action;
@@ -15,11 +15,11 @@ import rlpark.plugin.rltoys.problems.ProblemDiscreteAction;
  * Date: 25.03.13
  * Time: 11:03
  */
-public class CollisionAvoidingProblem2 implements ProblemDiscreteAction {
+public class TargetAndSpeedProblem implements ProblemDiscreteAction {
 
     private Action currentAction;
     private TRStep currentStep;
-    private CollisionAvoidingState2 currentState;
+    private TargetAndSpeedState currentState;
     public static final int AGENT_RANGE = 50; //if collision point is farther, we ignore it - state (-1, -1)
     public static final ActionArray Slower = new ActionArray(-1);
     public static final ActionArray Faster = new ActionArray(1);
@@ -96,8 +96,8 @@ public class CollisionAvoidingProblem2 implements ProblemDiscreteAction {
         return new Point3D(AGENT_RANGE, AGENT_RANGE, AGENT_RANGE);
     }
 
-    public void setCurrentState(CollisionAvoidingState2 collisionAvoidingState) {
-        this.currentState = collisionAvoidingState;
+    public void setCurrentState(TargetAndSpeedState targetAndSpeedState) {
+        this.currentState = targetAndSpeedState;
     }
 
     public Action getCurrentAction() {

@@ -1,10 +1,9 @@
 package pl.edu.agh.mabics.agents.implementation;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding2.CollisionAvoidingProblemController2;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding2.CollisionAvoidingState2;
+import pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly.TargetAndSpeedProblemController;
+import pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly.TargetAndSpeedState;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
 import rlpark.plugin.rltoys.envio.actions.Action;
@@ -17,15 +16,15 @@ import rlpark.plugin.rltoys.envio.actions.ActionArray;
  * Time: 09:53
  */
 @Service
-public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractAgent {
+public class TargetFocusedStraightAgent extends AbstractAgent {
 
-    private CollisionAvoidingProblemController2 collisionAvoidingProblemController;
+    private TargetAndSpeedProblemController targetAndSpeedProblemController;
     private boolean firstCall = true;
 
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
         if (firstCall) {
-            while (collisionAvoidingProblemController.getCurrentAction() == null) {
+            while (targetAndSpeedProblemController.getCurrentAction() == null) {
                 try {
                     //  System.out.println("waiting for action to be chosen by controller");
                     Thread.currentThread().sleep(10);
@@ -34,17 +33,17 @@ public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractA
                 }
             }
 
-            Action currentAction = collisionAvoidingProblemController.getCurrentAction();
-            collisionAvoidingProblemController.setCurrentAction(null);
+            Action currentAction = targetAndSpeedProblemController.getCurrentAction();
+            targetAndSpeedProblemController.setCurrentAction(null);
             firstCall = false;
             return responseFromAction(request, currentAction);
         }
-        collisionAvoidingProblemController.onStep();
+        targetAndSpeedProblemController.onStep();
         System.out.println("setting state");
-        collisionAvoidingProblemController
-                .setCurrentState(new CollisionAvoidingState2(request, collisionAvoidingProblemController.getReward()));
-        collisionAvoidingProblemController.resetReward();
-        while (collisionAvoidingProblemController.getCurrentAction() == null) {
+        targetAndSpeedProblemController
+                .setCurrentState(new TargetAndSpeedState(request, targetAndSpeedProblemController.getReward()));
+        targetAndSpeedProblemController.resetReward();
+        while (targetAndSpeedProblemController.getCurrentAction() == null) {
             try {
                 //System.out.println("waiting for action to be chosen by controller 2");
                 Thread.currentThread().sleep(10);
@@ -53,8 +52,8 @@ public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractA
             }
         }
         System.out.println("setting chosen action");
-        Action currentAction = collisionAvoidingProblemController.getCurrentAction();
-        collisionAvoidingProblemController.setCurrentAction(null);
+        Action currentAction = targetAndSpeedProblemController.getCurrentAction();
+        targetAndSpeedProblemController.setCurrentAction(null);
         return responseFromAction(request, currentAction);
     }
 
@@ -82,12 +81,12 @@ public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractA
 
     @Override
     public void onComplete() {
-        collisionAvoidingProblemController.onAgentGetsToTarget();
+        targetAndSpeedProblemController.onAgentGetsToTarget();
     }
 
     @Override
     public void onCollision() {
-        collisionAvoidingProblemController.onAgentCollision();
+        targetAndSpeedProblemController.onAgentCollision();
     }
 
     @Override
@@ -95,15 +94,10 @@ public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractA
         //this.firstCall = true;
     }
 
-    @Autowired
-    public void setCollisionAvoidingProblemController2(
-            CollisionAvoidingProblemController2 collisionAvoidingProblemController2) {
-        this.collisionAvoidingProblemController = collisionAvoidingProblemController2;
-    }
-
     public void initIt() {
-        collisionAvoidingProblemController.init();
-        Thread controllerThread = new Thread(collisionAvoidingProblemController);
+        targetAndSpeedProblemController = new TargetAndSpeedProblemController();
+        targetAndSpeedProblemController.init();
+        Thread controllerThread = new Thread(targetAndSpeedProblemController);
         controllerThread.start();
     }
 }
