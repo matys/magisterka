@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.ml;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoiding;
 
 import org.springframework.stereotype.Service;
 import rlpark.plugin.rltoys.agents.rl.LearnerAgentFA;
@@ -28,7 +28,7 @@ import java.util.Random;
  */
 @Service
 public class CollisionAvoidingProblemController implements Runnable {
-    private CollisionAvoidingProblem problem = null;//Problems.createProblem(100000);
+    private CollisionAvoidingProblem problem = null;
     private ControlLearner control;
     private Clock clock = new Clock("CollisionAvoidingProblemController");
     private Projector projector;
@@ -50,10 +50,11 @@ public class CollisionAvoidingProblemController implements Runnable {
                 projector.vectorSize());
         double alpha = .15 / projector.vectorNorm();     //learning rate
         double gamma = 1.0;                              //discount factor  (how important is future value)
-        double lambda = 0.6;
+        double lambda = 0.6;                             //how much less important is every next step action (lambda *
+        // rt+1 + lambda^2 rt+2 + lambda^3 rt+3...
         QLearning qlearning = new QLearning(problem.actions(), alpha, gamma, lambda, toStateAction, new RTraces());
-        double epsilon = 0.2;
-        Policy acting = new EpsilonGreedy(new Random(0), problem.actions(), toStateAction, qlearning, epsilon);
+        double epsilon = 0.2;        //how many actions should be chosen on random (instead of taking best)
+        Policy acting = new EpsilonGreedy(new Random(), problem.actions(), toStateAction, qlearning, epsilon);
         control = new QLearningControl(acting, qlearning);
         agent = new LearnerAgentFA(control, projector);
         Zephyr.advertise(clock, this);

@@ -35,9 +35,20 @@ public class ExperimentRunner {
         Set<SimulationResult> simulationResults = new HashSet<SimulationResult>(repetitionsQuantity);
         for (int repetitionNumber = 0; repetitionNumber < repetitionsQuantity; repetitionNumber++) {
             simulationResults.add(simulationRunner.startSimulation(repetitionNumber, data));
+            waitForExternalPlatform();
         }
-        statisticsHelper.prepareStatisticFiles(simulationResults, data.getExperimentConfiguration().getNumberOfGames(), data.getExperimentConfiguration().getOutputDirName());
-        return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(), data.getExperimentConfiguration().getOutputDirName());
+        statisticsHelper.prepareStatisticFiles(simulationResults, data.getExperimentConfiguration().getNumberOfGames(),
+                data.getExperimentConfiguration().getOutputDirName());
+        return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(),
+                data.getExperimentConfiguration().getOutputDirName());
+    }
+
+    private void waitForExternalPlatform() {
+        try {
+            Thread.currentThread().sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Autowired

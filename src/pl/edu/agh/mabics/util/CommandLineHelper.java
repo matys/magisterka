@@ -25,8 +25,10 @@ public class CommandLineHelper {
             System.out.println(builder.getCommand());
             p = Runtime.getRuntime().exec(builder.getCommand());
             if (waitForProcess) {
+                System.out.println("waiting for process");
                 p.waitFor();
             }
+            System.out.println("after waiting for process");
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 //            String line = reader.readLine();
 //            while (line != null) {
@@ -36,8 +38,6 @@ public class CommandLineHelper {
 
         } catch (IOException e) {
             e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
         } finally {
             return p;
         }

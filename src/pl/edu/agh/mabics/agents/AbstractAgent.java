@@ -166,7 +166,7 @@ public abstract class AbstractAgent extends AbstractHandler {
             server.stop();
             super.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            stopAgent();
         }
     }
 

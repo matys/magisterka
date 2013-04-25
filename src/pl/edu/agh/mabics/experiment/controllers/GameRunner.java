@@ -31,6 +31,8 @@ public class GameRunner implements IGameRunner {
 
     private static final String CONFIG_FILE_PATH = "..\\trunk\\src\\runner\\";
     private static final String CONFIG_FILE_NAME = "config3";
+    public static final int TIME_TO_SLEEP = 100;
+    private static final int PLATFORM_HANGED_TIME = 20000;
 
     private CommandLineHelper commandLineHelper;
     private AgentFactory agentFactory;
@@ -42,21 +44,37 @@ public class GameRunner implements IGameRunner {
     private Process platformThread;
     private boolean finished;
 
+
     public GameResult runGame(int gameNumber, FormBean data) {
-        //restartAgents(); perhaps not needed, perhaps it will restart some agent data that shouldn't be known between series
+        System.out.println("number of game : " + gameNumber);
         initCollisionController();
         initEndGameController(data);
         startPlatform(data);
         finished = false;
-        while (!finished) {
+        int timeOfWaiting = 0;
+        timeOfWaiting = waitForFinished(timeOfWaiting);
+        return returnResults(timeOfWaiting);
+    }
+
+    private GameResult returnResults(int timeOfWaiting) {
+        if (timeOfWaiting < PLATFORM_HANGED_TIME) {
+            GameResult result = createResult();
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    private int waitForFinished(int timeOfWaiting) {
+        while (!finished && timeOfWaiting < PLATFORM_HANGED_TIME) {
             try {
-                Thread.currentThread().sleep(100);
+                timeOfWaiting += TIME_TO_SLEEP;
+                Thread.currentThread().sleep(TIME_TO_SLEEP);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        GameResult result = createResult();
-        return result;
+        return timeOfWaiting;
     }
 
     private GameResult createResult() {
@@ -114,7 +132,7 @@ public class GameRunner implements IGameRunner {
 
     //TODO implement
     private String getVisualizationEnabledCommand(FormBean data) {
-//        data.getExperimentConfiguration().
+//        data.getExperimentConfiguration().is
         return "";
     }
 

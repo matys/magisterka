@@ -30,13 +30,15 @@ public class SimulationRunner {
         //init agents (knowledge doesn't change between games)
         gameRunner.initAgents(data);
         for (int gameNumber = 0; gameNumber < gamesNumber; gameNumber++) {
-            gamesResults.add(gameRunner.runGame(gameNumber, data));
-            if (gameNumber < gamesNumber - 1) {
-                try {
-                    Thread.currentThread().sleep(6000); //wait for external platform to stop
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            GameResult gameResult = gameRunner.runGame(gameNumber, data);
+            if (gameResult != null) {
+                gamesResults.add(gameResult);
+                if (gameNumber < gamesNumber - 1) {
+                    waitForExternalPlatform();
+                    gameRunner.restartAgents();
                 }
+            } else {      //restart the same game
+                gameNumber--;
                 gameRunner.restartAgents();
             }
         }
@@ -47,6 +49,14 @@ public class SimulationRunner {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private void waitForExternalPlatform() {
+        try {
+            Thread.currentThread().sleep(6000); //wait for external platform to stop
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Autowired

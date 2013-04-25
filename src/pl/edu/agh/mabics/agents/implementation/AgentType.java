@@ -10,7 +10,10 @@ public enum AgentType {
 
     RANDOM("randomly choose move", "randomAgent"),
     STRAIGHT("going straight forward", "straightAgent"),
-    AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent");
+    AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent"),
+    AVOIDING_COLLISION_STRAIGHT_WITH_TARGET_DISTANCE(
+            "going straight forward, " + "avoiding collisions and taking distance to target into consideration",
+            "avoidingCollisionsStraightAgentWithTargetDistance");
 
 
     private String description;

@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.ml;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoiding;
 
 import pl.edu.agh.mabics.platform.model.DistanceType;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;

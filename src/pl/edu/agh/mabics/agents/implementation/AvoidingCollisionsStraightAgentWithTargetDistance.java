@@ -3,8 +3,8 @@ package pl.edu.agh.mabics.agents.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingProblemController;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingState;
+import pl.edu.agh.mabics.agents.implementation.collisionAvoiding2.CollisionAvoidingProblemController2;
+import pl.edu.agh.mabics.agents.implementation.collisionAvoiding2.CollisionAvoidingState2;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
 import rlpark.plugin.rltoys.envio.actions.Action;
@@ -17,9 +17,9 @@ import rlpark.plugin.rltoys.envio.actions.ActionArray;
  * Time: 09:53
  */
 @Service
-public class AvoidingCollisionsStraightAgent extends AbstractAgent {
+public class AvoidingCollisionsStraightAgentWithTargetDistance extends AbstractAgent {
 
-    private CollisionAvoidingProblemController collisionAvoidingProblemController;
+    private CollisionAvoidingProblemController2 collisionAvoidingProblemController;
     private boolean firstCall = true;
 
     @Override
@@ -42,7 +42,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         collisionAvoidingProblemController.onStep();
         System.out.println("setting state");
         collisionAvoidingProblemController
-                .setCurrentState(new CollisionAvoidingState(request, collisionAvoidingProblemController.getReward()));
+                .setCurrentState(new CollisionAvoidingState2(request, collisionAvoidingProblemController.getReward()));
         collisionAvoidingProblemController.resetReward();
         while (collisionAvoidingProblemController.getCurrentAction() == null) {
             try {
@@ -96,9 +96,9 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     }
 
     @Autowired
-    public void setCollisionAvoidingProblemController(
-            CollisionAvoidingProblemController collisionAvoidingProblemController) {
-        this.collisionAvoidingProblemController = collisionAvoidingProblemController;
+    public void setCollisionAvoidingProblemController2(
+            CollisionAvoidingProblemController2 collisionAvoidingProblemController2) {
+        this.collisionAvoidingProblemController = collisionAvoidingProblemController2;
     }
 
     public void initIt() {
