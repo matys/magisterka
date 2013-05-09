@@ -1,5 +1,6 @@
 package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
+import pl.edu.agh.mabics.agents.implementation.Point3D;
 import rlpark.plugin.rltoys.algorithms.functions.states.Projector;
 import rlpark.plugin.rltoys.envio.actions.Action;
 import rlpark.plugin.rltoys.envio.actions.ActionArray;
@@ -27,7 +28,7 @@ public class TargetAndSpeedProblem implements ProblemDiscreteAction {
     static final public Action[] Actions = {Slower, Faster, theSame};
     private boolean endEpisode;
 
-    //action should be go faster/slower or exact values of speed?   some probability to make it indeterministic
+    //action should be go faster/slower or exact values of speed?   some probability to make it nondeterministic
     @Override
     public Action[] actions() {
         return Actions;  //To change body of implemented methods use File | Settings | File Templates.
@@ -36,9 +37,7 @@ public class TargetAndSpeedProblem implements ProblemDiscreteAction {
     @Override
     public TRStep initialize() {
         System.out.println("initialization of problem");
-        TRStep step = new TRStep(new double[]{currentState.getAgentDistanceToCollisionPoint(), currentState
-                .getCollisionAgentDistanceToCollisionPoint(), currentState.getDistanceToTarget()},
-                currentState.getReward());
+        TRStep step = new TRStep(new double[]{currentState.getDistanceToTarget()}, currentState.getReward());
         return step;
     }
 
@@ -61,9 +60,6 @@ public class TargetAndSpeedProblem implements ProblemDiscreteAction {
         System.out.println("action " + action.toString());
         System.out.println("state " + currentState.toString());
 
-//        currentStep = new TRStep(currentStep, action,
-//                new double[]{currentState.getAgentDistanceToCollisionPoint(), currentState
-//                        .getCollisionAgentDistanceToCollisionPoint(), currentState.getDistanceToTarget()}, currentState.getReward());
         if (endEpisode) {
             forceEndEpisode();
         } else {
@@ -111,7 +107,6 @@ public class TargetAndSpeedProblem implements ProblemDiscreteAction {
     @SuppressWarnings("serial")
     public Projector getMarkovProjector() {
         final Point3D size = size();
-        // final BVector projection = new BVector(size.x * size.y * size.z);
         final BVector projection = new BVector(size.x);
         return new Projector() {
             @Override
@@ -127,10 +122,6 @@ public class TargetAndSpeedProblem implements ProblemDiscreteAction {
             @Override
             public RealVector project(double[] obs) {
                 projection.clear();
-//                if (obs != null && obs[0] != -1 && obs[1] != -1 && obs[2] != -1) projection.setOn((int) (obs[0] *
-//                        size.y * size
-//                        .z +
-//                        obs[1] * size.y + obs[2]));
                 if (obs != null && obs[0] != -1) projection.setOn((int) obs[0]);
                 return projection;
             }

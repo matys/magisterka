@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
+package pl.edu.agh.mabics.agents.implementation;
 
 /**
  * Created with IntelliJ IDEA.

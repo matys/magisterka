@@ -1,6 +1,5 @@
 package pl.edu.agh.mabics.agents.implementation.collisionAvoiding;
 
-import org.springframework.stereotype.Service;
 import rlpark.plugin.rltoys.agents.rl.LearnerAgentFA;
 import rlpark.plugin.rltoys.algorithms.control.ControlLearner;
 import rlpark.plugin.rltoys.algorithms.control.acting.EpsilonGreedy;
@@ -26,7 +25,6 @@ import java.util.Random;
  * Date: 25.03.13
  * Time: 11:12
  */
-@Service
 public class CollisionAvoidingProblemController implements Runnable {
     private CollisionAvoidingProblem problem = null;
     private ControlLearner control;
@@ -37,7 +35,8 @@ public class CollisionAvoidingProblemController implements Runnable {
     private int reward = 0;
     private static final int GETTING_TARGET_REWARD = 100;
     private static final int COLLISION_REWARD = -100;
-    private static final int STEP_REWARD = -10;
+    private static final int STEP_REWARD = -20;
+    private QLearning qlearning;
 
 
     public void init() {
@@ -48,11 +47,11 @@ public class CollisionAvoidingProblemController implements Runnable {
         occupancy = new PVector(projector.vectorSize());
         TabularAction toStateAction = new TabularAction(problem.actions(), projector.vectorNorm(),
                 projector.vectorSize());
-        double alpha = .15 / projector.vectorNorm();     //learning rate
+        double alpha = .45 / projector.vectorNorm();     //learning rate
         double gamma = 1.0;                              //discount factor  (how important is future value)
-        double lambda = 0.6;                             //how much less important is every next step action (lambda *
+        double lambda = 0.9;                             //how much less important is every next step action (lambda *
         // rt+1 + lambda^2 rt+2 + lambda^3 rt+3...
-        QLearning qlearning = new QLearning(problem.actions(), alpha, gamma, lambda, toStateAction, new RTraces());
+        qlearning = new QLearning(problem.actions(), alpha, gamma, lambda, toStateAction, new RTraces());
         double epsilon = 0.2;        //how many actions should be chosen on random (instead of taking best)
         Policy acting = new EpsilonGreedy(new Random(), problem.actions(), toStateAction, qlearning, epsilon);
         control = new QLearningControl(acting, qlearning);
@@ -71,6 +70,7 @@ public class CollisionAvoidingProblemController implements Runnable {
         });
         while (clock.tick()) {
             runner.step();
+//            printTheta();
             occupancy.addToSelf(agent.lastState()); //????
         }
     }
@@ -81,6 +81,7 @@ public class CollisionAvoidingProblemController implements Runnable {
 
     public void onAgentGetsToTarget() {
         reward = reward + GETTING_TARGET_REWARD;
+        problem.setEndEpisode(true);
     }
 
     public void resetReward() {
@@ -105,5 +106,22 @@ public class CollisionAvoidingProblemController implements Runnable {
 
     public int getReward() {
         return reward;
+    }
+
+    private void printTheta() {
+        System.out.println("Action -1");
+        int agentRange = CollisionAvoidingProblem.AGENT_RANGE * CollisionAvoidingProblem.AGENT_RANGE * CollisionAvoidingProblem.AGENT_RANGE;
+        for (int i = 0; i < agentRange; i++) {
+            System.out.println(qlearning.theta().getEntry(i));
+        }
+        System.out.println("Action 0");
+        for (int i = 0; i < agentRange; i++) {
+            System.out.println(qlearning.theta().getEntry(i + agentRange * 2));
+        }
+
+        System.out.println("Action 1");
+        for (int i = 0; i < agentRange; i++) {
+            System.out.println(qlearning.theta().getEntry(i + agentRange));
+        }
     }
 }

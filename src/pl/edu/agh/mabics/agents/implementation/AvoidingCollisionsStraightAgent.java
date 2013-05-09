@@ -1,6 +1,5 @@
 package pl.edu.agh.mabics.agents.implementation;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingProblemController;
@@ -95,13 +94,8 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         //this.firstCall = true;
     }
 
-    @Autowired
-    public void setCollisionAvoidingProblemController(
-            CollisionAvoidingProblemController collisionAvoidingProblemController) {
-        this.collisionAvoidingProblemController = collisionAvoidingProblemController;
-    }
-
     public void initIt() {
+        collisionAvoidingProblemController = new CollisionAvoidingProblemController();
         collisionAvoidingProblemController.init();
         Thread controllerThread = new Thread(collisionAvoidingProblemController);
         controllerThread.start();
