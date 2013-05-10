@@ -10,6 +10,9 @@ import rlpark.plugin.rltoys.math.vector.RealVector;
 import rlpark.plugin.rltoys.math.vector.implementations.BVector;
 import rlpark.plugin.rltoys.problems.ProblemDiscreteAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mateusz
@@ -21,17 +24,26 @@ public class CollisionAvoidingProblem implements ProblemDiscreteAction {
     private Action currentAction;
     private TRStep currentStep;
     private CollisionAvoidingState currentState;
-    public static final int AGENT_RANGE = 50; //if collision point is farther, we ignore it - state (-1, -1)
-    public static final ActionArray Slower = new ActionArray(-1);
-    public static final ActionArray Faster = new ActionArray(1);
-    public static final ActionArray theSame = new ActionArray(0);
-    static final public Action[] Actions = {Slower, Faster, theSame};
+    public static int AGENT_RANGE; //if collision point is farther, we ignore it
+    List<Action> actions = new ArrayList<Action>();
     private boolean endEpisode;
+
+    public CollisionAvoidingProblem(Integer agentRange, Integer maxSpeedChange) {
+        this.AGENT_RANGE = agentRange;
+        for (int i = -maxSpeedChange; i <= maxSpeedChange; i++) {
+            actions.add(new ActionArray(i));
+        }
+    }
 
     //action should be go faster/slower or exact values of speed?   some probability to make it indeterministic
     @Override
     public Action[] actions() {
-        return Actions;  //To change body of implemented methods use File | Settings | File Templates.
+        Action actionsArray[] = new Action[actions.size()];
+        for (int i = 0; i < actions.size(); i++) {
+            actionsArray[i] = actions.get(i);
+        }
+        return actionsArray;
+
     }
 
     @Override

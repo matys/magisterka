@@ -26,7 +26,16 @@ public class StraightAgent extends AbstractAgent {
     public PlatformResponse getNextMove(PlatformRequest request) {
         PlatformResponse response = new PlatformResponse();
         //response.setSpeed(randomNewSpeed(request.getSpeed()));
-        response.setSpeed(2);
+        int speed = request.getSpeed();
+        int d_speed = Math.abs(random.nextInt() % 3) - 1; //find random number from set {-1,0,1}
+        speed += d_speed;
+        if (speed < 0) {
+            speed = 0;
+        }
+        if (speed > 2) {
+            speed = 2;
+        }
+        response.setSpeed(speed);
         Coordinates position = request.getPosition();
         Direction direction = getDirection(request.getDestination());
         for (Move move : request.getAllowedMoves()) {

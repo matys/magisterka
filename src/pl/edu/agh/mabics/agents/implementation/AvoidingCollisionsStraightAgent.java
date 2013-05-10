@@ -57,16 +57,9 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         return responseFromAction(request, currentAction);
     }
 
-    //TODO: refactor, generalization needed
     private PlatformResponse responseFromAction(PlatformRequest request, Action action) {
         double[] actions = ((ActionArray) action).actions;
         int wantedSpeed = (int) (request.getSpeed() + actions[0]);
-        if (wantedSpeed > 2) {
-            wantedSpeed = 2;
-        }
-        if (wantedSpeed < 0) {
-            wantedSpeed = 0;
-        }
         PlatformResponse response = new PlatformResponse();
         response.setSpeed(wantedSpeed);
         if (request.getAllowedMoves().size() == 0) {
@@ -95,7 +88,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     }
 
     public void initIt() {
-        collisionAvoidingProblemController = new CollisionAvoidingProblemController();
+        collisionAvoidingProblemController = new CollisionAvoidingProblemController(intersectionConfiguration);
         collisionAvoidingProblemController.init();
         Thread controllerThread = new Thread(collisionAvoidingProblemController);
         controllerThread.start();

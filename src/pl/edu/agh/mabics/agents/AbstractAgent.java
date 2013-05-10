@@ -11,6 +11,7 @@ import pl.edu.agh.mabics.experiment.controllers.IGameRunner;
 import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 import pl.edu.agh.mabics.platform.JSONHelper;
 import pl.edu.agh.mabics.platform.model.*;
+import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import javax.servlet.ServletException;
@@ -31,6 +32,8 @@ public abstract class AbstractAgent extends AbstractHandler {
     private boolean collision = false;
     private Server server;
     private boolean finished;
+    protected IntersectionConfiguration intersectionConfiguration;
+    private AgentFactory agentFactory;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -74,6 +77,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest)
             throws IOException {
         PlatformResponse nextMove = getNextMove(parsedRequest);
+        verify(nextMove);
         collisionController.acceptMove(id, nextMove.getMove());
         while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
             sleep();
@@ -89,6 +93,22 @@ public abstract class AbstractAgent extends AbstractHandler {
             nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove()));
             sendFinalMove(nextMove, response, request);
         }
+    }
+
+    private void verify(PlatformResponse nextMove) {
+        int wantedSpeed = nextMove.getSpeed();
+        int maxSpeed = intersectionConfiguration.getMaxSpeed();
+        if (wantedSpeed > maxSpeed) {
+            System.out.println("WARNING: illegal value of wanted speed: " + " wanted: " + wantedSpeed + " max: " +
+                    maxSpeed);
+            wantedSpeed = maxSpeed;
+        }
+        if (wantedSpeed < 0) {
+            System.out.println("WARNING: illegal value of wanted speed: " + " wanted: " + wantedSpeed + " min: " +
+                    maxSpeed);
+            wantedSpeed = 0;
+        }
+        nextMove.setSpeed(wantedSpeed);
     }
 
     private void sendFinalMove(PlatformResponse nextMove, HttpServletResponse response, Request request)
@@ -126,17 +146,22 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public void startAgent(Integer port, String id) {
         onNextGame();
-        this.port = port;
-        this.id = id;
-        this.finished = false;
-        server = new Server(port);
-        server.setHandler(this);
-        try {
-            System.out.println("Starting server on port: " + port.toString());
-            server.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        boolean portAlreadyInUse = false;
+        do {
+            this.port = port;
+            this.id = id;
+            this.finished = false;
+            server = new Server(port);
+            server.setHandler(this);
+            try {
+                System.out.println("Starting server on port: " + port.toString());
+                server.start();
+            } catch (java.net.BindException e) {
+                portAlreadyInUse = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } while (portAlreadyInUse);
         restartStatistics();
     }
 
@@ -192,5 +217,15 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public AgentStatistics getStatistics() {
         return statistics;
+    }
+
+    @Autowired
+    public void setIntersectionConfiguration(IntersectionConfiguration configuration) {
+        this.intersectionConfiguration = configuration;
+    }
+
+    @Autowired
+    public void setAgentFactory(AgentFactory agentFactory) {
+        this.agentFactory = agentFactory;
     }
 }

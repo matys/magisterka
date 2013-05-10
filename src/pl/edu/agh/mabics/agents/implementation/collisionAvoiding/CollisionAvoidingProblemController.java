@@ -1,5 +1,6 @@
 package pl.edu.agh.mabics.agents.implementation.collisionAvoiding;
 
+import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 import rlpark.plugin.rltoys.agents.rl.LearnerAgentFA;
 import rlpark.plugin.rltoys.algorithms.control.ControlLearner;
 import rlpark.plugin.rltoys.algorithms.control.acting.EpsilonGreedy;
@@ -37,10 +38,16 @@ public class CollisionAvoidingProblemController implements Runnable {
     private static final int COLLISION_REWARD = -100;
     private static final int STEP_REWARD = -20;
     private QLearning qlearning;
+    private IntersectionConfiguration intersectionConfiguration;
+
+    public CollisionAvoidingProblemController(IntersectionConfiguration intersectionConfiguration) {
+        this.intersectionConfiguration = intersectionConfiguration;
+    }
 
 
     public void init() {
-        problem = new CollisionAvoidingProblem();
+        problem = new CollisionAvoidingProblem(intersectionConfiguration.getAgentRange(),
+                intersectionConfiguration.getMaxSpeedChange());
         problem.setCurrentState(new CollisionAvoidingState());
         problem.initialize();
         projector = problem.getMarkovProjector();
@@ -108,20 +115,22 @@ public class CollisionAvoidingProblemController implements Runnable {
         return reward;
     }
 
+    //TODO: debug method only, generalization needed if more important role needed
     private void printTheta() {
         System.out.println("Action -1");
-        int agentRange = CollisionAvoidingProblem.AGENT_RANGE * CollisionAvoidingProblem.AGENT_RANGE * CollisionAvoidingProblem.AGENT_RANGE;
-        for (int i = 0; i < agentRange; i++) {
+        int agentRange = intersectionConfiguration.getAgentRange();
+        int statesQuantityPerAction = agentRange * agentRange * agentRange;
+        for (int i = 0; i < statesQuantityPerAction; i++) {
             System.out.println(qlearning.theta().getEntry(i));
         }
         System.out.println("Action 0");
-        for (int i = 0; i < agentRange; i++) {
-            System.out.println(qlearning.theta().getEntry(i + agentRange * 2));
+        for (int i = 0; i < statesQuantityPerAction; i++) {
+            System.out.println(qlearning.theta().getEntry(i + statesQuantityPerAction));
         }
 
         System.out.println("Action 1");
-        for (int i = 0; i < agentRange; i++) {
-            System.out.println(qlearning.theta().getEntry(i + agentRange));
+        for (int i = 0; i < statesQuantityPerAction; i++) {
+            System.out.println(qlearning.theta().getEntry(i + statesQuantityPerAction * 2));
         }
     }
 }

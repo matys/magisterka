@@ -2,6 +2,7 @@ package pl.edu.agh.mabics.ui.datamodel.beans;
 
 import org.springframework.stereotype.Component;
 import pl.edu.agh.mabics.agents.implementation.AgentType;
+import pl.edu.agh.mabics.experiment.util.PhysicType;
 import pl.edu.agh.mabics.platform.converters.ConverterUtil;
 import pl.edu.agh.mabics.ui.datamodel.util.AgentDataConverter;
 import pl.edu.agh.mabics.ui.datamodel.util.AgentDataReverseConverter;
@@ -112,35 +113,43 @@ public class FormBean {
     }
 
     public String getLeftTopCornerDownCoordinates() {
-        return coordinatesReverseConverter.convert(agentsConfiguration.getDownSideConfiguration().getLeftTopCornerCoordinates());
+        return coordinatesReverseConverter
+                .convert(agentsConfiguration.getDownSideConfiguration().getLeftTopCornerCoordinates());
     }
 
     public void setLeftTopCornerDownCoordinates(final String leftTopCornerDownCoordinates) {
-        agentsConfiguration.getDownSideConfiguration().setLeftTopCornerCoordinates(coordinatesConverter.convert(leftTopCornerDownCoordinates));
+        agentsConfiguration.getDownSideConfiguration()
+                .setLeftTopCornerCoordinates(coordinatesConverter.convert(leftTopCornerDownCoordinates));
     }
 
     public String getRightDownCornerDownCoordinates() {
-        return coordinatesReverseConverter.convert(agentsConfiguration.getDownSideConfiguration().getRightDownCornerCoordinates());
+        return coordinatesReverseConverter
+                .convert(agentsConfiguration.getDownSideConfiguration().getRightDownCornerCoordinates());
     }
 
     public void setRightDownCornerDownCoordinates(final String rightDownCornerDownCoordinates) {
-        agentsConfiguration.getDownSideConfiguration().setRightDownCornerCoordinates(coordinatesConverter.convert(rightDownCornerDownCoordinates));
+        agentsConfiguration.getDownSideConfiguration()
+                .setRightDownCornerCoordinates(coordinatesConverter.convert(rightDownCornerDownCoordinates));
     }
 
     public String getLeftTopCornerLeftCoordinates() {
-        return coordinatesReverseConverter.convert(agentsConfiguration.getLeftSideConfiguration().getLeftTopCornerCoordinates());
+        return coordinatesReverseConverter
+                .convert(agentsConfiguration.getLeftSideConfiguration().getLeftTopCornerCoordinates());
     }
 
     public void setLeftTopCornerLeftCoordinates(final String leftTopCornerLeftCoordinates) {
-        agentsConfiguration.getLeftSideConfiguration().setLeftTopCornerCoordinates(coordinatesConverter.convert(leftTopCornerLeftCoordinates));
+        agentsConfiguration.getLeftSideConfiguration()
+                .setLeftTopCornerCoordinates(coordinatesConverter.convert(leftTopCornerLeftCoordinates));
     }
 
     public String getRightDownCornerLeftCoordinates() {
-        return coordinatesReverseConverter.convert(agentsConfiguration.getLeftSideConfiguration().getRightDownCornerCoordinates());
+        return coordinatesReverseConverter
+                .convert(agentsConfiguration.getLeftSideConfiguration().getRightDownCornerCoordinates());
     }
 
     public void setRightDownCornerLeftCoordinates(final String rightDownCornerLeftCoordinates) {
-        this.agentsConfiguration.getLeftSideConfiguration().setRightDownCornerCoordinates(coordinatesConverter.convert(rightDownCornerLeftCoordinates));
+        this.agentsConfiguration.getLeftSideConfiguration()
+                .setRightDownCornerCoordinates(coordinatesConverter.convert(rightDownCornerLeftCoordinates));
     }
 
     public String getEndLineLeft() {
@@ -183,8 +192,7 @@ public class FormBean {
     public void setNumberOfAgentsLeft(final String numberOfAgentsLeft) {
         if (numberOfAgentsLeft != null)
             agentsConfiguration.getLeftSideConfiguration().setNumberOfAgents(new Integer(numberOfAgentsLeft));
-        else
-            agentsConfiguration.getLeftSideConfiguration().setNumberOfAgents(null);
+        else agentsConfiguration.getLeftSideConfiguration().setNumberOfAgents(null);
     }
 
     public String getNumberOfAgentsDown() {
@@ -306,5 +314,64 @@ public class FormBean {
 
     public void setOutputDirName(String dirName) {
         experimentConfiguration.setOutputDirName(dirName);
+    }
+
+    public void setAgentRange(String text) {
+        if (text != null) {
+            intersectionConfiguration.setAgentRange(new Integer(text));
+        } else {
+            intersectionConfiguration.setAgentRange(null);
+        }
+    }
+
+    public void setAgentMaxSpeed(String text) {
+        if (text != null) {
+            intersectionConfiguration.setMaxSpeed(new Integer(text));
+        } else {
+            intersectionConfiguration.setMaxSpeed(null);
+        }
+    }
+
+    public void setAgentMaxSpeedChange(String text) {
+        if (text != null) {
+            intersectionConfiguration.setMaxSpeedChange(new Integer(text));
+        } else {
+            intersectionConfiguration.setMaxSpeedChange(null);
+        }
+
+
+    }
+
+    public void setPhysicType(PhysicType type) {
+        intersectionConfiguration.setPhysic(type);
+    }
+
+    public String getAgentRange() {
+        Integer agentRange = intersectionConfiguration.getAgentRange();
+        if (agentRange != null) {
+            return agentRange.toString();
+        }
+        return null;
+    }
+
+    public String getAgentMaxSpeed() {
+        Integer maxSpeed = intersectionConfiguration.getMaxSpeed();
+        if (maxSpeed != null) {
+            return maxSpeed.toString();
+        }
+        return null;
+    }
+
+
+    public String getAgentMaxSpeedChange() {
+        Integer maxSpeedChange = intersectionConfiguration.getMaxSpeedChange();
+        if (maxSpeedChange != null) {
+            return maxSpeedChange.toString();
+        }
+        return null;
+    }
+
+    public PhysicType getPhysicType() {
+        return intersectionConfiguration.getPhysic();
     }
 }

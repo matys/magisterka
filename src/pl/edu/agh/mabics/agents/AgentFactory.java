@@ -30,4 +30,9 @@ public class AgentFactory implements BeanFactoryAware {
         return newAgent;
     }
 
+    public Integer nextPort() {
+        portCounter++;
+        return portCounter;
+    }
+
 }

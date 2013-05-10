@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.experiment.datamodel.SimulationResult;
 import pl.edu.agh.mabics.experiment.util.GraphsHelper;
+import pl.edu.agh.mabics.experiment.util.PhysicType;
 import pl.edu.agh.mabics.experiment.util.StatisticsHelper;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
+import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +33,7 @@ public class ExperimentRunner {
      * @return names of files with plotted results of experiment
      */
     public List<String> startExperiment(FormBean data) {
+        initPhysicFile(data.getIntersectionConfiguration());
         int repetitionsQuantity = data.getExperimentConfiguration().getNumberOfSeries();
         Set<SimulationResult> simulationResults = new HashSet<SimulationResult>(repetitionsQuantity);
         for (int repetitionNumber = 0; repetitionNumber < repetitionsQuantity; repetitionNumber++) {
@@ -41,6 +44,13 @@ public class ExperimentRunner {
                 data.getExperimentConfiguration().getOutputDirName());
         return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(),
                 data.getExperimentConfiguration().getOutputDirName());
+    }
+
+    private void initPhysicFile(IntersectionConfiguration intersectionConfiguration) {
+        int maxSpeed = intersectionConfiguration.getMaxSpeed();
+        int maxSpeedChange = intersectionConfiguration.getMaxSpeedChange();
+        PhysicType physic = intersectionConfiguration.getPhysic();
+        //TODO: create file!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     private void waitForExternalPlatform() {

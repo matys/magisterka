@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="pl.edu.agh.mabics.MabicsGUI">
   <grid id="27dc6" binding="Main" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="598" height="714"/>
+      <xy x="20" y="20" width="633" height="714"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -155,6 +155,7 @@
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="-1" height="250"/>
+                    <preferred-size width="423" height="300"/>
                   </grid>
                 </constraints>
                 <properties/>
@@ -213,7 +214,7 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="9a3a9" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="9a3a9" layout-manager="GridLayoutManager" row-count="2" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -223,35 +224,69 @@
                     <children>
                       <component id="c5aab" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Environment Physic:"/>
                         </properties>
                       </component>
-                      <component id="3dd7" class="javax.swing.JRadioButton" binding="simpleEnvironmentRadioButton">
+                      <component id="3fd6f" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Simple"/>
+                          <text value="Agent Range"/>
                         </properties>
                       </component>
-                      <component id="3c86c" class="javax.swing.JRadioButton" binding="other1RadioButton" default-binding="true">
+                      <component id="d2bb4" class="javax.swing.JTextField" binding="agentRangeField">
                         <constraints>
-                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="50" height="-1"/>
+                            <maximum-size width="50" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="51ca3" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Other1"/>
+                          <text value="Max speed"/>
                         </properties>
                       </component>
-                      <component id="703cd" class="javax.swing.JRadioButton" binding="other2RadioButton" default-binding="true">
+                      <component id="f68ab" class="javax.swing.JTextField" binding="maxSpeedField">
                         <constraints>
-                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="50" height="-1"/>
+                            <maximum-size width="50" height="-1"/>
+                          </grid>
                         </constraints>
                         <properties>
-                          <text value="Other2"/>
+                          <text value=""/>
                         </properties>
+                      </component>
+                      <component id="c60a4" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Max speed change"/>
+                        </properties>
+                      </component>
+                      <component id="3e06a" class="javax.swing.JTextField" binding="maxSpeedChangeField">
+                        <constraints>
+                          <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="77e57" class="javax.swing.JComboBox" binding="physicComboBox">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
                       </component>
                     </children>
                   </grid>

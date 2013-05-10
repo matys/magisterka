@@ -61,12 +61,6 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
     private PlatformResponse responseFromAction(PlatformRequest request, Action action) {
         double[] actions = ((ActionArray) action).actions;
         int wantedSpeed = (int) (request.getSpeed() + actions[0]);
-        if (wantedSpeed > 2) {
-            wantedSpeed = 2;
-        }
-        if (wantedSpeed < 0) {
-            wantedSpeed = 0;
-        }
         PlatformResponse response = new PlatformResponse();
         response.setSpeed(wantedSpeed);
         if (request.getAllowedMoves().size() == 0) {
