@@ -3,12 +3,12 @@ package pl.edu.agh.mabics.experiment.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.experiment.datamodel.SimulationResult;
-import pl.edu.agh.mabics.experiment.util.GraphsHelper;
-import pl.edu.agh.mabics.experiment.util.PhysicType;
-import pl.edu.agh.mabics.experiment.util.StatisticsHelper;
+import pl.edu.agh.mabics.experiment.util.*;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,9 +24,11 @@ import java.util.Set;
 @Controller
 public class ExperimentRunner {
 
+    private static final String PHYSIC_FILE_PATH = "..\\trunk\\src\\runner\\";
     private SimulationRunner simulationRunner;
     private GraphsHelper graphsHelper;
     private StatisticsHelper statisticsHelper;
+    private FileHelper fileHelper;
 
     /**
      * @param data
@@ -47,10 +49,21 @@ public class ExperimentRunner {
     }
 
     private void initPhysicFile(IntersectionConfiguration intersectionConfiguration) {
-        int maxSpeed = intersectionConfiguration.getMaxSpeed();
-        int maxSpeedChange = intersectionConfiguration.getMaxSpeedChange();
-        PhysicType physic = intersectionConfiguration.getPhysic();
-        //TODO: create file!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        PhysicType physicType = intersectionConfiguration.getPhysic();
+        Physic physic = null;
+        switch (physicType) {
+            case StraightOnly:
+                physic = new StraightOnlyPhysic(intersectionConfiguration.getMaxSpeed(),
+                        intersectionConfiguration.getMaxSpeedChange());
+                break;
+        }
+        BufferedWriter writer = fileHelper.createBufferedWriter(PHYSIC_FILE_PATH + physicType.getPhysicFile());
+        try {
+            physic.writePhysicToFile(writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        fileHelper.closeBufferedWriter(writer);
     }
 
     private void waitForExternalPlatform() {
@@ -74,5 +87,10 @@ public class ExperimentRunner {
     @Autowired
     public void setStatisticsHelper(StatisticsHelper statisticsHelper) {
         this.statisticsHelper = statisticsHelper;
+    }
+
+    @Autowired
+    public void setFileHelper(FileHelper fileHelper) {
+        this.fileHelper = fileHelper;
     }
 }

@@ -176,7 +176,6 @@ public abstract class AbstractAgent extends AbstractHandler {
         return port;
     }
 
-
     protected Move getStayInPlaceMove(Coordinates position) {
         return new Move(position, new Vector(0, 0));
     }
