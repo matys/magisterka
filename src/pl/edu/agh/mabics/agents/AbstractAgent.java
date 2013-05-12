@@ -83,14 +83,18 @@ public abstract class AbstractAgent extends AbstractHandler {
             sleep();
         }
         if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
+            System.out.println("move approved " + id);
             collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
         } else {
+            System.out.println("move not approved " + id);
             collision = true;
             onCollision();
             removeMove(parsedRequest, nextMove);
-            nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove()));
+//            System.out.println("finding new move...");
+            nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove(), parsedRequest.getPosition()));
+//            System.out.println("new move found...");
             sendFinalMove(nextMove, response, request);
         }
     }
@@ -115,9 +119,10 @@ public abstract class AbstractAgent extends AbstractHandler {
             throws IOException {
         collisionController.acceptMove(id, nextMove.getMove());
         while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
+//            System.out.println("waiting for all moves");
             sleep();
         }
-        if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {    //FIX: remove "!"
+        if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
             collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
@@ -146,18 +151,20 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public void startAgent(Integer port, String id) {
         onNextGame();
-        boolean portAlreadyInUse = false;
+        boolean portAlreadyInUse;
         do {
             this.port = port;
             this.id = id;
             this.finished = false;
             server = new Server(port);
             server.setHandler(this);
+            portAlreadyInUse = false;
             try {
                 System.out.println("Starting server on port: " + port.toString());
                 server.start();
             } catch (java.net.BindException e) {
                 portAlreadyInUse = true;
+                port = agentFactory.nextPort();
             } catch (Exception e) {
                 e.printStackTrace();
             }

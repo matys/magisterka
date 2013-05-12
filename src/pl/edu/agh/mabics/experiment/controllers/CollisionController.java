@@ -3,9 +3,11 @@ package pl.edu.agh.mabics.experiment.controllers;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.platform.model.Move;
 import pl.edu.agh.mabics.platform.model.MoveState;
+import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +18,7 @@ import java.util.Map;
 @Service
 public class CollisionController extends Thread {
 
-    private Map<String, Move> chosenMoves = new HashMap<String, Move>();
+    private Map<String, Move> chosenMoves = new ConcurrentHashMap<String, Move>();
     private int numberOfAgents = 1;
 
 
@@ -26,7 +28,6 @@ public class CollisionController extends Thread {
         while (true) {
             while (chosenMoves.size() < numberOfAgents) {
                 sleep();
-                // System.out.println("waiting for decision of agents");
             }
             Map<String, Move> duplicatedMoves = getDuplicatedMoves();
             if (duplicatedMoves.isEmpty()) {
@@ -72,7 +73,7 @@ public class CollisionController extends Thread {
         chosenMoves.clear();
     }
 
-    public Map<String, Move> getDuplicatedMoves() {
+    private Map<String, Move> getDuplicatedMoves() {
         Map<String, Move> duplicatedMoves = new HashMap<String, Move>();
         Map<String, Move> checkedMoves = new HashMap<String, Move>();
         for (String moveId : chosenMoves.keySet()) {
@@ -81,7 +82,7 @@ public class CollisionController extends Thread {
                 Move checkedMove = checkedMoves.get(checkedMoveId);
                 if (checkedMove.getPoint().equals(move.getPoint())) {
                     duplicatedMoves.put(moveId, move);
-                    duplicatedMoves.put(moveId, checkedMove);
+                    duplicatedMoves.put(checkedMoveId, checkedMove);
                 }
             }
             checkedMoves.put(moveId, move);
@@ -90,11 +91,12 @@ public class CollisionController extends Thread {
     }
 
     //TODO: improve it. now it's look for first possible move increasing y coordinate all the time
-    public Move getPossibleMove(Move wantedMove) {
-        while (hasMove(chosenMoves, wantedMove)) {
-            wantedMove.getPoint().setY(wantedMove.getPoint().getY() + 1);
+    public synchronized Move getPossibleMove(Move wantedMove, Coordinates previousPosition) {
+        Move possibleMove = new Move(previousPosition, wantedMove.getVelocity());
+        while (hasMove(chosenMoves, possibleMove)) {
+            possibleMove.getPoint().setY(possibleMove.getPoint().getY() + 1);
         }
-        return wantedMove;
+        return possibleMove;
     }
 
     private boolean hasMove(Map<String, Move> chosenMoves, Move moveToCheck) {
