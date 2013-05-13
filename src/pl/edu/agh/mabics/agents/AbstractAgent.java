@@ -34,6 +34,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     private boolean finished;
     protected IntersectionConfiguration intersectionConfiguration;
     private AgentFactory agentFactory;
+    private boolean stopped = false;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -43,16 +44,18 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
             throws IOException, ServletException {
-        System.out.println("agent " + id + " got request");
-        String content = request.getReader().readLine();
-        PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
-        prepareResponseToSend(response);
-        if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition(), parsedRequest.getDestination())) {
-            finished = true;
-            onComplete();
+        if (!stopped) {
+            System.out.println("agent " + id + " got request");
+            String content = request.getReader().readLine();
+            PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
+            prepareResponseToSend(response);
+            if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition(), parsedRequest.getDestination())) {
+                finished = true;
+                onComplete();
+            }
+            makeMove((Request) request, response, parsedRequest);
+            afterStep();
         }
-        makeMove((Request) request, response, parsedRequest);
-        afterStep();
     }
 
     private void afterStep() {
@@ -172,12 +175,19 @@ public abstract class AbstractAgent extends AbstractHandler {
         restartStatistics();
     }
 
+    public void restartAgent() {
+        onNextGame();
+        this.stopped = false;
+        this.finished = false;
+        restartStatistics();
+    }
+
     protected abstract void onNextGame();
+
 
     protected void restartStatistics() {
         statistics = new AgentStatistics();
     }
-
 
     public int getPort() {
         return port;
@@ -192,15 +202,16 @@ public abstract class AbstractAgent extends AbstractHandler {
         this.jsonHelper = jsonHelper;
     }
 
+
     public void stopAgent() {
         try {
-            server.stop();
-            super.stop();
+            stopped = true;
+//            server.stop();
+//            super.stop();
         } catch (Exception e) {
             stopAgent();
         }
     }
-
 
     @Autowired
     public void setCollisionController(CollisionController collisionController) {
@@ -234,4 +245,5 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void setAgentFactory(AgentFactory agentFactory) {
         this.agentFactory = agentFactory;
     }
+
 }

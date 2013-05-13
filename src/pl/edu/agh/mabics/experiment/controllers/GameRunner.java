@@ -224,7 +224,7 @@ public class GameRunner implements IGameRunner {
 
     public void restartAgents() {
         for (AbstractAgent agent : agents.values()) {
-            agent.startAgent(agent.getPort(), agent.getId());
+            agent.restartAgent();
         }
     }
 }
