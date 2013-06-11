@@ -28,6 +28,10 @@ public class AlgorithmParameter {
         this.step = step;
     }
 
+    public AlgorithmParameter() {
+
+    }
+
     public String getName() {
         return name;
     }

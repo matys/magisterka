@@ -1,6 +1,7 @@
 package pl.edu.agh.mabics.ui.util.serialization;
 
 import org.springframework.stereotype.Service;
+import pl.edu.agh.mabics.agents.implementation.AlgorithmParameter;
 import pl.edu.agh.mabics.ui.datamodel.beans.*;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
@@ -26,6 +27,8 @@ public class FormBeanSerializer extends XMLSerializer {
         mapping.put("intersection", IntersectionConfiguration.class);
         mapping.put("one_side", OneSideConfiguration.class);
         mapping.put("coordinates", Coordinates.class);
+        mapping.put("parameters", ParametersSearchConfiguration.class);
+        mapping.put("parameter", AlgorithmParameter.class);
     }
 
     public void serialize(final FormBean form, String filePath) {

@@ -2,12 +2,10 @@ package pl.edu.agh.mabics.ui.datamodel.beans;
 
 import org.springframework.stereotype.Component;
 import pl.edu.agh.mabics.agents.implementation.AgentType;
+import pl.edu.agh.mabics.agents.implementation.AlgorithmParameter;
 import pl.edu.agh.mabics.experiment.util.PhysicType;
 import pl.edu.agh.mabics.platform.converters.ConverterUtil;
-import pl.edu.agh.mabics.ui.datamodel.util.AgentDataConverter;
-import pl.edu.agh.mabics.ui.datamodel.util.AgentDataReverseConverter;
-import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesConverter;
-import pl.edu.agh.mabics.ui.datamodel.util.CoordinatesReverseConverter;
+import pl.edu.agh.mabics.ui.datamodel.util.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -25,7 +23,16 @@ public class FormBean {
     private IntersectionConfiguration intersectionConfiguration;
 
     private AgentsConfiguration agentsConfiguration;
+    private ParametersSearchConfiguration parametersSearchConfiguration;
+    private ParametersConverter parametersConverter;
 
+    public ParametersConverter getParametersConverter() {
+        return parametersConverter;
+    }
+
+    public void setParametersConverter(ParametersConverter parametersConverter) {
+        this.parametersConverter = parametersConverter;
+    }
 
     public void setCoordinatesConverter(CoordinatesConverter coordinatesConverter) {
         this.coordinatesConverter = coordinatesConverter;
@@ -65,6 +72,7 @@ public class FormBean {
             experimentConfiguration.setNumberOfSeries(null);
         }
     }
+
 
     public String getSamplingFrequency() {
         if (experimentConfiguration.getSamplingFrequency() != null) {
@@ -221,6 +229,13 @@ public class FormBean {
         agentsConfiguration.getDownSideConfiguration().setAgents(agentsData);
     }
 
+    public void setParametersConfiguration(final JPanel parameters) {
+        parametersSearchConfiguration.setParameters(parametersConverter.convert(parameters));
+    }
+
+    public List<AlgorithmParameter> getParametersConfiguration() {
+        return parametersSearchConfiguration.getParameters();
+    }
 
     //it must be copied, not new returned
     public JPanel getLeftAgentsData() {
@@ -306,6 +321,7 @@ public class FormBean {
         experimentConfiguration.copyDataTo(formBean.getExperimentConfiguration());
         intersectionConfiguration.copyDataTo(formBean.getIntersectionConfiguration());
         agentsConfiguration.copyDataTo(formBean.getAgentsConfiguration());
+        parametersSearchConfiguration.copyDataTo(formBean.getParametersSearchConfiguration());
     }
 
     public String getOutputDirName() {
@@ -373,5 +389,13 @@ public class FormBean {
 
     public PhysicType getPhysicType() {
         return intersectionConfiguration.getPhysic();
+    }
+
+    public void setParametersSearchConfiguration(ParametersSearchConfiguration parametersSearchConfiguration) {
+        this.parametersSearchConfiguration = parametersSearchConfiguration;
+    }
+
+    public ParametersSearchConfiguration getParametersSearchConfiguration() {
+        return parametersSearchConfiguration;
     }
 }

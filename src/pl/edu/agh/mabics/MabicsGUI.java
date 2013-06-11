@@ -198,9 +198,12 @@ public class MabicsGUI {
         maxSpeedField.setText(data.getAgentMaxSpeed());
         maxSpeedChangeField.setText(data.getAgentMaxSpeedChange());
         physicComboBox.setSelectedItem(data.getPhysicType());
+        AgentType leftSelectedAgentType = (AgentType) agentImplementationLeftComboBox.getSelectedItem();
+        initParametersSearchTab(data.getParametersConfiguration(), leftSelectedAgentType.getDescription());
     }
 
     public FormBean getData(FormBean data) {
+        data.setParametersConfiguration(parametersTab);
         data.setPlotTimeOfIntersectionCrossingAverage(plotTimeOfIntersectionCrossingAverageCheckBox.isSelected());
         data.setPlotNumberOfCollision(plotNumberOfCollisionsCheckBox.isSelected());
         data.setNumberOfSeries(numberOfSeriesTextField.getText());
@@ -227,6 +230,7 @@ public class MabicsGUI {
         data.setAgentMaxSpeed(maxSpeedField.getText());
         data.setAgentMaxSpeedChange(maxSpeedChangeField.getText());
         data.setPhysicType((PhysicType) physicComboBox.getSelectedItem());
+
         return data;
     }
 
