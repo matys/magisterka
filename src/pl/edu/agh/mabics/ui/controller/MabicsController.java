@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.MabicsGUI;
+import pl.edu.agh.mabics.agents.implementation.AgentType;
 import pl.edu.agh.mabics.experiment.controllers.ExperimentRunner;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 import pl.edu.agh.mabics.ui.listeners.helpers.IExperimentRunnerHelper;
@@ -14,6 +15,8 @@ import pl.edu.agh.mabics.ui.util.serialization.FormBeanSerializer;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 
 /**
@@ -23,7 +26,8 @@ import java.awt.event.MouseListener;
  * Time: 17:32
  */
 @Controller
-public class MabicsController implements ISerializationHelper, IIntersectionConfigurationHelper, IExperimentRunnerHelper {
+public class MabicsController
+        implements ISerializationHelper, IIntersectionConfigurationHelper, IExperimentRunnerHelper {
 
     private FormBeanSerializer formBeanSerializer;
     private FormBean formBean;
@@ -43,15 +47,33 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
     }
 
     private void initListeners() {
-        mabicsGUI.getIntersectionFileChooseButton().addMouseListener(new IntersectionImageChoiceListener(mabicsGUI.getFc(), mabicsGUI.getParent(), this));
+        mabicsGUI.getIntersectionFileChooseButton()
+                .addMouseListener(new IntersectionImageChoiceListener(mabicsGUI.getFc(), mabicsGUI.getParent(), this));
         mabicsGUI.getIntersectionFileShowButton().addMouseListener(new ShowIntersectionListener(this));
-        mabicsGUI.getNumberOfAgentsLeftTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getNumberOfAgentsLeftTextField(), "Left"));
-        mabicsGUI.getNumberOfAgentsDownTextField().getDocument().addDocumentListener(new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getNumberOfAgentsDownTextField(), "Down"));
-        mabicsGUI.getGenerateRandomButtonLeft().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelLeft(), mabicsGUI.getLeftTopCornerLeftTextField(), mabicsGUI.getRightDownCornerLeftTextField()));
-        mabicsGUI.getGenerateRandomButtonDown().addMouseListener(new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelDown(), mabicsGUI.getLeftTopCornerDownTextField(), mabicsGUI.getRightDownCornerDownTextField()));
-        mabicsGUI.getWriteToFileButton().addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
-        mabicsGUI.getReadFromFileButton().addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
+        mabicsGUI.getNumberOfAgentsLeftTextField().getDocument().addDocumentListener(
+                new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelLeft(),
+                        mabicsGUI.getNumberOfAgentsLeftTextField(), "Left"));
+        mabicsGUI.getNumberOfAgentsDownTextField().getDocument().addDocumentListener(
+                new NumberOfAgentsChangeListener(mabicsGUI.getAgentsPanelDown(),
+                        mabicsGUI.getNumberOfAgentsDownTextField(), "Down"));
+        mabicsGUI.getGenerateRandomButtonLeft().addMouseListener(
+                new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelLeft(),
+                        mabicsGUI.getLeftTopCornerLeftTextField(), mabicsGUI.getRightDownCornerLeftTextField()));
+        mabicsGUI.getGenerateRandomButtonDown().addMouseListener(
+                new GenerateRandomAgentsListener(mabicsGUI.getAgentsPanelDown(),
+                        mabicsGUI.getLeftTopCornerDownTextField(), mabicsGUI.getRightDownCornerDownTextField()));
+        mabicsGUI.getWriteToFileButton()
+                .addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
+        mabicsGUI.getReadFromFileButton()
+                .addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
         mabicsGUI.getRunButton().addActionListener(new StartExperimentListener(this, experimentRunner));
+        mabicsGUI.getAgentImplementationLeftComboBox().addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                AgentType newAgentType = (AgentType) e.getItem();
+                mabicsGUI.initParametersSearchTab(newAgentType.getParameters(), newAgentType.getDescription());
+            }
+        });
     }
 
     private void removeOldListeners() {
@@ -67,16 +89,14 @@ public class MabicsController implements ISerializationHelper, IIntersectionConf
     private void removeOldActionListeners(JButton button, Class listenerClass) {
         ActionListener[] listeners = button.getActionListeners();
         for (ActionListener listener : listeners) {
-            if (listenerClass.isInstance(listener))
-                button.removeActionListener(listener);
+            if (listenerClass.isInstance(listener)) button.removeActionListener(listener);
         }
     }
 
     private void removeOldMouseListeners(JButton button, Class listenerClass) {
         MouseListener[] listeners = button.getMouseListeners();
         for (MouseListener listener : listeners) {
-            if (listenerClass.isInstance(listener))
-                button.removeMouseListener(listener);
+            if (listenerClass.isInstance(listener)) button.removeMouseListener(listener);
         }
     }
 

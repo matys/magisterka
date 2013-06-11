@@ -2,12 +2,15 @@ package pl.edu.agh.mabics;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import pl.edu.agh.mabics.agents.implementation.AgentType;
+import pl.edu.agh.mabics.agents.implementation.AlgorithmParameter;
 import pl.edu.agh.mabics.experiment.util.PhysicType;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +61,7 @@ public class MabicsGUI {
     private JTextField maxSpeedField;
     private JTextField maxSpeedChangeField;
     private JComboBox physicComboBox;
+    private JPanel parametersTab = new JPanel();
 
 
     public MabicsGUI() {
@@ -65,8 +69,75 @@ public class MabicsGUI {
         agentImplementationDownComboBox.setModel(new DefaultComboBoxModel(AgentType.values()));
         agentImplementationLeftComboBox.setModel(new DefaultComboBoxModel(AgentType.values()));
         physicComboBox.setModel(new DefaultComboBoxModel(PhysicType.values()));
+        AgentType leftSelectedAgentType = (AgentType) agentImplementationLeftComboBox.getSelectedItem();
+        initParametersSearchTab(leftSelectedAgentType.getParameters(), leftSelectedAgentType.getDescription());
+    }
 
-
+    public void initParametersSearchTab(List<AlgorithmParameter> parameters, String algorithmName) {
+        final JPanel panel10 = new JPanel();
+        panel10.setLayout(new GridLayoutManager(parameters.size() + 1, 7, new Insets(0, 0, 0, 0), -1, -1));
+        parametersTab.removeAll();
+        parametersTab.add(panel10,
+                new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null,
+                        0, false));
+        final JLabel algorithmLabel = new JLabel();
+        algorithmLabel.setText(algorithmName);
+        panel10.add(algorithmLabel,
+                new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+                        false));
+        final Spacer spacer1 = new Spacer();
+        panel10.add(spacer1,
+                new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        int i = 1;
+        for (AlgorithmParameter param : parameters) {
+            final JLabel parameterLabel = new JLabel();
+            parameterLabel.setText(param.getName());
+            panel10.add(parameterLabel,
+                    new GridConstraints(i, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+                            false));
+            JTextField fromTextField = new JTextField();
+            fromTextField.setText(param.getFromValue().toString());
+            panel10.add(fromTextField,
+                    new GridConstraints(i, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                            GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
+                            new Dimension(150, -1), null, 0, false));
+            final JLabel paramToLabel = new JLabel();
+            paramToLabel.setText("to:");
+            panel10.add(paramToLabel,
+                    new GridConstraints(i, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+                            false));
+            JTextField toTextField = new JTextField();
+            toTextField.setText(param.getToValue().toString());
+            panel10.add(toTextField,
+                    new GridConstraints(i, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                            GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
+                            new Dimension(150, -1), null, 0, false));
+            final JLabel paramFromLAbel = new JLabel();
+            paramFromLAbel.setText("from:");
+            panel10.add(paramFromLAbel,
+                    new GridConstraints(i, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+                            false));
+            final JLabel paramStepLabel = new JLabel();
+            paramStepLabel.setText("step:");
+            panel10.add(paramStepLabel,
+                    new GridConstraints(i, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
+                            false));
+            JTextField stepTextField = new JTextField();
+            stepTextField.setText(param.getStep().toString());
+            panel10.add(stepTextField,
+                    new GridConstraints(i, 6, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                            GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
+                            new Dimension(150, -1), null, 0, false));
+            i++;
+        }
     }
 
 
@@ -274,6 +345,10 @@ public class MabicsGUI {
 
     public JButton getRunButton() {
         return runButton;
+    }
+
+    public JComboBox getAgentImplementationLeftComboBox() {
+        return agentImplementationLeftComboBox;
     }
 
     /**
@@ -617,33 +692,31 @@ public class MabicsGUI {
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null,
                         0, false));
+        tabbedPane1.addTab("Parameters search", parametersTab);
         final JPanel panel9 = new JPanel();
         panel9.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane1.addTab("Parameters search", panel9);
+        Main.add(panel9, BorderLayout.SOUTH);
         final JPanel panel10 = new JPanel();
-        panel10.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        Main.add(panel10, BorderLayout.SOUTH);
-        final JPanel panel11 = new JPanel();
-        panel11.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        panel10.add(panel11, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+        panel10.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel9.add(panel10, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0,
                 false));
         runButton = new JButton();
         runButton.setText("Run!");
-        panel11.add(runButton,
+        panel10.add(runButton,
                 new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         writeToFileButton = new JButton();
         writeToFileButton.setText("Write to file");
-        panel11.add(writeToFileButton,
+        panel10.add(writeToFileButton,
                 new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         readFromFileButton = new JButton();
         readFromFileButton.setText("Read from file");
-        panel11.add(readFromFileButton,
+        panel10.add(readFromFileButton,
                 new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
