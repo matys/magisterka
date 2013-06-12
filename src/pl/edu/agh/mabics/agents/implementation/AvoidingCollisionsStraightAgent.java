@@ -20,6 +20,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
 
     private CollisionAvoidingProblemController collisionAvoidingProblemController;
     private boolean firstCall = true;
+    private AlgorithmConfigurationBean algorithmConfigurationBean;
 
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
@@ -89,8 +90,10 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
 
     public void initIt() {
         collisionAvoidingProblemController = new CollisionAvoidingProblemController(intersectionConfiguration);
+        initParameters(collisionAvoidingProblemController, CollisionAvoidingProblemController.class);
         collisionAvoidingProblemController.init();
         Thread controllerThread = new Thread(collisionAvoidingProblemController);
         controllerThread.start();
     }
+
 }

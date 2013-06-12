@@ -90,6 +90,7 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
 
     public void initIt() {
         targetAndSpeedProblemController = new TargetAndSpeedProblemController();
+        initParameters(targetAndSpeedProblemController, TargetAndSpeedProblemController.class);
         targetAndSpeedProblemController.init();
         Thread controllerThread = new Thread(targetAndSpeedProblemController);
         controllerThread.start();

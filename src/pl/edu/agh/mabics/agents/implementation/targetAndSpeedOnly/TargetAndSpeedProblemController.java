@@ -38,6 +38,12 @@ public class TargetAndSpeedProblemController implements Runnable {
     private static final int STEP_REWARD = -20;
     private QLearning qlearning;
 
+    double epsilon = 0.2;        //how many actions should be chosen on random (instead of taking best)
+    double gamma = 1.0;                              //discount factor  (how important is future value)
+    double lambda = 0.9;                             //how much less important is every next step action (lambda *
+    // rt+1 + lambda^2 rt+2 + lambda^3 rt+3...
+    double alpha = .45;   //learning rate
+
 
     public void init() {
         problem = new TargetAndSpeedProblem();
@@ -47,12 +53,8 @@ public class TargetAndSpeedProblemController implements Runnable {
         occupancy = new PVector(projector.vectorSize());
         TabularAction toStateAction = new TabularAction(problem.actions(), projector.vectorNorm(),
                 projector.vectorSize());
-        double alpha = .45 / projector.vectorNorm();     //learning rate
-        double gamma = 1.0;                              //discount factor  (how important is future value)
-        double lambda = 0.9;                             //how less important is every next step action (lambda *
-        // rt+1 + lambda^2 rt+2 + lambda^3 rt+3...
+        alpha = alpha / projector.vectorNorm();
         qlearning = new QLearning(problem.actions(), alpha, gamma, lambda, toStateAction, new RTraces());
-        double epsilon = 0.2;        //how many actions should be chosen on random (instead of taking best)
         Policy acting = new EpsilonGreedy(new Random(), problem.actions(), toStateAction, qlearning, epsilon);
         control = new QLearningControl(acting, qlearning);
         agent = new LearnerAgentFA(control, projector);
@@ -123,5 +125,22 @@ public class TargetAndSpeedProblemController implements Runnable {
 
     public int getReward() {
         return reward;
+    }
+
+
+    public void setEpsilon(Double epsilon) {
+        this.epsilon = epsilon;
+    }
+
+    public void setGamma(Double gamma) {
+        this.gamma = gamma;
+    }
+
+    public void setLambda(Double lambda) {
+        this.lambda = lambda;
+    }
+
+    public void setAlpha(Double alpha) {
+        this.alpha = alpha;
     }
 }

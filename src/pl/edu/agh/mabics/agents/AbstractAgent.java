@@ -3,8 +3,11 @@ package pl.edu.agh.mabics.agents;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.AbstractHandler;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.mabics.agents.implementation.AlgorithmConfigurationBean;
+import pl.edu.agh.mabics.agents.implementation.PossibleValue;
 import pl.edu.agh.mabics.experiment.controllers.CollisionController;
 import pl.edu.agh.mabics.experiment.controllers.EndGameController;
 import pl.edu.agh.mabics.experiment.controllers.IGameRunner;
@@ -18,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 @Service
 public abstract class AbstractAgent extends AbstractHandler {
@@ -35,6 +40,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     protected IntersectionConfiguration intersectionConfiguration;
     private AgentFactory agentFactory;
     private boolean stopped = false;
+    private AlgorithmConfigurationBean algorithmConfigurationBean;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -200,6 +206,33 @@ public abstract class AbstractAgent extends AbstractHandler {
     @Autowired
     public void setJsonHelper(JSONHelper jsonHelper) {
         this.jsonHelper = jsonHelper;
+    }
+
+
+    protected void initParameters(Object controller, Class controllerClass) {
+        for (PossibleValue possibleValue : algorithmConfigurationBean.getPossibleValues()) {
+            Method method = BeanUtils
+                    .findDeclaredMethod(controllerClass, "set" + capitalizeFirstLetter(possibleValue.getName()),
+                            new Class[]{Double.class});
+            try {
+                method.invoke(controller, possibleValue.getValue());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Autowired
+    public void setAlgorithmConfigurationBean(AlgorithmConfigurationBean algorithmConfigurationBean) {
+        this.algorithmConfigurationBean = algorithmConfigurationBean;
+    }
+
+    private String capitalizeFirstLetter(String name) {
+        Character first = Character.toUpperCase(name.charAt(0));
+        return first + name.substring(1);
     }
 
 
