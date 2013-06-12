@@ -4,8 +4,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.MabicsGUI;
-import pl.edu.agh.mabics.agents.implementation.AgentType;
 import pl.edu.agh.mabics.experiment.controllers.ExperimentRunner;
+import pl.edu.agh.mabics.experiment.controllers.ParametersSearchRunner;
 import pl.edu.agh.mabics.ui.datamodel.beans.FormBean;
 import pl.edu.agh.mabics.ui.listeners.helpers.IExperimentRunnerHelper;
 import pl.edu.agh.mabics.ui.listeners.helpers.IIntersectionConfigurationHelper;
@@ -15,7 +15,6 @@ import pl.edu.agh.mabics.ui.util.serialization.FormBeanSerializer;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 
@@ -34,6 +33,7 @@ public class MabicsController
     private JFrame frame;
     private MabicsGUI mabicsGUI;
     private ExperimentRunner experimentRunner;
+    private ParametersSearchRunner parametersSearchRunner;
 
 
     public MabicsController() {
@@ -66,14 +66,9 @@ public class MabicsController
                 .addActionListener(new WriteToFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
         mabicsGUI.getReadFromFileButton()
                 .addActionListener(new ReadFromFileListener(this, mabicsGUI.getParent(), mabicsGUI.getFc()));
-        mabicsGUI.getRunButton().addActionListener(new StartExperimentListener(this, experimentRunner));
-        mabicsGUI.getAgentImplementationLeftComboBox().addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                AgentType newAgentType = (AgentType) e.getItem();
-                mabicsGUI.initParametersSearchTab(newAgentType.getParameters(), newAgentType.getDescription());
-            }
-        });
+        mabicsGUI.getRunButton()
+                .addActionListener(new StartExperimentListener(this, experimentRunner, parametersSearchRunner));
+        mabicsGUI.getAgentImplementationLeftComboBox().addItemListener(new AlgorithmChangedListener(mabicsGUI));
     }
 
     private void removeOldListeners() {
@@ -84,6 +79,14 @@ public class MabicsController
         removeOldMouseListeners(mabicsGUI.getGenerateRandomButtonLeft(), GenerateRandomAgentsListener.class);
         removeOldActionListeners(mabicsGUI.getWriteToFileButton(), WriteToFileListener.class);
         removeOldActionListeners(mabicsGUI.getReadFromFileButton(), ReadFromFileListener.class);
+        removeOldActionListeners(mabicsGUI.getAgentImplementationLeftComboBox(), AlgorithmChangedListener.class);
+    }
+
+    private void removeOldActionListeners(JComboBox comboBox, Class<AlgorithmChangedListener> listenerClass) {
+        ItemListener[] listeners = comboBox.getItemListeners();
+        for (ItemListener listener : listeners) {
+            if (listenerClass.isInstance(listener)) comboBox.removeItemListener(listener);
+        }
     }
 
     private void removeOldActionListeners(JButton button, Class listenerClass) {
@@ -157,6 +160,11 @@ public class MabicsController
     public FormBean getDataFromForm() {
         mabicsGUI.getData(formBean);
         return formBean;
+    }
+
+    @Autowired
+    public void setParametersSearchRunner(ParametersSearchRunner parametersSearchRunner) {
+        this.parametersSearchRunner = parametersSearchRunner;
     }
 }
 
