@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Set;
 
 @Service
 public abstract class AbstractAgent extends AbstractHandler {
@@ -210,16 +211,19 @@ public abstract class AbstractAgent extends AbstractHandler {
 
 
     protected void initParameters(Object controller, Class controllerClass) {
-        for (PossibleValue possibleValue : algorithmConfigurationBean.getPossibleValues()) {
-            Method method = BeanUtils
-                    .findDeclaredMethod(controllerClass, "set" + capitalizeFirstLetter(possibleValue.getName()),
-                            new Class[]{Double.class});
-            try {
-                method.invoke(controller, possibleValue.getValue());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+        Set<PossibleValue> possibleValues = algorithmConfigurationBean.getPossibleValues();
+        if (possibleValues != null && !possibleValues.isEmpty()) {
+            for (PossibleValue possibleValue : possibleValues) {
+                Method method = BeanUtils
+                        .findDeclaredMethod(controllerClass, "set" + capitalizeFirstLetter(possibleValue.getName()),
+                                new Class[]{Double.class});
+                try {
+                    method.invoke(controller, possibleValue.getValue());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

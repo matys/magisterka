@@ -41,8 +41,12 @@ public class ParametersSearchRunner {
             Double step = param.getStep();
             Double fromValue = param.getFromValue();
             Double toValue = param.getToValue();
-            for (Double value = fromValue; value <= toValue; value += step) {
-                possibleValues.add(new PossibleValue(param.getName(), value));
+            if (step != 0) {
+                for (Double value = fromValue; value <= toValue; value += step) {
+                    possibleValues.add(new PossibleValue(param.getName(), value));
+                }
+            } else {
+                possibleValues.add(new PossibleValue(param.getName(), fromValue));
             }
             generatedValues.add(possibleValues);
         }
