@@ -25,13 +25,26 @@ public class ParametersSearchRunner {
     private AlgorithmConfigurationBean algorithmConfigurationBean;
 
     public void searchBestParameters(FormBean data) {
+        String baseOutputDir = data.getExperimentConfiguration().getOutputDirName();
         List<AlgorithmParameter> parameters = data.getParametersConfiguration();
         List<Set<PossibleValue>> possibleValues = generatePossibleValues(parameters);
         Set<Set<Object>> configurations = cartesianProduct(possibleValues);
         for (Set<Object> conf : configurations) {
             algorithmConfigurationBean.setConfiguration(conf);
+            prepareOutputDirForExperiment(data, conf, baseOutputDir);
             experimentRunner.startExperiment(data);
         }
+    }
+
+    private void prepareOutputDirForExperiment(FormBean data, Set<Object> conf, String baseOutputDir) {
+        String configurationOutputDirName = "";
+        for (Object o : conf) {
+            PossibleValue value = (PossibleValue) o;
+            configurationOutputDirName = configurationOutputDirName + value.getName() + value.getValue();
+        }
+        configurationOutputDirName.replace(".", ",");
+        data.getExperimentConfiguration().setOutputDirName(baseOutputDir +
+                "\\" + configurationOutputDirName);
     }
 
     private List<Set<PossibleValue>> generatePossibleValues(List<AlgorithmParameter> parameters) {
