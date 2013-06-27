@@ -22,13 +22,14 @@ public class GraphsHelper {
     private CommandLineHelper commandLineHelper;
     private FileHelper fileHelper;
 
-    public List<String> createGraphs(String[] statisticFiles, String outputDirName) {
+    public List<String> createGraphs(String[] statisticFiles, String outputDirName, Integer samplingFrequency) {
         List<String> outputFilesNames = new ArrayList<String>();
         for (String statisticFile : statisticFiles) {
             Map<String, String> parameters = new HashMap<String, String>();
             parameters.put("folder", outputDirName);
             parameters.put("fileName", statisticFile);
             parameters.put("format", OUTPUT_FORMAT);
+            parameters.put("frequency", samplingFrequency.toString());
             String outputFileName = fileHelper.removeExtension(statisticFile);
             parameters.put("title", outputFileName);
             String command = "gnuplot -e " + toGnuplotCommand(parameters) + " plot_statistics.p";

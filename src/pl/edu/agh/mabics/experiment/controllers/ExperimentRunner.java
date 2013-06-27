@@ -45,7 +45,8 @@ public class ExperimentRunner {
         statisticsHelper.prepareStatisticFiles(simulationResults, data.getExperimentConfiguration().getNumberOfGames(),
                 data.getExperimentConfiguration().getOutputDirName());
         return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(),
-                data.getExperimentConfiguration().getOutputDirName());
+                data.getExperimentConfiguration().getOutputDirName(),
+                data.getExperimentConfiguration().getSamplingFrequency());
     }
 
     private void initPhysicFile(IntersectionConfiguration intersectionConfiguration) {
