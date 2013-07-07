@@ -22,7 +22,8 @@ public class GenerateRandomAgentsListener extends MouseAdapter {
     private JTextField leftTopCornerField;
     private JTextField rightDownCornerField;
 
-    public GenerateRandomAgentsListener(JPanel agentsPanel, JTextField leftTopCornerField, JTextField rightDownCornerField) {
+    public GenerateRandomAgentsListener(JPanel agentsPanel, JTextField leftTopCornerField,
+                                        JTextField rightDownCornerField) {
         this.agentsPanel = agentsPanel;
         this.leftTopCornerField = leftTopCornerField;
         this.rightDownCornerField = rightDownCornerField;
@@ -35,7 +36,8 @@ public class GenerateRandomAgentsListener extends MouseAdapter {
         java.util.List<JTextField> alreadyAddedAgents = new ArrayList<JTextField>();
         for (Component agent : agentsPanel.getComponents()) {
             if (agent instanceof JTextField) {
-                JTextField randomAgent = AgentListenersHelper.createUniqueRandomAgent(alreadyAddedAgents, leftTopCoordinates, rightDownCoordinates);
+                JTextField randomAgent = AgentListenersHelper
+                        .createUniqueRandomAgent(alreadyAddedAgents, leftTopCoordinates, rightDownCoordinates);
                 alreadyAddedAgents.add(randomAgent);
                 ((JTextField) agent).setText(randomAgent.getText());
             }

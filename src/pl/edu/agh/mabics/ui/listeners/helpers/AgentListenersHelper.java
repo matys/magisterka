@@ -1,6 +1,7 @@
 package pl.edu.agh.mabics.ui.listeners.helpers;
 
 import org.springframework.stereotype.Service;
+import pl.edu.agh.mabics.ui.datamodel.beans.AgentData;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 
 import javax.swing.*;
@@ -25,17 +26,18 @@ public class AgentListenersHelper {
      * @param rightDownCoordinates
      * @return
      */
-    public static JTextField generateRandomAgentPosition(Coordinates leftTopCoordinates, Coordinates rightDownCoordinates) {
+    public static JTextField generateRandomAgentPosition(Coordinates leftTopCoordinates,
+                                                         Coordinates rightDownCoordinates) {
         int leftX = leftTopCoordinates.getX();
         int rightX = rightDownCoordinates.getX();
         int topY = leftTopCoordinates.getY();
         int downY = rightDownCoordinates.getY();
-        Integer x = scaleCoordinate(leftX, rightX);
-        Integer y = scaleCoordinate(downY, topY);
+        Integer x = randomCoordinateInRange(leftX, rightX);
+        Integer y = randomCoordinateInRange(downY, topY);
         return createAgentPosition(x.toString(), y.toString());
     }
 
-    private static Integer scaleCoordinate(int smaller, int grater) {
+    private static Integer randomCoordinateInRange(int smaller, int grater) {
         assert smaller < grater;
         int random = randomGenerator.nextInt();
         return smaller + Math.abs(random) % (grater - smaller);
@@ -73,7 +75,8 @@ public class AgentListenersHelper {
         return false;
     }
 
-    public static JTextField createUniqueRandomAgent(List<JTextField> alreadyAddedAgents, Coordinates leftTopCoordinates, Coordinates rightDownCoordinates) {
+    public static JTextField createUniqueRandomAgent(List<JTextField> alreadyAddedAgents,
+                                                     Coordinates leftTopCoordinates, Coordinates rightDownCoordinates) {
         int counter = 0;
         while (true) {
             JTextField randomAgent = generateRandomAgentPosition(leftTopCoordinates, rightDownCoordinates);
@@ -85,5 +88,43 @@ public class AgentListenersHelper {
                 throw new IllegalArgumentException("to less space for agents");
             }
         }
+    }
+
+    public static AgentData createUniqueRandomAgentData(List<AgentData> alreadyAddedAgents,
+                                                        Coordinates leftTopCoordinates,
+                                                        Coordinates rightDownCoordinates) {
+        AgentData randomAgent = new AgentData();
+        int counter = 0;
+        while (true) {
+            fillRandomAgentPosition(randomAgent, leftTopCoordinates, rightDownCoordinates);
+            if (!AgentListenersHelper.agentAlreadyCreated(randomAgent, alreadyAddedAgents)) {
+                return randomAgent;
+            }
+            counter++;
+            if (counter > 200) {
+                throw new IllegalArgumentException("to less space for agents");
+            }
+        }
+    }
+
+    private static void fillRandomAgentPosition(AgentData randomAgent, Coordinates leftTopCoordinates,
+                                                Coordinates rightDownCoordinates) {
+        int leftX = leftTopCoordinates.getX();
+        int rightX = rightDownCoordinates.getX();
+        int topY = leftTopCoordinates.getY();
+        int downY = rightDownCoordinates.getY();
+        Integer x = randomCoordinateInRange(leftX, rightX);
+        Integer y = randomCoordinateInRange(downY, topY);
+        randomAgent.setLocation(new Coordinates(x, y));
+    }
+
+    private static boolean agentAlreadyCreated(AgentData newAgent, List<AgentData> oldAgents) {
+        for (AgentData oldAgent : oldAgents) {
+            if (oldAgent.getLocation().getY() == newAgent.getLocation().getY() && oldAgent.getLocation()
+                    .getX() == newAgent.getLocation().getX()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
