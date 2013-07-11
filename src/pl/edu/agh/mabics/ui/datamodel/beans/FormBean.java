@@ -398,4 +398,20 @@ public class FormBean {
     public ParametersSearchConfiguration getParametersSearchConfiguration() {
         return parametersSearchConfiguration;
     }
+
+    public boolean getVisualizationEnabled() {
+        return experimentConfiguration.getVisualizationEnabled();
+    }
+
+    public void setVisualizationEnabled(boolean visualizationEnabled) {
+        experimentConfiguration.setVisualizationEnabled(visualizationEnabled);
+    }
+
+    public boolean getLeftSideOnlyStatistics() {
+        return agentsConfiguration.isLeftSideOnlyStatistics();
+    }
+
+    public void setLeftSideOnlyStatistics(boolean leftSideOnlyStatistics) {
+        agentsConfiguration.setLeftSideOnlyStatistics(leftSideOnlyStatistics);
+    }
 }

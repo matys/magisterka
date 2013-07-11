@@ -18,6 +18,7 @@ public class ExperimentConfiguration {
     private Integer samplingFrequency;
     private Integer numberOfGames;
     private String outputDirName;
+    private boolean visualizationEnabled;
 
     public boolean isPlotTimeOfIntersectionCrossingAverage() {
         return plotTimeOfIntersectionCrossingAverage;
@@ -83,6 +84,15 @@ public class ExperimentConfiguration {
         experimentConfiguration.setPlotTimeOfIntersectionCrossingAverage(isPlotTimeOfIntersectionCrossingAverage());
         experimentConfiguration.setSamplingFrequency(getSamplingFrequency());
         experimentConfiguration.setOutputDirName(getOutputDirName());
+        experimentConfiguration.setVisualizationEnabled(getVisualizationEnabled());
+    }
+
+    public boolean getVisualizationEnabled() {
+        return visualizationEnabled;
+    }
+
+    public void setVisualizationEnabled(boolean visualizationEnabled) {
+        this.visualizationEnabled = visualizationEnabled;
     }
 }
 

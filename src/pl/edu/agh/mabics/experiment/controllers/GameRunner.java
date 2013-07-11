@@ -126,14 +126,16 @@ public class GameRunner implements IGameRunner {
         buildConfigurationFile(data);
         String physicFile = data.getIntersectionConfiguration().getPhysic().getPhysicFile();
         String visualisationCommand = getVisualizationEnabledCommand(data);
-        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python physicsRunner.py " + " -r " + physicFile + " -c " +
+        String[] commands = {"cd " + CONFIG_FILE_PATH, "start python physicsRunner.py " + " -r " + physicFile +
+                visualisationCommand + " -c " +
                 configurationFileBuilder.getFile()};
         platformThread = commandLineHelper.runCommand(commands, false);
     }
 
-    //TODO implement
     private String getVisualizationEnabledCommand(FormBean data) {
-//        data.getExperimentConfiguration().is
+        if (data.getExperimentConfiguration().getVisualizationEnabled()) {
+            return " -v True ";
+        }
         return "";
     }
 

@@ -14,6 +14,7 @@ public class AgentsConfiguration {
     private boolean generateForEveryGame;
     private OneSideConfiguration leftSideConfiguration;
     private OneSideConfiguration downSideConfiguration;
+    private boolean leftSideOnlyStatistics;
 
     public void setPerformParametersSearch(boolean performParametersSearch) {
         this.performParametersSearch = performParametersSearch;
@@ -52,6 +53,14 @@ public class AgentsConfiguration {
         agentsConfiguration.setPerformParametersSearch(isPerformParametersSearch());
         leftSideConfiguration.copyDataTo(agentsConfiguration.getLeftSideConfiguration());
         downSideConfiguration.copyDataTo(agentsConfiguration.getDownSideConfiguration());
+        agentsConfiguration.setLeftSideOnlyStatistics(isLeftSideOnlyStatistics());
     }
 
+    public boolean isLeftSideOnlyStatistics() {
+        return leftSideOnlyStatistics;
+    }
+
+    public void setLeftSideOnlyStatistics(boolean leftSideOnlyStatistics) {
+        this.leftSideOnlyStatistics = leftSideOnlyStatistics;
+    }
 }
