@@ -90,12 +90,23 @@ public class CollisionController extends Thread {
         return duplicatedMoves;
     }
 
-    //TODO: improve it. now it's look for first possible move increasing y coordinate all the time
-    public synchronized Move getPossibleMove(Move wantedMove, Coordinates previousPosition) {
-        Move possibleMove = new Move(previousPosition, wantedMove.getVelocity());
-        while (hasMove(chosenMoves, possibleMove)) {
-            possibleMove.getPoint().setY(possibleMove.getPoint().getY() + 1);
+    //TODO: fix because synchronized seems to not work properly
+    public synchronized Move getPossibleMove(Move wantedMove, Coordinates previousPosition, String id) {
+        Move possibleMove = null;
+        if (!hasMove(chosenMoves, wantedMove)) {
+            possibleMove = wantedMove; //one of agents in conflicted has to release position,
+            // so the second one can take it
+        } else {
+            possibleMove = new Move(previousPosition, wantedMove.getVelocity());
+            while (hasMove(chosenMoves, possibleMove)) {
+                if (wantedMove.getVelocity().getY() > 0) {
+                    possibleMove.getPoint().setY(possibleMove.getPoint().getY() + 1);
+                } else {
+                    possibleMove.getPoint().setX(possibleMove.getPoint().getX() + 1);
+                }
+            }
         }
+        acceptMove(id, possibleMove);
         return possibleMove;
     }
 

@@ -102,9 +102,10 @@ public abstract class AbstractAgent extends AbstractHandler {
             collision = true;
             onCollision();
             removeMove(parsedRequest, nextMove);
-//            System.out.println("finding new move...");
-            nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove(), parsedRequest.getPosition()));
-//            System.out.println("new move found...");
+            sleep(); //to wait as other not accepted agents removes their positions
+            System.out.println("finding new move... old one: " + nextMove.getMove().getPoint().toString());
+            nextMove.setMove(collisionController.getPossibleMove(nextMove.getMove(), parsedRequest.getPosition(), id));
+            System.out.println("new move found... new one: " + nextMove.getMove().getPoint().toString());
             sendFinalMove(nextMove, response, request);
         }
     }
@@ -127,13 +128,11 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     private void sendFinalMove(PlatformResponse nextMove, HttpServletResponse response, Request request)
             throws IOException {
-        collisionController.acceptMove(id, nextMove.getMove());
         while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
 //            System.out.println("waiting for all moves");
             sleep();
         }
         if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
-            collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
         }
