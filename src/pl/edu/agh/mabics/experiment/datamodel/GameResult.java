@@ -10,11 +10,13 @@ public class GameResult {
     private Integer timeOfLast;
     private Integer numberOfCollisions;
     private Float averageTime;
+    private Integer timeOfFirst;
 
-    public GameResult(int numberOfCollisions, int timeOfLast, float averageTime) {
+    public GameResult(int numberOfCollisions, int timeOfLast, float averageTime, Integer timeOfFirst) {
         this.timeOfLast = timeOfLast;
         this.numberOfCollisions = numberOfCollisions;
         this.averageTime = averageTime;
+        this.timeOfFirst = timeOfFirst;
     }
 
     public Integer getTimeOfLast() {
@@ -27,5 +29,9 @@ public class GameResult {
 
     public Float getAverageTime() {
         return averageTime;
+    }
+
+    public Integer getTimeOfFirst() {
+        return timeOfFirst;
     }
 }

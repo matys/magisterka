@@ -81,15 +81,19 @@ public class GameRunner implements IGameRunner {
         int sumOfCollisions = 0;
         int timeOfLast = 0;
         float averageTime = 0.0f;
+        int timeOfFirst = Integer.MAX_VALUE;
         for (AbstractAgent agent : agents.values()) {
             sumOfCollisions += agent.getStatistics().numberOfCollisions;
             int agentSteps = agent.getStatistics().numberOfSteps;
             if (agentSteps > timeOfLast) {
                 timeOfLast = agentSteps;
             }
+            if (agentSteps < timeOfFirst) {
+                timeOfFirst = agentSteps;
+            }
             averageTime += agentSteps / agents.size();
         }
-        return new GameResult(sumOfCollisions, timeOfLast, averageTime);
+        return new GameResult(sumOfCollisions, timeOfLast, averageTime, timeOfFirst);
     }
 
     private void initEndGameController(FormBean data) {
