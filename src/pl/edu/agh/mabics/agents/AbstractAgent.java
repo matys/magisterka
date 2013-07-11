@@ -285,4 +285,7 @@ public abstract class AbstractAgent extends AbstractHandler {
         this.agentFactory = agentFactory;
     }
 
+    public AgentSite getAgentSite() {
+        return agentSite;
+    }
 }

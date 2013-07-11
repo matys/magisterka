@@ -53,12 +53,12 @@ public class GameRunner implements IGameRunner {
         finished = false;
         int timeOfWaiting = 0;
         timeOfWaiting = waitForFinished(timeOfWaiting);
-        return returnResults(timeOfWaiting);
+        return returnResults(timeOfWaiting, data.getLeftSideOnlyStatistics());
     }
 
-    private GameResult returnResults(int timeOfWaiting) {
+    private GameResult returnResults(int timeOfWaiting, boolean leftSideOnlyStatistics) {
         if (timeOfWaiting < PLATFORM_HANGED_TIME) {
-            GameResult result = createResult();
+            GameResult result = createResult(leftSideOnlyStatistics);
             return result;
         } else {
             return null;
@@ -77,21 +77,23 @@ public class GameRunner implements IGameRunner {
         return timeOfWaiting;
     }
 
-    private GameResult createResult() {
+    private GameResult createResult(boolean leftSideOnlyStatistics) {
         int sumOfCollisions = 0;
         int timeOfLast = 0;
         float averageTime = 0.0f;
         int timeOfFirst = Integer.MAX_VALUE;
         for (AbstractAgent agent : agents.values()) {
-            sumOfCollisions += agent.getStatistics().numberOfCollisions;
-            int agentSteps = agent.getStatistics().numberOfSteps;
-            if (agentSteps > timeOfLast) {
-                timeOfLast = agentSteps;
+            if ((leftSideOnlyStatistics && agent.getAgentSite() == AgentSite.LEFT) || !leftSideOnlyStatistics) {
+                sumOfCollisions += agent.getStatistics().numberOfCollisions;
+                int agentSteps = agent.getStatistics().numberOfSteps;
+                if (agentSteps > timeOfLast) {
+                    timeOfLast = agentSteps;
+                }
+                if (agentSteps < timeOfFirst) {
+                    timeOfFirst = agentSteps;
+                }
+                averageTime += agentSteps / agents.size();
             }
-            if (agentSteps < timeOfFirst) {
-                timeOfFirst = agentSteps;
-            }
-            averageTime += agentSteps / agents.size();
         }
         return new GameResult(sumOfCollisions, timeOfLast, averageTime, timeOfFirst);
     }
