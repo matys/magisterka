@@ -1,11 +1,15 @@
 package pl.edu.agh.mabics.agents.implementation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly.TargetAndSpeedProblemController;
 import pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly.TargetAndSpeedState;
+import pl.edu.agh.mabics.agents.util.MovesFilter;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
+import pl.edu.agh.mabics.platform.model.Vector;
+import pl.edu.agh.mabics.util.AgentSite;
 import rlpark.plugin.rltoys.envio.actions.Action;
 import rlpark.plugin.rltoys.envio.actions.ActionArray;
 
@@ -20,6 +24,7 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
 
     private TargetAndSpeedProblemController targetAndSpeedProblemController;
     private boolean firstCall = true;
+    private MovesFilter movesFilter;
 
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
@@ -59,6 +64,7 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
 
     //TODO: refactor, generalization needed
     private PlatformResponse responseFromAction(PlatformRequest request, Action action) {
+        filterStraightMoves(request);
         double[] actions = ((ActionArray) action).actions;
         int wantedSpeed = (int) (request.getSpeed() + actions[0]);
         PlatformResponse response = new PlatformResponse();
@@ -71,6 +77,16 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
             // same point
         }
         return response;
+    }
+
+    private void filterStraightMoves(PlatformRequest request) {
+        Vector desiredVelocity = null;
+        if (agentSite == AgentSite.LEFT) {
+            desiredVelocity = new Vector(1, 0);
+        } else {
+            desiredVelocity = new Vector(0, 1);
+        }
+        movesFilter.filterOutMovesWithVelocityDifferentThan(request, desiredVelocity);
     }
 
     @Override
@@ -94,5 +110,10 @@ public class TargetFocusedStraightAgent extends AbstractAgent {
         targetAndSpeedProblemController.init();
         Thread controllerThread = new Thread(targetAndSpeedProblemController);
         controllerThread.start();
+    }
+
+    @Autowired
+    public void setMovesFilter(MovesFilter movesFilter) {
+        this.movesFilter = movesFilter;
     }
 }

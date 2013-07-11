@@ -1,11 +1,15 @@
 package pl.edu.agh.mabics.agents.implementation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingProblemController;
 import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingState;
+import pl.edu.agh.mabics.agents.util.MovesFilter;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
+import pl.edu.agh.mabics.platform.model.Vector;
+import pl.edu.agh.mabics.util.AgentSite;
 import rlpark.plugin.rltoys.envio.actions.Action;
 import rlpark.plugin.rltoys.envio.actions.ActionArray;
 
@@ -20,7 +24,8 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
 
     private CollisionAvoidingProblemController collisionAvoidingProblemController;
     private boolean firstCall = true;
-    private AlgorithmConfigurationBean algorithmConfigurationBean;
+    private MovesFilter movesFilter;
+
 
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
@@ -59,6 +64,8 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     }
 
     private PlatformResponse responseFromAction(PlatformRequest request, Action action) {
+
+        filterStraightMoves(request);
         double[] actions = ((ActionArray) action).actions;
         int wantedSpeed = (int) (request.getSpeed() + actions[0]);
         PlatformResponse response = new PlatformResponse();
@@ -71,6 +78,16 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
             // same point
         }
         return response;
+    }
+
+    private void filterStraightMoves(PlatformRequest request) {
+        Vector desiredVelocity = null;
+        if (agentSite == AgentSite.LEFT) {
+            desiredVelocity = new Vector(1, 0);
+        } else {
+            desiredVelocity = new Vector(0, 1);
+        }
+        movesFilter.filterOutMovesWithVelocityDifferentThan(request, desiredVelocity);
     }
 
     @Override
@@ -96,4 +113,8 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         controllerThread.start();
     }
 
+    @Autowired
+    public void setMovesFilter(MovesFilter movesFilter) {
+        this.movesFilter = movesFilter;
+    }
 }

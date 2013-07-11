@@ -5,6 +5,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.implementation.AgentType;
+import pl.edu.agh.mabics.util.AgentSite;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,10 +24,10 @@ public class AgentFactory implements BeanFactoryAware {
         this.beanFactory = beanFactory;
     }
 
-    public AbstractAgent createAgent(String id, AgentType type) {
+    public AbstractAgent createAgent(String id, AgentType type, AgentSite agentSite) {
         portCounter++;
         AbstractAgent newAgent = (AbstractAgent) beanFactory.getBean(type.getBeanName());
-        newAgent.startAgent(portCounter, id);
+        newAgent.startAgent(portCounter, id, agentSite);
         return newAgent;
     }
 

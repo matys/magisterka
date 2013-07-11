@@ -17,4 +17,15 @@ public class Vector {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector) {
+            Vector otherVector = (Vector) obj;
+            if (this.getX() == otherVector.getX() && this.getY() == otherVector.getY()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

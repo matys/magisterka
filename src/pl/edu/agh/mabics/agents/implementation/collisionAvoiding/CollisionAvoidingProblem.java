@@ -71,7 +71,7 @@ public class CollisionAvoidingProblem implements ProblemDiscreteAction {
 //        System.out.println("action and its state available");
         this.currentAction = null;
         //process current state, check reward
-        System.out.println("äction " + action.toString());
+        System.out.println("action " + action.toString());
         System.out.println("state " + currentState.toString());
 
         if (endEpisode) {

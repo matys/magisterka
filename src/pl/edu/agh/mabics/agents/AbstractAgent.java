@@ -16,6 +16,7 @@ import pl.edu.agh.mabics.platform.JSONHelper;
 import pl.edu.agh.mabics.platform.model.*;
 import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
+import pl.edu.agh.mabics.util.AgentSite;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     private AgentFactory agentFactory;
     private boolean stopped = false;
     private AlgorithmConfigurationBean algorithmConfigurationBean;
+    protected AgentSite agentSite;
 
     public abstract PlatformResponse getNextMove(PlatformRequest request);
 
@@ -158,12 +160,13 @@ public abstract class AbstractAgent extends AbstractHandler {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public void startAgent(Integer port, String id) {
+    public void startAgent(Integer port, String id, AgentSite site) {
         onNextGame();
         boolean portAlreadyInUse;
         do {
             this.port = port;
             this.id = id;
+            this.agentSite = site;
             this.finished = false;
             server = new Server(port);
             server.setHandler(this);

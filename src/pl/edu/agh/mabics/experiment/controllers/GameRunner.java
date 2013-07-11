@@ -162,13 +162,14 @@ public class GameRunner implements IGameRunner {
 
 
     public void initAgents(FormBean data) {
-        initOneSide(data.getAgentsConfiguration().getDownSideConfiguration());
-        initOneSide(data.getAgentsConfiguration().getLeftSideConfiguration());
+        initOneSide(data.getAgentsConfiguration().getDownSideConfiguration(), AgentSite.DOWN);
+        initOneSide(data.getAgentsConfiguration().getLeftSideConfiguration(), AgentSite.LEFT);
     }
 
-    private void initOneSide(OneSideConfiguration data) {
+    private void initOneSide(OneSideConfiguration data, AgentSite agentSite) {
         for (AgentData agentData : data.getAgents()) {
-            AbstractAgent agent = agentFactory.createAgent(agentData.getName(), data.getAgentImplementation());
+            AbstractAgent agent = agentFactory
+                    .createAgent(agentData.getName(), data.getAgentImplementation(), agentSite);
             agents.put(agentData.getName(), agent);
         }
     }

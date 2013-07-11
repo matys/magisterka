@@ -90,7 +90,6 @@ public class CollisionController extends Thread {
         return duplicatedMoves;
     }
 
-    //TODO: fix because synchronized seems to not work properly
     public synchronized Move getPossibleMove(Move wantedMove, Coordinates previousPosition, String id) {
         Move possibleMove = null;
         if (!hasMove(chosenMoves, wantedMove)) {
