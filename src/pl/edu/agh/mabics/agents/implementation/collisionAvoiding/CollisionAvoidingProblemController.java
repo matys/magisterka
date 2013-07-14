@@ -33,10 +33,8 @@ public class CollisionAvoidingProblemController implements Runnable {
     private Projector projector;
     private PVector occupancy;
     private LearnerAgentFA agent;
-    private int reward = 0;
-    private static final int GETTING_TARGET_REWARD = 100;
-    private static final int COLLISION_REWARD = -100;
-    private static final int STEP_REWARD = -20;
+    private double reward = 0;
+
     private QLearning qlearning;
     private IntersectionConfiguration intersectionConfiguration;
 
@@ -47,6 +45,9 @@ public class CollisionAvoidingProblemController implements Runnable {
     double lambda = 0.9;                             //how much less important is every next step action (lambda *
     // rt+1 + lambda^2 rt+2 + lambda^3 rt+3...
     double alpha = .45;   //learning rate
+    private double gettingToTargetReward = 100;
+    private double collisionReward = -100;
+    private double stepReward = -20;
 
     public CollisionAvoidingProblemController(IntersectionConfiguration intersectionConfiguration) {
         this.intersectionConfiguration = intersectionConfiguration;
@@ -93,7 +94,7 @@ public class CollisionAvoidingProblemController implements Runnable {
     }
 
     public void onAgentGetsToTarget() {
-        reward = reward + GETTING_TARGET_REWARD;
+        reward = reward + gettingToTargetReward;
         problem.setEndEpisode(true);
     }
 
@@ -102,11 +103,11 @@ public class CollisionAvoidingProblemController implements Runnable {
     }
 
     public void onAgentCollision() {
-        reward = reward + COLLISION_REWARD;
+        reward = reward + collisionReward;
     }
 
     public void onStep() {
-        reward = reward + STEP_REWARD;
+        reward = reward + stepReward;
     }
 
     public Action getCurrentAction() {
@@ -118,7 +119,7 @@ public class CollisionAvoidingProblemController implements Runnable {
     }
 
     public int getReward() {
-        return reward;
+        return (int) reward;
     }
 
     //TODO: debug method only, generalization needed if more important role needed
@@ -154,5 +155,17 @@ public class CollisionAvoidingProblemController implements Runnable {
 
     public void setAlpha(Double alpha) {
         this.alpha = alpha;
+    }
+
+    public void setGettingToTargetReward(Double gettingToTargetReward) {
+        this.gettingToTargetReward = gettingToTargetReward;
+    }
+
+    public void setCollisionReward(Double collisionReward) {
+        this.collisionReward = collisionReward;
+    }
+
+    public void setStepReward(Double stepReward) {
+        this.stepReward = stepReward;
     }
 }
