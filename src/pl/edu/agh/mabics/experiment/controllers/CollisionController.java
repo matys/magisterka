@@ -22,7 +22,6 @@ public class CollisionController extends Thread {
     private int numberOfAgents = 1;
 
 
-    //TODO turn on as only platform changed
     @Override
     public void run() {
         while (true) {

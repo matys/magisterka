@@ -58,12 +58,14 @@ public abstract class AbstractAgent extends AbstractHandler {
             String content = request.getReader().readLine();
             PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
             prepareResponseToSend(response);
-            if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition(), parsedRequest.getDestination())) {
+            if (endPointController.isAgentInEndPoint(id, parsedRequest.getPosition())) {
                 finished = true;
                 onComplete();
             }
             makeMove((Request) request, response, parsedRequest);
             afterStep();
+        } else {
+            System.out.println("request got, but agent is already stopped");
         }
     }
 

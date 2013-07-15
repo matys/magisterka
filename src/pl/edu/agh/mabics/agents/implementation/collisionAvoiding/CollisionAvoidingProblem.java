@@ -58,17 +58,17 @@ public class CollisionAvoidingProblem implements ProblemDiscreteAction {
     @Override
     public TRStep step(Action action) {
         this.currentState = null;
-//        System.out.println("Action chosen");
+        System.out.println("Action chosen");
         this.currentAction = action; //can be set to null from outside after being read.
         while (this.currentState == null) {
             try {
-                // System.out.println("waiting for state");
+                System.out.println("waiting for state");
                 Thread.currentThread().sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-//        System.out.println("action and its state available");
+        System.out.println("action and its state available");
         this.currentAction = null;
         //process current state, check reward
         System.out.println("action " + action.toString());

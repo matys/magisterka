@@ -32,7 +32,7 @@ public class GameRunner implements IGameRunner {
     private static final String CONFIG_FILE_PATH = "..\\trunk\\src\\runner\\";
     private static final String CONFIG_FILE_NAME = "config3";
     public static final int TIME_TO_SLEEP = 100;
-    private static final int PLATFORM_HANGED_TIME = 60000;
+    private static final int PLATFORM_HANGED_TIME = 300000;
 
     private CommandLineHelper commandLineHelper;
     private AgentFactory agentFactory;
@@ -99,26 +99,10 @@ public class GameRunner implements IGameRunner {
     }
 
     private void initEndGameController(FormBean data) {
-        HashMap<String, List<Coordinates>> agentsDestination = new HashMap<String, List<Coordinates>>();
-        addOneSideAgents(data.getAgentsConfiguration().getDownSideConfiguration(), agentsDestination, AgentSite.DOWN);
-        addOneSideAgents(data.getAgentsConfiguration().getLeftSideConfiguration(), agentsDestination, AgentSite.LEFT);
-        endGameController.init(agentsDestination);
-    }
-
-    private void addOneSideAgents(OneSideConfiguration data, HashMap<String, List<Coordinates>> agentsDestination,
-                                  AgentSite site) {
-        List<Coordinates> destinationCoordinates = new ArrayList<Coordinates>();
-        switch (site) {
-            case DOWN:
-                destinationCoordinates.addAll(agentDataHelper.generateDownEndlinePoints(data));
-                break;
-            case LEFT:
-                destinationCoordinates.addAll(agentDataHelper.generateLeftEndlinePoints(data));
-                break;
-        }
-        for (AgentData agent : data.getAgents()) {
-            agentsDestination.put(agent.getName(), destinationCoordinates);
-        }
+        OneSideConfiguration downSideConfiguration = data.getAgentsConfiguration().getDownSideConfiguration();
+        OneSideConfiguration leftSideConfiguration = data.getAgentsConfiguration().getLeftSideConfiguration();
+        endGameController.init(downSideConfiguration.getAgents(), downSideConfiguration.getEndLine(),
+                leftSideConfiguration.getAgents(), leftSideConfiguration.getEndLine());
     }
 
     private void initCollisionController() {

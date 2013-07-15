@@ -32,7 +32,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         if (firstCall) {
             while (collisionAvoidingProblemController.getCurrentAction() == null) {
                 try {
-                    //  System.out.println("waiting for action to be chosen by controller");
+                    System.out.println("waiting for action to be chosen by controller (first time)");
                     Thread.currentThread().sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -51,7 +51,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         collisionAvoidingProblemController.resetReward();
         while (collisionAvoidingProblemController.getCurrentAction() == null) {
             try {
-                //System.out.println("waiting for action to be chosen by controller 2");
+                System.out.println("waiting for action to be chosen by controller");
                 Thread.currentThread().sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
