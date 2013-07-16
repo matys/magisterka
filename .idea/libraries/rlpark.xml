@@ -6,6 +6,8 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/rlpark.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/weka-src.jar/weka-src.jar!/src/test/java" />
+      <root url="jar://$USER_HOME$/Downloads/weka-src.jar/weka-src.jar!/src/main/java" />
     </SOURCES>
   </library>
 </component>

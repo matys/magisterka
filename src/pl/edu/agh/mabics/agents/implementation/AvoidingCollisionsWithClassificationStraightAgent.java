@@ -3,8 +3,8 @@ package pl.edu.agh.mabics.agents.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.agents.AbstractAgent;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingProblemController;
-import pl.edu.agh.mabics.agents.implementation.collisionAvoiding.CollisionAvoidingState;
+import pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding.CollisionAvoidingWithClassificationProblemController;
+import pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding.CollisionAvoidingWithClassificationState;
 import pl.edu.agh.mabics.agents.util.MovesFilter;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.PlatformResponse;
@@ -19,10 +19,11 @@ import rlpark.plugin.rltoys.envio.actions.ActionArray;
  * Date: 25.03.13
  * Time: 09:53
  */
+//TODO add generalization for all 3 agents types using q-learnig
 @Service
-public class AvoidingCollisionsStraightAgent extends AbstractAgent {
+public class AvoidingCollisionsWithClassificationStraightAgent extends AbstractAgent {
 
-    private CollisionAvoidingProblemController collisionAvoidingProblemController;
+    private CollisionAvoidingWithClassificationProblemController problemController;
     private boolean firstCall = true;
     private MovesFilter movesFilter;
 
@@ -30,7 +31,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
         if (firstCall) {
-            while (collisionAvoidingProblemController.getCurrentAction() == null) {
+            while (problemController.getCurrentAction() == null) {
                 try {
                     System.out.println("waiting for action to be chosen by controller (first time)");
                     Thread.currentThread().sleep(10);
@@ -39,17 +40,17 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
                 }
             }
 
-            Action currentAction = collisionAvoidingProblemController.getCurrentAction();
-            collisionAvoidingProblemController.setCurrentAction(null);
+            Action currentAction = problemController.getCurrentAction();
+            problemController.setCurrentAction(null);
             firstCall = false;
             return responseFromAction(request, currentAction);
         }
-        collisionAvoidingProblemController.onStep();
+        problemController.onStep();
         System.out.println("setting state");
-        collisionAvoidingProblemController
-                .setCurrentState(new CollisionAvoidingState(request, collisionAvoidingProblemController.getReward()));
-        collisionAvoidingProblemController.resetReward();
-        while (collisionAvoidingProblemController.getCurrentAction() == null) {
+        problemController
+                .setCurrentState(new CollisionAvoidingWithClassificationState(request, problemController.getReward()));
+        problemController.resetReward();
+        while (problemController.getCurrentAction() == null) {
             try {
                 System.out.println("waiting for action to be chosen by controller");
                 Thread.currentThread().sleep(10);
@@ -58,8 +59,8 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
             }
         }
         System.out.println("setting chosen action");
-        Action currentAction = collisionAvoidingProblemController.getCurrentAction();
-        collisionAvoidingProblemController.setCurrentAction(null);
+        Action currentAction = problemController.getCurrentAction();
+        problemController.setCurrentAction(null);
         return responseFromAction(request, currentAction);
     }
 
@@ -81,7 +82,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     }
 
     private void filterStraightMoves(PlatformRequest request) {
-        Vector desiredVelocity;
+        Vector desiredVelocity = null;
         if (agentSite == AgentSite.LEFT) {
             desiredVelocity = new Vector(1, 0);
         } else {
@@ -92,12 +93,12 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
 
     @Override
     public void onComplete() {
-        collisionAvoidingProblemController.onAgentGetsToTarget();
+        problemController.onAgentGetsToTarget();
     }
 
     @Override
     public void onCollision() {
-        collisionAvoidingProblemController.onAgentCollision();
+        problemController.onAgentCollision();
     }
 
     @Override
@@ -106,10 +107,10 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
     }
 
     public void initIt() {
-        collisionAvoidingProblemController = new CollisionAvoidingProblemController(intersectionConfiguration);
-        initParameters(collisionAvoidingProblemController, CollisionAvoidingProblemController.class);
-        collisionAvoidingProblemController.init();
-        Thread controllerThread = new Thread(collisionAvoidingProblemController);
+        problemController = new CollisionAvoidingWithClassificationProblemController(intersectionConfiguration);
+        initParameters(problemController, CollisionAvoidingWithClassificationProblemController.class);
+        problemController.init();
+        Thread controllerThread = new Thread(problemController);
         controllerThread.start();
     }
 

@@ -17,7 +17,23 @@ public enum AgentType {
     AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent",
             initAvoidingCollisionStraightParameters()),
     TARGET_AND_SPEED("going straight forward, " + "avoiding taking distance to target into consideration",
-            "targetFocusedStraightAgent", initTargetAndSpeedParameters());
+            "targetFocusedStraightAgent", initTargetAndSpeedParameters()),
+    AVOIDING_COLLISION_WITH_CLASSIFICATION_STRAIGHT("going straight forward, " + "avoiding taking distance to target " +
+            "into consideration and using classification to reduce " +
+            "number of states", "avoidingCollisionsWithClassificationStraightAgent",
+            initAvoidingCollisionsWithClassificationParameters());
+
+    private static List<AlgorithmParameter> initAvoidingCollisionsWithClassificationParameters() {
+        List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
+        parameters.add(new AlgorithmParameter("alpha", 0.45));
+        parameters.add(new AlgorithmParameter("gamma", 1.0));
+        parameters.add(new AlgorithmParameter("lambda", 0.9));
+        parameters.add(new AlgorithmParameter("epsilon", 0.2));
+        parameters.add(new AlgorithmParameter("gettingToTargetReward", 100d));
+        parameters.add(new AlgorithmParameter("collisionReward", -100d));
+        parameters.add(new AlgorithmParameter("stepReward", -20d));
+        return parameters;
+    }
 
     private static List<AlgorithmParameter> initTargetAndSpeedParameters() {
         List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
