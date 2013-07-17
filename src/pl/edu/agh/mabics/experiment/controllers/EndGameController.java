@@ -1,6 +1,9 @@
 package pl.edu.agh.mabics.experiment.controllers;
 
 import org.springframework.stereotype.Service;
+import pl.edu.agh.mabics.platform.model.Move;
+import pl.edu.agh.mabics.platform.model.PlatformResponse;
+import pl.edu.agh.mabics.platform.model.Vector;
 import pl.edu.agh.mabics.ui.datamodel.beans.AgentData;
 import pl.edu.agh.mabics.ui.datamodel.util.Coordinates;
 import pl.edu.agh.mabics.util.AgentSite;
@@ -20,6 +23,7 @@ import java.util.Map;
 public class EndGameController {
 
     private Map<String, AgentState> agentsStates = new HashMap<String, AgentState>();
+    private Map<String, Coordinates> agentsParkingSpots = new HashMap<String, Coordinates>();
 
     public boolean isAgentInEndPoint(String agentId, Coordinates position) {
         AgentState agentState = agentsStates.get(agentId);
@@ -43,9 +47,11 @@ public class EndGameController {
     public void init(List<AgentData> downAgents, int topEndLine, List<AgentData> leftAgents, int rightEndLine) {
         for (AgentData agent : downAgents) {
             agentsStates.put(agent.getName(), new AgentState(AgentSite.DOWN, topEndLine));
+            agentsParkingSpots.put(agent.getName(), agent.getLocation());
         }
         for (AgentData agent : leftAgents) {
             agentsStates.put(agent.getName(), new AgentState(AgentSite.LEFT, rightEndLine));
+            agentsParkingSpots.put(agent.getName(), agent.getLocation());
         }
     }
 
@@ -54,6 +60,15 @@ public class EndGameController {
             if (!state.inEndPoint) return false;
         }
         return true;
+    }
+
+    public PlatformResponse park(String id) {
+        PlatformResponse response = new PlatformResponse();
+        Coordinates spot = agentsParkingSpots.get(id);
+        Move move = new Move(spot, new Vector(0, 0));
+        response.setMove(move);
+        response.setSpeed(0);
+        return response;
     }
 
     private class AgentState {

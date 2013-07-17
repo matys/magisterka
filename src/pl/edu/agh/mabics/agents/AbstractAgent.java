@@ -90,7 +90,12 @@ public abstract class AbstractAgent extends AbstractHandler {
 
     private void makeMove(Request request, HttpServletResponse response, PlatformRequest parsedRequest)
             throws IOException {
-        PlatformResponse nextMove = getNextMove(parsedRequest);
+        PlatformResponse nextMove = null;
+        if (!finished) {
+            nextMove = getNextMove(parsedRequest);
+        } else {
+            nextMove = endPointController.park(id);
+        }
         verify(nextMove);
         collisionController.acceptMove(id, nextMove.getMove());
         while (nextMove.getMove().getState().equals(MoveState.NOT_PROCESSED)) {
