@@ -104,6 +104,7 @@ public class CollisionAvoidingWithClassificationProblemController implements Run
 
     public void onAgentCollision() {
         reward = reward + collisionReward;
+        problem.collisionHappened();
     }
 
     public void onStep() {

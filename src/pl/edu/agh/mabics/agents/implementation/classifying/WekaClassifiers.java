@@ -9,7 +9,7 @@ import weka.classifiers.trees.J48;
  * Date: 16.07.13
  * Time: 23:34
  */
-public enum WekaClassifier {
+public enum WekaClassifiers {
     C45 {
         @Override
         public Classifier getClassifier() {

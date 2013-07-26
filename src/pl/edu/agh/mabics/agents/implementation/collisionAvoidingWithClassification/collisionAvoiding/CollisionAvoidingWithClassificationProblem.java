@@ -1,7 +1,7 @@
 package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding;
 
 import pl.edu.agh.mabics.agents.implementation.Point2D;
-import pl.edu.agh.mabics.agents.implementation.classifying.MyClassifier;
+import pl.edu.agh.mabics.agents.implementation.classifying.*;
 import rlpark.plugin.rltoys.algorithms.functions.states.Projector;
 import rlpark.plugin.rltoys.envio.actions.Action;
 import rlpark.plugin.rltoys.envio.actions.ActionArray;
@@ -23,6 +23,9 @@ import java.util.List;
 public class CollisionAvoidingWithClassificationProblem implements ProblemDiscreteAction {
 
     public static final int REDUCED_PART_OF_STATE_SIZE = 2;
+    public static final int UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES = 10;
+    public static final Class<PositiveNegativeReducedStates> REDUCED_STATES_CLASS = PositiveNegativeReducedStates.class;
+    public static final int NEGATIVE_STATE_PRIORITY = 5;
     private Action currentAction;
     private TRStep currentStep;
     private CollisionAvoidingWithClassificationState currentState;
@@ -30,8 +33,13 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
     List<Action> actions = new ArrayList<Action>();
     private boolean endEpisode;
     private MyClassifier classifier;
+    private boolean collisionHappened = false;
 
     public CollisionAvoidingWithClassificationProblem(Integer agentRange, Integer maxSpeedChange) {
+        classifier = new MyClassifier(REDUCED_STATES_CLASS, WekaClassifiers.C45,
+                new PositiveNegativeStateComparator(NEGATIVE_STATE_PRIORITY),
+                CollisionAvoidingWithClassificationState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE,
+                UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES);
         this.AGENT_RANGE = agentRange;
         for (int i = -maxSpeedChange; i <= maxSpeedChange; i++) {
             actions.add(new ActionArray(i));
@@ -52,16 +60,9 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
     @Override
     public TRStep initialize() {
         System.out.println("initialization of problem");
-        TRStep step = null;
-        //TODO: refactor
-        try {
-            step = new TRStep(
-                    new double[]{currentState.getDistanceToTarget(), classifier.reduce(currentState.getStateAsDouble())
-                            .getDoubleRepresentation()}, currentState.getReward());
-        } catch (MyClassifier.ClassifierException e) {
-            e.printStackTrace();
-        }
-        return step;
+        return new TRStep(new double[]{currentState.getDistanceToTarget(), getReducedState()},
+                currentState.getReward());
+
     }
 
     @Override
@@ -71,32 +72,46 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
         this.currentAction = action; //can be set to null from outside after being read.
         while (this.currentState == null) {
             try {
-                System.out.println("waiting for state");
+//                System.out.println("waiting for state");
                 Thread.currentThread().sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        classifier.addState(currentState.getReducableState());
         System.out.println("action and its state available");
         this.currentAction = null;
         //process current state, check reward
         System.out.println("action " + action.toString());
         System.out.println("state " + currentState.toString());
 
+        if (collisionHappened) {
+            classifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
+            System.out.println("Teaching as negative examples on collision");
+            collisionHappened = false;
+        }
+
         if (endEpisode) {
+            System.out.println("Teaching as positive examples on the end of game");
+            classifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
             forceEndEpisode();
         } else {
-            //TODO refactor block below
-            try {
-                currentStep = new TRStep(currentStep, action,
-                        new double[]{classifier.reduce(currentState.getStateAsDouble()).getDoubleRepresentation()},
-                        currentState.getReward());
-            } catch (MyClassifier.ClassifierException e) {
-                e.printStackTrace();
-            }
+            currentStep = new TRStep(currentStep, action,
+                    new double[]{currentState.getDistanceToTarget(), getReducedState()}, currentState.getReward());
         }
         return currentStep;
 
+    }
+
+    private double getReducedState() {
+        Double[] reducableState = currentState.getReducableState();
+        IReducedStatesEnum reducedState;
+        try {
+            reducedState = classifier.reduce(reducableState);
+        } catch (MyClassifier.ClassifierException e) {
+            reducedState = EnumHelper.getRandomValue(REDUCED_STATES_CLASS);
+        }
+        return reducedState.getDoubleRepresentation();
     }
 
     @Override
@@ -159,6 +174,10 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
 
     public void setEndEpisode(boolean endEpisode) {
         this.endEpisode = endEpisode;
+    }
+
+    public void collisionHappened() {
+        this.collisionHappened = true;
     }
 }
 

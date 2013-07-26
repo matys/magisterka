@@ -23,16 +23,12 @@ public class CollisionAvoidingWithClassificationState {
     private int collisionAgentSpeed;
     private int distanceToTarget;
     private int reward;
+    public static final Integer NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE = 2;
 
     public CollisionAvoidingWithClassificationState(PlatformRequest request, int reward) {
         calculateCollisionDistances(request);
         calculateDistanceToTarget(request);
         this.reward = reward;
-        if (agentDistanceToCollisionPoint == -1) { //no more collisions possible (in the range of agent)
-            //teach using all as positive examples
-        } else {
-            //put state to backlog, will be used later
-        }
     }
 
     private void calculateDistanceToTarget(PlatformRequest request) {
@@ -54,9 +50,8 @@ public class CollisionAvoidingWithClassificationState {
                     .distance(closestRobot.getPosition(), getCollisionDistanceType(robot));
             this.collisionAgentDistanceToCollisionPoint = closestRobot.getPosition()
                     .distance(robot.getPosition(), getCollisionDistanceType(closestRobot));
-            //TODO add 123 line of Physic runner adding speed to robot, fix robotCOnverter, uncomment code below
-//            this.agentSpeed = robot.getSpeed();
-//            this.collisionAgentSpeed = closestRobot.getSpeed();
+            this.agentSpeed = robot.getSpeed();
+            this.collisionAgentSpeed = closestRobot.getSpeed();
         }
     }
 
@@ -160,8 +155,9 @@ public class CollisionAvoidingWithClassificationState {
                 " reward: " + this.reward;
     }
 
-    //TODO: replace with method getStateToReduce returning map of fields and their names
-    public Double[] getStateAsDouble() {
-        return new Double[]{(double) this.agentSpeed, (double) this.collisionAgentSpeed, (double) this.agentDistanceToCollisionPoint, (double) this.collisionAgentDistanceToCollisionPoint};
+    public Double[] getReducableState() {
+        //return new Double[]{(double) this.agentSpeed, (double) this.collisionAgentSpeed,
+        //        (double) this.agentDistanceToCollisionPoint, (double) this.collisionAgentDistanceToCollisionPoint};
+        return new Double[]{(double) this.agentDistanceToCollisionPoint, (double) this.collisionAgentDistanceToCollisionPoint};
     }
 }

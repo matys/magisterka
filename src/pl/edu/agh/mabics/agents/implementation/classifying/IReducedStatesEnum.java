@@ -13,4 +13,5 @@ public interface IReducedStatesEnum {
     public IReducedStatesEnum getValueForString(String value);
 
     public double getDoubleRepresentation();
+
 }

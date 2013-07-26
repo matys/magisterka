@@ -13,13 +13,16 @@ import java.util.List;
  * Time: 17:53
  */
 @Service
-public class RobotConverter implements IConverter<Robot, List<List<Integer>>> {
+public class RobotConverter implements IConverter<Robot, List> {
     private Point2DConverter point2DConverter;
     private VectorConverter vectorConverter;
 
     @Override
-    public Robot convert(List<List<Integer>> input) {
-        return new Robot(this.point2DConverter.convert(input.get(0)), this.vectorConverter.convert(input.get(1)));
+    public Robot convert(List input) {
+        List<Integer> position = (List<Integer>) input.get(0);
+        List<Integer> velocity = (List<Integer>) input.get(1);
+        Integer speed = (Integer) input.get(2);
+        return new Robot(this.point2DConverter.convert(position), this.vectorConverter.convert(velocity), speed);
     }
 
 

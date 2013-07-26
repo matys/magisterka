@@ -32,7 +32,7 @@ public class GameRunner implements IGameRunner {
     private static final String CONFIG_FILE_PATH = "..\\trunk\\src\\runner\\";
     private static final String CONFIG_FILE_NAME = "config3";
     public static final int TIME_TO_SLEEP = 100;
-    private static final int PLATFORM_HANGED_TIME = 300000;
+    private static final int PLATFORM_HANGED_TIME = 70000;
 
     private CommandLineHelper commandLineHelper;
     private AgentFactory agentFactory;

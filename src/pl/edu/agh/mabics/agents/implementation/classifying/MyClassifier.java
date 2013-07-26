@@ -25,10 +25,12 @@ public class MyClassifier {
     private IReducedStatesEnum[] indexToClassMap;
     private Integer updateFrequencyInNbrOfExamples;
     private Integer numberOfStateAttributes;
+    private IStatesComparator statesComparator;
 
-    public <E extends IReducedStatesEnum> MyClassifier(Class<E> enumData, WekaClassifier wekaClassifier,
-                                                       Integer numberOfStateAttributes,
+    public <E extends IReducedStatesEnum> MyClassifier(Class<E> enumData, WekaClassifiers wekaClassifier,
+                                                       IStatesComparator<E> comparator, Integer numberOfStateAttributes,
                                                        Integer updateFrequencyInNbrOfExamples) {
+        this.statesComparator = comparator;
         this.numberOfStateAttributes = numberOfStateAttributes;
         this.updateFrequencyInNbrOfExamples = updateFrequencyInNbrOfExamples;
         restartUpdateCounter();
@@ -51,7 +53,7 @@ public class MyClassifier {
     private <E extends IReducedStatesEnum> Attribute prepareClasses(Class<E> enumData) {
         FastVector stateReductionClasses = new FastVector(enumData.getEnumConstants().length);
         int i = 0;
-        indexToClassMap = new PositiveNegativeReducedStates[enumData.getEnumConstants().length];
+        indexToClassMap = new IReducedStatesEnum[enumData.getEnumConstants().length];
         for (E clazz : enumData.getEnumConstants()) {
             stateReductionClasses.addElement(clazz.getStringRepresentation());
             indexToClassMap[i] = clazz;
@@ -68,7 +70,7 @@ public class MyClassifier {
         previousExamples.add(state);
     }
 
-    public void usePreviousExamplesAs(PositiveNegativeReducedStates className) {
+    public void usePreviousExamplesAs(IReducedStatesEnum className) {
         addPreviousExamplesToTrainingSet(className.getStringRepresentation());
     }
 
@@ -105,10 +107,26 @@ public class MyClassifier {
 
         // Filter instance.
         try {
-            return indexToClassMap[getIndexOfTheMostProbable(classifier.distributionForInstance(testInstance))];
+            double[] results = classifier.distributionForInstance(testInstance);
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"  + results[0] + "           " + results[1]);
+            return getBestState(results);
         } catch (Exception e) {
             throw new ClassifierException("Classifier not ready yet");
         }
+    }
+
+    private IReducedStatesEnum getBestState(double[] results) {
+        IReducedStatesEnum bestState = indexToClassMap[0];
+        double bestResult = results[0];
+        for (int i = 1; i < indexToClassMap.length; i++) {
+            IReducedStatesEnum state_i = indexToClassMap[i];
+            double value_i = results[i];
+            if (statesComparator.compare(bestState, bestResult, state_i, value_i) < 0) {
+                bestState = state_i;
+                bestResult = value_i;
+            }
+        }
+        return bestState;
     }
 
     private int getIndexOfTheMostProbable(double[] doubles) {
@@ -125,19 +143,43 @@ public class MyClassifier {
 
 
     public static void main(String[] args) {
-        MyClassifier myClassifier = new MyClassifier(PositiveNegativeReducedStates.class, WekaClassifier.C45, 4, 7);
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 0.0});
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 0.0});
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 0.0});
+        MyClassifier myClassifier = new MyClassifier(PositiveNegativeReducedStates.class, WekaClassifiers.C45,
+                new PositiveNegativeStateComparator(1), 1, 6);
+        myClassifier.addState(new Double[]{0.1});
+        myClassifier.addState(new Double[]{0.2});
+        myClassifier.addState(new Double[]{0.15});
+        myClassifier.addState(new Double[]{0.1});
+        myClassifier.addState(new Double[]{0.2});
+        myClassifier.addState(new Double[]{0.15});
+        myClassifier.addState(new Double[]{0.1});
+        myClassifier.addState(new Double[]{0.2});
+        myClassifier.addState(new Double[]{0.15});
+        myClassifier.addState(new Double[]{0.1});
+        myClassifier.addState(new Double[]{0.2});
+        myClassifier.addState(new Double[]{0.15});
+        myClassifier.addState(new Double[]{0.1});
+        myClassifier.addState(new Double[]{0.2});
+        myClassifier.addState(new Double[]{0.15});
         myClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 1.0});
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 1.0});
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 1.0});
-        myClassifier.addState(new Double[]{1.0, 1.0, 1.0, 1.0});
+        myClassifier.addState(new Double[]{0.8});
+        myClassifier.addState(new Double[]{0.9});
+        myClassifier.addState(new Double[]{0.85});
+        myClassifier.addState(new Double[]{0.8});
+        myClassifier.addState(new Double[]{0.9});
+        myClassifier.addState(new Double[]{0.85});
+        myClassifier.addState(new Double[]{0.8});
+        myClassifier.addState(new Double[]{0.9});
+        myClassifier.addState(new Double[]{0.85});
+        myClassifier.addState(new Double[]{0.8});
+        myClassifier.addState(new Double[]{0.9});
+        myClassifier.addState(new Double[]{0.85});
+        myClassifier.addState(new Double[]{0.8});
+        myClassifier.addState(new Double[]{0.9});
+        myClassifier.addState(new Double[]{0.85});
         myClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
         IReducedStatesEnum reducedState = null;
         try {
-            reducedState = myClassifier.reduce(new Double[]{1.0, 1.0, 1.0, 0.0});
+            reducedState = myClassifier.reduce(new Double[]{0.19});
             System.out.println(reducedState.getStringRepresentation());
         } catch (ClassifierException e) {
             e.printStackTrace();

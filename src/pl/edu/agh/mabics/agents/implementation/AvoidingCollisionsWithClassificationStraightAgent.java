@@ -33,7 +33,7 @@ public class AvoidingCollisionsWithClassificationStraightAgent extends AbstractA
         if (firstCall) {
             while (problemController.getCurrentAction() == null) {
                 try {
-                    System.out.println("waiting for action to be chosen by controller (first time)");
+//                    System.out.println("waiting for action to be chosen by controller (first time)");
                     Thread.currentThread().sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -52,7 +52,7 @@ public class AvoidingCollisionsWithClassificationStraightAgent extends AbstractA
         problemController.resetReward();
         while (problemController.getCurrentAction() == null) {
             try {
-                System.out.println("waiting for action to be chosen by controller");
+//                System.out.println("waiting for action to be chosen by controller");
                 Thread.currentThread().sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -31,4 +31,5 @@ public enum PositiveNegativeReducedStates implements IReducedStatesEnum {
     public double getDoubleRepresentation() {
         return doubleRepresentation;
     }
+
 }

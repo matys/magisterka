@@ -12,10 +12,12 @@ public class Robot {
 
     private Coordinates position;
     private Vector velocity;
+    private int speed;
 
-    public Robot(Coordinates position, Vector velocity) {
+    public Robot(Coordinates position, Vector velocity, Integer speed) {
         this.position = position;
         this.velocity = velocity;
+        this.speed = speed;
     }
 
     public Coordinates getPosition() {
@@ -32,5 +34,13 @@ public class Robot {
 
     public void setVelocity(Vector velocity) {
         this.velocity = velocity;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }
