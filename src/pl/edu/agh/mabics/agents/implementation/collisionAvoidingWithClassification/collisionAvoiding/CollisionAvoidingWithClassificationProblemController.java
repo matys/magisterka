@@ -169,4 +169,8 @@ public class CollisionAvoidingWithClassificationProblemController implements Run
     public void setStepReward(Double stepReward) {
         this.stepReward = stepReward;
     }
+
+    public void resetExperienceFromLastGame() {
+        problem.resetExperienceFromLastGame();
+    }
 }

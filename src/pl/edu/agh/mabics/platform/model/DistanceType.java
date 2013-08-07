@@ -10,4 +10,12 @@ public enum DistanceType {
 
     HORIZONTAL,
     VERTICAL;
+
+    public DistanceType revert() {
+        if (this.equals(HORIZONTAL)) {
+            return VERTICAL;
+        } else {
+            return HORIZONTAL;
+        }
+    }
 }

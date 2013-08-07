@@ -54,7 +54,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
             throws IOException, ServletException {
         if (!stopped) {
-            System.out.println("agent " + id + " got request");
+//            System.out.println("agent " + id + " got request");
             String content = request.getReader().readLine();
             PlatformRequest parsedRequest = jsonHelper.parseRequest(content);
             prepareResponseToSend(response);
@@ -65,7 +65,7 @@ public abstract class AbstractAgent extends AbstractHandler {
             makeMove((Request) request, response, parsedRequest);
             afterStep();
         } else {
-            System.out.println("request got, but agent is already stopped");
+//            System.out.println("request got, but agent is already stopped");
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class AbstractAgent extends AbstractHandler {
             sleep();
         }
         if (nextMove.getMove().getState().equals(MoveState.ACCEPTED)) {
-            System.out.println("move approved " + id);
+//            System.out.println("move approved " + id);
             collision = false;
             response.getOutputStream().print(jsonHelper.responseToJSON(nextMove));
             request.setHandled(true);
@@ -191,15 +191,25 @@ public abstract class AbstractAgent extends AbstractHandler {
         restartStatistics();
     }
 
-    public void restartAgent() {
-        onNextGame();
+    public void restartAgent(RestartReasonCode restartReasonCode) {
+        switch (restartReasonCode) {
+            case SIMULATION_FINISHED:
+                onNextGame();
+                break;
+            case PLATFORM_HANGED:
+                onRestartBecausePlatformHanged();
+            default:
+                break;
+        }
         this.stopped = false;
         this.finished = false;
         restartStatistics();
     }
 
-    protected abstract void onNextGame();
+    protected void onRestartBecausePlatformHanged() {
+    }
 
+    protected abstract void onNextGame();
 
     protected void restartStatistics() {
         statistics = new AgentStatistics();
@@ -213,11 +223,11 @@ public abstract class AbstractAgent extends AbstractHandler {
         return new Move(position, new Vector(0, 0));
     }
 
+
     @Autowired
     public void setJsonHelper(JSONHelper jsonHelper) {
         this.jsonHelper = jsonHelper;
     }
-
 
     protected void initParameters(Object controller, Class controllerClass) {
         Set<PossibleValue> possibleValues = algorithmConfigurationBean.getPossibleValues();
@@ -243,11 +253,11 @@ public abstract class AbstractAgent extends AbstractHandler {
         this.algorithmConfigurationBean = algorithmConfigurationBean;
     }
 
+
     private String capitalizeFirstLetter(String name) {
         Character first = Character.toUpperCase(name.charAt(0));
         return first + name.substring(1);
     }
-
 
     public void stopAgent() {
         try {
@@ -291,6 +301,7 @@ public abstract class AbstractAgent extends AbstractHandler {
     public void setAgentFactory(AgentFactory agentFactory) {
         this.agentFactory = agentFactory;
     }
+
 
     public AgentSite getAgentSite() {
         return agentSite;

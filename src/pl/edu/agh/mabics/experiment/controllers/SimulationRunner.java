@@ -2,6 +2,7 @@ package pl.edu.agh.mabics.experiment.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.mabics.agents.RestartReasonCode;
 import pl.edu.agh.mabics.experiment.datamodel.GameResult;
 import pl.edu.agh.mabics.experiment.datamodel.SimulationResult;
 import pl.edu.agh.mabics.experiment.util.StatisticsHelper;
@@ -41,11 +42,11 @@ public class SimulationRunner {
                 gamesResults.add(gameResult);
                 if (gameNumber < gamesNumber - 1) {
                     waitForExternalPlatform();
-                    gameRunner.restartAgents();
+                    gameRunner.restartAgents(RestartReasonCode.SIMULATION_FINISHED);
                 }
             } else {      //restart the same game
                 gameNumber--;
-                gameRunner.restartAgents();
+                gameRunner.restartAgents(RestartReasonCode.PLATFORM_HANGED);
             }
         }
         result.setGameResults(gamesResults);

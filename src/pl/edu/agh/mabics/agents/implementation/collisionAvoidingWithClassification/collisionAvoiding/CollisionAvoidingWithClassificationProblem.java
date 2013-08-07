@@ -108,6 +108,7 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
         IReducedStatesEnum reducedState;
         try {
             reducedState = classifier.reduce(reducableState);
+            System.out.println(reducedState.getStringRepresentation());
         } catch (MyClassifier.ClassifierException e) {
             reducedState = EnumHelper.getRandomValue(REDUCED_STATES_CLASS);
         }
@@ -178,6 +179,10 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
 
     public void collisionHappened() {
         this.collisionHappened = true;
+    }
+
+    public void resetExperienceFromLastGame() {
+        classifier.removeNotClassifiedExamples();
     }
 }
 

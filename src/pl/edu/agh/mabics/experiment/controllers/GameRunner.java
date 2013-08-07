@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.mabics.agents.AbstractAgent;
 import pl.edu.agh.mabics.agents.AgentFactory;
+import pl.edu.agh.mabics.agents.RestartReasonCode;
 import pl.edu.agh.mabics.experiment.datamodel.AgentStatistics;
 import pl.edu.agh.mabics.experiment.datamodel.GameResult;
 import pl.edu.agh.mabics.experiment.util.AgentDataHelper;
@@ -43,6 +44,7 @@ public class GameRunner implements IGameRunner {
     private Map<String, AbstractAgent> agents = new HashMap<String, AbstractAgent>();
     private Process platformThread;
     private boolean finished;
+    private Integer leftSideNumberOfAgents;
 
 
     public GameResult runGame(int gameNumber, FormBean data) {
@@ -92,7 +94,7 @@ public class GameRunner implements IGameRunner {
                 if (agentSteps < timeOfFirst) {
                     timeOfFirst = agentSteps;
                 }
-                averageTime += agentSteps / agents.size();
+                averageTime += agentSteps / (leftSideOnlyStatistics ? leftSideNumberOfAgents : agents.size());
             }
         }
         return new GameResult(sumOfCollisions, timeOfLast, averageTime, timeOfFirst);
@@ -156,6 +158,7 @@ public class GameRunner implements IGameRunner {
     public void initAgents(FormBean data) {
         initOneSide(data.getAgentsConfiguration().getDownSideConfiguration(), AgentSite.DOWN);
         initOneSide(data.getAgentsConfiguration().getLeftSideConfiguration(), AgentSite.LEFT);
+        leftSideNumberOfAgents = data.getAgentsConfiguration().getLeftSideConfiguration().getNumberOfAgents();
     }
 
     private void initOneSide(OneSideConfiguration data, AgentSite agentSite) {
@@ -215,9 +218,9 @@ public class GameRunner implements IGameRunner {
         finished = true;
     }
 
-    public void restartAgents() {
+    public void restartAgents(RestartReasonCode restartCode) {
         for (AbstractAgent agent : agents.values()) {
-            agent.restartAgent();
+            agent.restartAgent(restartCode);
         }
     }
 }

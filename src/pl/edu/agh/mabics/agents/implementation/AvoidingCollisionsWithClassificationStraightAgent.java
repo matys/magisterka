@@ -102,8 +102,8 @@ public class AvoidingCollisionsWithClassificationStraightAgent extends AbstractA
     }
 
     @Override
-    protected void onNextGame() {
-        //this.firstCall = true;
+    protected void onRestartBecausePlatformHanged() {
+        problemController.resetExperienceFromLastGame();
     }
 
     public void initIt() {
@@ -112,6 +112,11 @@ public class AvoidingCollisionsWithClassificationStraightAgent extends AbstractA
         problemController.init();
         Thread controllerThread = new Thread(problemController);
         controllerThread.start();
+    }
+
+    @Override
+    protected void onNextGame() {
+        //this.firstCall = true;
     }
 
     @Autowired

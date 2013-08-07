@@ -100,6 +100,7 @@ public class AvoidingCollisionsStraightAgent extends AbstractAgent {
         collisionAvoidingProblemController.onAgentCollision();
     }
 
+
     @Override
     protected void onNextGame() {
         //this.firstCall = true;

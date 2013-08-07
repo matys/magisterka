@@ -14,6 +14,8 @@ public enum AgentType {
     //TODO add more parameters as Rewards, etc..
     RANDOM("randomly choose move", "randomAgent", new ArrayList<AlgorithmParameter>()),
     STRAIGHT("going straight forward", "straightAgent", new ArrayList<AlgorithmParameter>()),
+    STRAIGHT_CONSTANT("going straight forward with constant speed", "straightConstantAgent",
+            new ArrayList<AlgorithmParameter>()),
     AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent",
             initAvoidingCollisionStraightParameters()),
     TARGET_AND_SPEED("going straight forward, " + "avoiding taking distance to target into consideration",

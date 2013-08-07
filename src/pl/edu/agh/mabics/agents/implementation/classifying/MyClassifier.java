@@ -108,7 +108,7 @@ public class MyClassifier {
         // Filter instance.
         try {
             double[] results = classifier.distributionForInstance(testInstance);
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"  + results[0] + "           " + results[1]);
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + results[0] + "           " + results[1]);
             return getBestState(results);
         } catch (Exception e) {
             throw new ClassifierException("Classifier not ready yet");
@@ -141,6 +141,11 @@ public class MyClassifier {
         return maxIndex;
     }
 
+
+    public void removeNotClassifiedExamples() {
+        System.out.println("clearing examples!!!");
+        previousExamples.clear();
+    }
 
     public static void main(String[] args) {
         MyClassifier myClassifier = new MyClassifier(PositiveNegativeReducedStates.class, WekaClassifiers.C45,

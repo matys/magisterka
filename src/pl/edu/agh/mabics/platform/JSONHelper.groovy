@@ -46,15 +46,14 @@ class JSONHelper {
 
     public PlatformRequest parseRequest(String content) {
         def jsonObj = new JsonSlurper().parseText(content)
-        jsonObj.each {id, data -> println id + data}
+        //jsonObj.each {id, data -> println id + data}
         def request = new PlatformRequest();
         request.setId(jsonObj.id);
         request.setSpeed(jsonObj.speed);
         request.setVelocity(vectorConverter.convert(jsonObj.velocity));
         request.setPosition(point2DConverter.convert(jsonObj.position));
         request.setRobots(converterUtil.convertList(jsonObj.robots, robotConverter));
-        request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))         //TODO brakuje
-        // speed?
+        request.setAllowedMoves(converterUtil.convertList(jsonObj.allowedMoves, moveConverter))
         request.setDestination(converterUtil.convertList(jsonObj.destination, point2DConverter))
         return request;
     }
@@ -69,7 +68,7 @@ class JSONHelper {
             speed response.getSpeed()
             velocity jsonMove.get(1).get(0), jsonMove.get(1).get(1)
         }
-        print builder.toString() + "\n"
+        // print builder.toString() + "\n"
         return builder.toString();
     }
 

@@ -1,5 +1,6 @@
 package pl.edu.agh.mabics.agents.implementation.targetAndSpeedOnly;
 
+import pl.edu.agh.mabics.agents.util.StateHelper;
 import pl.edu.agh.mabics.platform.model.DistanceType;
 import pl.edu.agh.mabics.platform.model.PlatformRequest;
 import pl.edu.agh.mabics.platform.model.Robot;
@@ -24,14 +25,10 @@ public class TargetAndSpeedState {
     }
 
     private void calculateDistanceToTarget(PlatformRequest request) {
-        DistanceType type = getCollisionDistanceType(currentRobot(request.getRobots(), request.getPosition()));
+        DistanceType type = StateHelper
+                .getCollisionDistanceType(currentRobot(request.getRobots(), request.getPosition()));
         Coordinates destination = request.getDestination().get(0);
-        this.distanceToTarget = destination.distance(request.getPosition(), type);
-    }
-
-    private DistanceType getCollisionDistanceType(Robot robot) {
-        if (robot.getVelocity().getX() == 0) return DistanceType.VERTICAL;
-        else return DistanceType.HORIZONTAL;
+        this.distanceToTarget = destination.distance(request.getPosition(), type.revert());
     }
 
     private Robot currentRobot(List<Robot> robots, Coordinates position) {
