@@ -22,7 +22,7 @@ public class GraphsHelper {
     private CommandLineHelper commandLineHelper;
     private FileHelper fileHelper;
 
-    public List<String> createGraphs(String[] statisticFiles, String outputDirName, Integer samplingFrequency) {
+    public List<String> createGraphs(List<String> statisticFiles, String outputDirName, Integer samplingFrequency) {
         List<String> outputFilesNames = new ArrayList<String>();
         for (String statisticFile : statisticFiles) {
             Map<String, String> parameters = new HashMap<String, String>();

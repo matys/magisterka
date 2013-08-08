@@ -44,7 +44,7 @@ public class ExperimentRunner {
         }
         statisticsHelper.prepareStatisticFiles(simulationResults, data.getExperimentConfiguration().getNumberOfGames(),
                 data.getExperimentConfiguration().getOutputDirName());
-        return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(),
+        return graphsHelper.createGraphs(statisticsHelper.getStatisticFilesNames(simulationResults),
                 data.getExperimentConfiguration().getOutputDirName(),
                 data.getExperimentConfiguration().getSamplingFrequency());
     }

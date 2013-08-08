@@ -15,16 +15,16 @@ import java.lang.reflect.Method;
 @Service
 public class ReflectionHelper {
 
-    public Double getValue(GameResult obj, String methodName) {
+    public Object getValue(GameResult obj, String methodName) {
         try {
             Method method = obj.getClass().getMethod(methodName);
             Object value = method.invoke(obj);
-            if (value instanceof Double)
-                return (Double) value;
-            if (value instanceof Integer)
-                return new Double((Integer) value);
-            if (value instanceof Float)
-                return new Double((Float) value);
+            if (value instanceof Double) return (Double) value;
+            if (value instanceof Integer) return new Double((Integer) value);
+            if (value instanceof Float) return new Double((Float) value);
+            if (value instanceof Object) {
+                return value;
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

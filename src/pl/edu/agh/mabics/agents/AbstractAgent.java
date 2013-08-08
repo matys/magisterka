@@ -197,6 +197,7 @@ public abstract class AbstractAgent extends AbstractHandler {
                 onNextGame();
                 break;
             case PLATFORM_HANGED:
+                System.out.println("PLATFORM HANGED!!!");
                 onRestartBecausePlatformHanged();
             default:
                 break;

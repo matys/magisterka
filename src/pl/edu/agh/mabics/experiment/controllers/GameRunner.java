@@ -84,20 +84,26 @@ public class GameRunner implements IGameRunner {
         int timeOfLast = 0;
         float averageTime = 0.0f;
         int timeOfFirst = Integer.MAX_VALUE;
+        Map<String, Integer> timePerAgent = new HashMap<String, Integer>();
+        Map<String, Integer> collisionsPerAgent = new HashMap<String, Integer>();
         for (AbstractAgent agent : agents.values()) {
             if ((leftSideOnlyStatistics && agent.getAgentSite() == AgentSite.LEFT) || !leftSideOnlyStatistics) {
-                sumOfCollisions += agent.getStatistics().numberOfCollisions;
-                int agentSteps = agent.getStatistics().numberOfSteps;
-                if (agentSteps > timeOfLast) {
-                    timeOfLast = agentSteps;
+                String agentId = agent.getId();
+                int numberOfCollisions = agent.getStatistics().numberOfCollisions;
+                collisionsPerAgent.put(agentId, numberOfCollisions);
+                sumOfCollisions += numberOfCollisions;
+                int numberOfSteps = agent.getStatistics().numberOfSteps;
+                timePerAgent.put(agentId, numberOfSteps);
+                if (numberOfSteps > timeOfLast) {
+                    timeOfLast = numberOfSteps;
                 }
-                if (agentSteps < timeOfFirst) {
-                    timeOfFirst = agentSteps;
+                if (numberOfSteps < timeOfFirst) {
+                    timeOfFirst = numberOfSteps;
                 }
-                averageTime += agentSteps / (leftSideOnlyStatistics ? leftSideNumberOfAgents : agents.size());
+                averageTime += numberOfSteps / (leftSideOnlyStatistics ? leftSideNumberOfAgents : agents.size());
             }
         }
-        return new GameResult(sumOfCollisions, timeOfLast, averageTime, timeOfFirst);
+        return new GameResult(sumOfCollisions, timeOfLast, averageTime, timeOfFirst, timePerAgent, collisionsPerAgent);
     }
 
     private void initEndGameController(FormBean data) {
