@@ -414,4 +414,16 @@ public class FormBean {
     public void setLeftSideOnlyStatistics(boolean leftSideOnlyStatistics) {
         agentsConfiguration.setLeftSideOnlyStatistics(leftSideOnlyStatistics);
     }
+
+    public Integer getBoxWidth() {
+        return experimentConfiguration.getBoxWidth();
+    }
+
+    public void setBoxWidth(final String boxWidth) {
+        if (boxWidth != null) {
+            experimentConfiguration.setBoxWidth(new Integer(boxWidth));
+        } else {
+            experimentConfiguration.setBoxWidth(null);
+        }
+    }
 }

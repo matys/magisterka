@@ -64,6 +64,7 @@ public class MabicsGUI {
     private JPanel parametersTab = new JPanel();
     private JCheckBox visualizationCheckBox;
     private JCheckBox leftSideStatisticsOnlyCheckBox;
+    private JTextField boxWidthTextField = new JTextField();
 
 
     public MabicsGUI() {
@@ -162,6 +163,7 @@ public class MabicsGUI {
         plotNumberOfCollisionsCheckBox.setSelected(data.isPlotNumberOfCollision());
         numberOfSeriesTextField.setText(data.getNumberOfSeries());
         samplingFrequencyTextField.setText(data.getSamplingFrequency());
+        boxWidthTextField.setText(data.getBoxWidth().toString());
         numberOfGamesTextField.setText(data.getNumberOfGames());
         plotTimeOfIntersectionCorssingLastCheckBox.setSelected(data.isPlotTimeOfIntersection());
         intersectionFilePath.setText(data.getIntersectionFilePath());
@@ -213,6 +215,7 @@ public class MabicsGUI {
         data.setPlotNumberOfCollision(plotNumberOfCollisionsCheckBox.isSelected());
         data.setNumberOfSeries(numberOfSeriesTextField.getText());
         data.setSamplingFrequency(samplingFrequencyTextField.getText());
+        data.setBoxWidth(boxWidthTextField.getText());
         data.setNumberOfGames(numberOfGamesTextField.getText());
         data.setPlotTimeOfIntersection(plotTimeOfIntersectionCorssingLastCheckBox.isSelected());
         data.setIntersectionFilePath(intersectionFilePath.getText());
@@ -377,7 +380,7 @@ public class MabicsGUI {
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("Experiment", panel1);
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(9, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new GridLayoutManager(10, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel1.add(panel2,
                 new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -438,12 +441,12 @@ public class MabicsGUI {
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label5 = new JLabel();
         label5.setText("Output folder name");
-        panel2.add(label5, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        panel2.add(label5, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         outputDirName = new JTextField();
         outputDirName.setText("");
         panel2.add(outputDirName,
-                new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                         new Dimension(150, -1), new Dimension(100, -1), 0, false));
         final JCheckBox checkBox1 = new JCheckBox();
@@ -453,14 +456,23 @@ public class MabicsGUI {
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label6 = new JLabel();
         label6.setText("Visualization?");
-        panel2.add(label6, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        panel2.add(label6, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         visualizationCheckBox = new JCheckBox();
         visualizationCheckBox.setText("");
         panel2.add(visualizationCheckBox,
-                new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        boxWidthTextField.setText("");
+        panel2.add(boxWidthTextField,
+                new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
+                        new Dimension(150, -1), new Dimension(100, -1), 0, false));
+        final JLabel label7 = new JLabel();
+        label7.setText("Histogram box width");
+        panel2.add(label7, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         Environment = new JPanel();
         Environment.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("Environment", Environment);
@@ -485,9 +497,9 @@ public class MabicsGUI {
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0,
                 false));
-        final JLabel label7 = new JLabel();
-        label7.setText("Choose intersection");
-        panel4.add(label7, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label8 = new JLabel();
+        label8.setText("Choose intersection");
+        panel4.add(label8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         IntersectionFileChooseButton = new JButton();
         IntersectionFileChooseButton.setText("...");
@@ -512,22 +524,22 @@ public class MabicsGUI {
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0,
                 false));
-        final JLabel label8 = new JLabel();
-        label8.setText("Environment Physic:");
-        panel5.add(label8, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label9 = new JLabel();
-        label9.setText("Agent Range");
-        panel5.add(label9, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        label9.setText("Environment Physic:");
+        panel5.add(label9, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label10 = new JLabel();
+        label10.setText("Agent Range");
+        panel5.add(label10, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         agentRangeField = new JTextField();
         panel5.add(agentRangeField,
                 new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                         new Dimension(50, -1), new Dimension(50, -1), 0, false));
-        final JLabel label10 = new JLabel();
-        label10.setText("Max speed");
-        panel5.add(label10, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label11 = new JLabel();
+        label11.setText("Max speed");
+        panel5.add(label11, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         maxSpeedField = new JTextField();
         maxSpeedField.setText("");
@@ -535,9 +547,9 @@ public class MabicsGUI {
                 new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                         new Dimension(50, -1), new Dimension(50, -1), 0, false));
-        final JLabel label11 = new JLabel();
-        label11.setText("Max speed change");
-        panel5.add(label11, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label12 = new JLabel();
+        label12.setText("Max speed change");
+        panel5.add(label12, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         maxSpeedChangeField = new JTextField();
         panel5.add(maxSpeedChangeField,
@@ -564,13 +576,13 @@ public class MabicsGUI {
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(200, -1),
                 null, null, 0, false));
-        final JLabel label12 = new JLabel();
-        label12.setText("Number of agents:");
-        panel8.add(label12, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label13 = new JLabel();
-        label13.setText("Starting area:");
-        panel8.add(label13, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        label13.setText("Number of agents:");
+        panel8.add(label13, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label14 = new JLabel();
+        label14.setText("Starting area:");
+        panel8.add(label14, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         LeftTopCornerDownTextField = new JTextField();
         LeftTopCornerDownTextField.setText("(x,y)");
@@ -584,9 +596,9 @@ public class MabicsGUI {
                 new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                         new Dimension(150, -1), new Dimension(80, -1), 0, false));
-        final JLabel label14 = new JLabel();
-        label14.setText("Down");
-        panel8.add(label14, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label15 = new JLabel();
+        label15.setText("Down");
+        panel8.add(label15, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         generateRandomButtonLeft = new JButton();
         generateRandomButtonLeft.setText("Generate Random");
@@ -605,23 +617,23 @@ public class MabicsGUI {
                 new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
                         false));
-        final JLabel label15 = new JLabel();
-        label15.setText("Change Implementation");
-        label15.setVerifyInputWhenFocusTarget(true);
-        panel8.add(label15, new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label16 = new JLabel();
+        label16.setText("Change Implementation");
+        label16.setVerifyInputWhenFocusTarget(true);
+        panel8.add(label16, new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         agentImplementationDownComboBox = new JComboBox();
         panel8.add(agentImplementationDownComboBox,
                 new GridConstraints(9, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
                         false));
-        final JLabel label16 = new JLabel();
-        label16.setText("LeftTopCorner");
-        panel8.add(label16, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label17 = new JLabel();
-        label17.setText("RightDownCorner");
-        panel8.add(label17, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        label17.setText("LeftTopCorner");
+        panel8.add(label17, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label18 = new JLabel();
+        label18.setText("RightDownCorner");
+        panel8.add(label18, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         LeftTopCornerLeftTextField = new JTextField();
         LeftTopCornerLeftTextField.setText("(x,y)");
@@ -635,9 +647,9 @@ public class MabicsGUI {
                 new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                         new Dimension(150, -1), new Dimension(80, -1), 0, false));
-        final JLabel label18 = new JLabel();
-        label18.setText("End line:");
-        panel8.add(label18, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label19 = new JLabel();
+        label19.setText("End line:");
+        panel8.add(label19, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         EndLineLeftTextField = new JTextField();
         EndLineLeftTextField.setText("x");
@@ -667,10 +679,10 @@ public class MabicsGUI {
                 new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label19 = new JLabel();
-        label19.setText("Change Implementation");
-        label19.setVerifyInputWhenFocusTarget(true);
-        panel8.add(label19, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label20 = new JLabel();
+        label20.setText("Change Implementation");
+        label20.setVerifyInputWhenFocusTarget(true);
+        panel8.add(label20, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         generateForEveryGameCheckBox = new JCheckBox();
         generateForEveryGameCheckBox.setText("Generate for every game");
@@ -678,9 +690,9 @@ public class MabicsGUI {
                 new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label20 = new JLabel();
-        label20.setText("Left");
-        panel8.add(label20, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+        final JLabel label21 = new JLabel();
+        label21.setText("Left");
+        panel8.add(label21, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel8.add(scrollPane1,

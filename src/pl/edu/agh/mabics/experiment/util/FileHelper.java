@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.util.CommandLineHelper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,5 +62,15 @@ public class FileHelper {
     public String removeExtension(String fileName) {
 //        return fileName.split(".")[0];
         return fileName.substring(0, fileName.length() - 4);
+    }
+
+    public BufferedReader createBufferedReader(String file) {
+        try {
+            FileReader reader = new FileReader(file);
+            return new BufferedReader(reader);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
