@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithSpeedClassification;
 
 import pl.edu.agh.mabics.agents.implementation.Point2D;
 import pl.edu.agh.mabics.agents.implementation.classifying.*;
@@ -20,24 +20,29 @@ import java.util.List;
  * Date: 25.03.13
  * Time: 11:03
  */
-public class CollisionAvoidingWithClassificationProblem implements ProblemDiscreteAction {
+/*
+TODO: generalization needed - this class is exactly the same as CollisionAvoidingWithClassificationProblem
+use spring conf to do that
+*/
+
+public class CollisionAvoidingWithSpeedClassificationProblem implements ProblemDiscreteAction {
 
     public static final int UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES = 10;
     public static final Class<PositiveNegativeReducedStates> REDUCED_STATES_CLASS = PositiveNegativeReducedStates.class;
     public static final int NEGATIVE_STATE_PRIORITY = 5;
     private Action currentAction;
     private TRStep currentStep;
-    private CollisionAvoidingWithClassificationState currentState;
+    private CollisionAvoidingWithSpeedClassificationState currentState;
     public static int AGENT_RANGE; //if collision point is farther, we ignore it
     List<Action> actions = new ArrayList<Action>();
     private boolean endEpisode;
     private MyClassifier classifier;
     private boolean collisionHappened = false;
 
-    public CollisionAvoidingWithClassificationProblem(Integer agentRange, Integer maxSpeedChange) {
+    public CollisionAvoidingWithSpeedClassificationProblem(Integer agentRange, Integer maxSpeedChange) {
         classifier = new MyClassifier(REDUCED_STATES_CLASS, WekaClassifiers.C45,
                 new PositiveNegativeStateComparator(NEGATIVE_STATE_PRIORITY),
-                CollisionAvoidingWithClassificationState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE,
+                CollisionAvoidingWithSpeedClassificationState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE,
                 UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES);
         this.AGENT_RANGE = agentRange;
         for (int i = -maxSpeedChange; i <= maxSpeedChange; i++) {
@@ -133,10 +138,11 @@ public class CollisionAvoidingWithClassificationProblem implements ProblemDiscre
     }
 
     public Point2D size() {
-        return new Point2D(AGENT_RANGE, CollisionAvoidingWithClassificationState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE);
+        return new Point2D(AGENT_RANGE,
+                CollisionAvoidingWithSpeedClassificationState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE);
     }
 
-    public void setCurrentState(CollisionAvoidingWithClassificationState collisionAvoidingState) {
+    public void setCurrentState(CollisionAvoidingWithSpeedClassificationState collisionAvoidingState) {
         this.currentState = collisionAvoidingState;
     }
 
