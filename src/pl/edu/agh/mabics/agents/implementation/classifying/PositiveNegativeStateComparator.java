@@ -20,10 +20,14 @@ public class PositiveNegativeStateComparator implements IStatesComparator<Positi
                           PositiveNegativeReducedStates state2, double state2value) {
         if (state1.equals(state2)) {
             return state1value - state2value;
-        } else if (state1.equals(PositiveNegativeReducedStates.POSITIVE)) {
+        } else if (state1 == PositiveNegativeReducedStates.POSITIVE) {
             return state1value - state2value * negativeStatePriority;
         } else {
             return state1value * negativeStatePriority - state2value;
         }
+    }
+
+    public boolean isRequiredState(PositiveNegativeReducedStates state, PositiveNegativeReducedStates requiredState) {
+        return state == requiredState;
     }
 }

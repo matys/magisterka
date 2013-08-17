@@ -191,6 +191,34 @@ public class MyClassifier {
         }
     }
 
+    public <E extends IReducedStatesEnum> Double[] chooseTheBest(List<Double[]> possibleDecisions, E requiredClass)
+            throws Exception {
+        Double[] bestDecision = null;
+        double bestValue = -1;
+        int requiredClassIndex = getIndexOfRequiredClass(requiredClass);
+        for (Double[] decision : possibleDecisions) {
+            Instances testSet = trainingSet.stringFreeStructure();
+            Instance testInstance = makeInstance(null, decision, testSet);
+            double requiredClassValue = classifier.distributionForInstance(testInstance)[requiredClassIndex];
+            if (requiredClassValue > bestValue) {
+                bestDecision = decision;
+                bestValue = requiredClassValue;
+            }
+        }
+        return bestDecision;
+    }
+
+    private <E extends IReducedStatesEnum> int getIndexOfRequiredClass(E requiredState) {
+        int i = 0;
+        for (IReducedStatesEnum clazz : indexToClassMap) {
+            if (clazz == requiredState) {
+                return i;
+            }
+            i++;
+        }
+        return i;
+    }
+
 
     public class ClassifierException extends Exception {
         public ClassifierException(String s) {

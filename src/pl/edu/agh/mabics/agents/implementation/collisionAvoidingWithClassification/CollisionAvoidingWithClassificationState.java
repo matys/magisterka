@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification;
 
 import pl.edu.agh.mabics.agents.util.StateHelper;
 import pl.edu.agh.mabics.platform.model.DistanceType;

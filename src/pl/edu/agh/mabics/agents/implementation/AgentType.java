@@ -11,10 +11,9 @@ import java.util.List;
  */
 public enum AgentType {
 
-    RANDOM("randomly choose move", "randomAgent", new ArrayList<AlgorithmParameter>()),
-    STRAIGHT("going straight forward", "straightAgent", new ArrayList<AlgorithmParameter>()),
-    STRAIGHT_CONSTANT("going straight forward with constant speed", "straightConstantAgent",
-            new ArrayList<AlgorithmParameter>()),
+    RANDOM("randomly choose move", "randomAgent", initEmptyParametersList()),
+    STRAIGHT("going straight forward", "straightAgent", initEmptyParametersList()),
+    STRAIGHT_CONSTANT("going straight forward with constant speed", "straightConstantAgent", initEmptyParametersList()),
     AVOIDING_COLLISION_STRAIGHT("going straight forward and avoiding collisions", "avoidingCollisionsStraightAgent",
             initAvoidingCollisionStraightParameters()),
     TARGET_AND_SPEED("going straight forward, " + "taking distance to target into consideration",
@@ -33,10 +32,19 @@ public enum AgentType {
             "number of states", "avoidingCollisionsWithSpeedClassificationStraightAgent",
             initAvoidingCollisionsWithSpeedClassificationParameters()
 
-    );
+    ),
+
+    AVOIDING_COLLISION_WITH_SAFETY_MODE(
+            "Checks first if collision possible, if not RL is making decision, " + "slowing down otherwise",
+            "avoidingCollisionsWithSafetyModeAgent", initEmptyParametersList());
+
+    private static ArrayList<AlgorithmParameter> initEmptyParametersList() {
+        return new ArrayList<AlgorithmParameter>();
+    }
+
 
     private static List<AlgorithmParameter> initAvoidingCollisionsWithClassificationParameters() {
-        List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
+        List<AlgorithmParameter> parameters = initEmptyParametersList();
         parameters.add(new AlgorithmParameter("alpha", 0.45));
         parameters.add(new AlgorithmParameter("gamma", 1.0));
         parameters.add(new AlgorithmParameter("lambda", 0.9));
@@ -49,7 +57,7 @@ public enum AgentType {
 
 
     private static List<AlgorithmParameter> initAvoidingCollisionsWithSpeedClassificationParameters() {
-        List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
+        List<AlgorithmParameter> parameters = initEmptyParametersList();
         parameters.add(new AlgorithmParameter("alpha", 0.45));
         parameters.add(new AlgorithmParameter("gamma", 1.0));
         parameters.add(new AlgorithmParameter("lambda", 0.9));
@@ -62,7 +70,7 @@ public enum AgentType {
 
 
     private static List<AlgorithmParameter> initTargetAndSpeedParameters() {
-        List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
+        List<AlgorithmParameter> parameters = initEmptyParametersList();
         parameters.add(new AlgorithmParameter("alpha", 0.45));
         parameters.add(new AlgorithmParameter("gamma", 1.0));
         parameters.add(new AlgorithmParameter("lambda", 0.9));
@@ -74,7 +82,7 @@ public enum AgentType {
     }
 
     private static List<AlgorithmParameter> initAvoidingCollisionStraightParameters() {
-        List<AlgorithmParameter> parameters = new ArrayList<AlgorithmParameter>();
+        List<AlgorithmParameter> parameters = initEmptyParametersList();
         parameters.add(new AlgorithmParameter("alpha", 0.45));
         parameters.add(new AlgorithmParameter("gamma", 1.0));
         parameters.add(new AlgorithmParameter("lambda", 0.9));

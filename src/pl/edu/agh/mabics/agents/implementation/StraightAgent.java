@@ -32,8 +32,8 @@ public class StraightAgent extends AbstractAgent {
         if (speed < 0) {
             speed = 0;
         }
-        if (speed > 2) {
-            speed = 2;
+        if (speed > 1) {
+            speed = 1;
         }
         response.setSpeed(speed);
         Coordinates position = request.getPosition();

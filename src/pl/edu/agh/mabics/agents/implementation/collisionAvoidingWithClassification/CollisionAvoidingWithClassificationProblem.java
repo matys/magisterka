@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification;
 
 import pl.edu.agh.mabics.agents.implementation.Point2D;
 import pl.edu.agh.mabics.agents.implementation.classifying.*;

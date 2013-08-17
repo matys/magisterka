@@ -1,4 +1,4 @@
-package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification.collisionAvoiding;
+package pl.edu.agh.mabics.agents.implementation.collisionAvoidingWithClassification;
 
 import pl.edu.agh.mabics.ui.datamodel.beans.IntersectionConfiguration;
 import rlpark.plugin.rltoys.agents.rl.LearnerAgentFA;
