@@ -44,11 +44,13 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
         classifier.addState(state.getReducableState()); //only adding as future training example
         PositiveNegativeReducedStates reducedState = null;
         try {
-            classifier.reduce(state.getReducableState());
+            reducedState = (PositiveNegativeReducedStates) classifier.reduce(state.getReducableState());
         } catch (MyClassifier.ClassifierException e) {
             reducedState = (PositiveNegativeReducedStates) EnumHelper
                     .getRandomValue(PositiveNegativeReducedStates.class);
         }
+        System.out.println(state.getReducableState());
+        System.out.println(reducedState);
         switch (reducedState) {
             case POSITIVE:
 //               return generateNextStepUsingRL(request);
@@ -61,7 +63,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
     }
 
     private PlatformResponse generateSlowerMove(PlatformRequest request) {
-        return responseFromAction(request, GO_FASTER_ACTION);
+        return responseFromAction(request, GO_SLOWER_ACTION);
     }
 
     private PlatformResponse generateFasterMove(PlatformRequest request) {

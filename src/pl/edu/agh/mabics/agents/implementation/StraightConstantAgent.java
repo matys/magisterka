@@ -28,7 +28,7 @@ public class StraightConstantAgent extends AbstractAgent {
         PlatformResponse response = new PlatformResponse();
 
         if (speed == 0) {
-            speed = Math.abs(random.nextInt() % 2) + 1; //find random number from set {1,2}
+            speed = Math.abs(random.nextInt() % 3) + 1; //find random number from set {1,2,3}
             System.out.println("speed was chosen!: " + speed);
         }
         response.setSpeed(speed);
