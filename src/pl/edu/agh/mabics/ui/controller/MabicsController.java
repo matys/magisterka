@@ -11,7 +11,7 @@ import pl.edu.agh.mabics.ui.listeners.helpers.IExperimentRunnerHelper;
 import pl.edu.agh.mabics.ui.listeners.helpers.IIntersectionConfigurationHelper;
 import pl.edu.agh.mabics.ui.listeners.helpers.ISerializationHelper;
 import pl.edu.agh.mabics.ui.listeners.implementation.*;
-import pl.edu.agh.mabics.ui.util.serialization.FormBeanSerializer;
+import pl.edu.agh.mabics.ui.util.serialization.IFormBeanSerializer;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -28,7 +28,7 @@ import java.awt.event.MouseListener;
 public class MabicsController
         implements ISerializationHelper, IIntersectionConfigurationHelper, IExperimentRunnerHelper {
 
-    private FormBeanSerializer formBeanSerializer;
+    private IFormBeanSerializer formBeanSerializer;
     private FormBean formBean;
     private JFrame frame;
     private MabicsGUI mabicsGUI;
@@ -117,8 +117,7 @@ public class MabicsController
         this.formBean = formBean;
     }
 
-    @Autowired
-    public void setFormBeanSerializer(FormBeanSerializer formBeanSerializer) {
+    public void setFormBeanSerializer(IFormBeanSerializer formBeanSerializer) {
         this.formBeanSerializer = formBeanSerializer;
     }
 

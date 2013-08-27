@@ -46,7 +46,7 @@ class JSONHelper {
 
     public PlatformRequest parseRequest(String content) {
         def jsonObj = new JsonSlurper().parseText(content)
-        jsonObj.each {id, data -> println id + data}
+        //jsonObj.each {id, data -> println id + data}
         def request = new PlatformRequest();
         request.setId(jsonObj.id);
         request.setSpeed(jsonObj.speed);

@@ -1,6 +1,8 @@
 package pl.edu.agh.mabics.experiment.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.mabics.util.CommandLineHelper;
 
@@ -124,4 +126,24 @@ public class GraphsHelper {
     public void setFileHelper(FileHelper fileHelper) {
         this.fileHelper = fileHelper;
     }
+
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+        GraphsHelper commandLineHelper = (GraphsHelper) context.getBean("graphsHelper");
+
+        List<String> files = new ArrayList<String>();
+        files.add("timeAverageStatistic.txt");
+        files.add("timeLastStatistic.txt");
+        files.add("collisionsQuantityStatistic.txt");
+        files.add("timeFirstStatistic.txt");
+        files.add("agentLeft1\\timeStatistic.txt");
+        files.add("agentLeft1\\collisionsQuantityStatistic.txt");
+        files.add("agentLeft0\\timeStatistic.txt");
+        files.add("agentLeft0\\collisionsQuantityStatistic.txt");
+        files.add("agentLeft2\\timeStatistic.txt");
+        files.add("agentLeft2\\collisionsQuantityStatistic.txt");
+        String output = "zosia\\alpha0.45lambda0.9epsilon0.2gamma0.9collisionReward-100.0stepReward-20.0gettingToTargetReward100.0";
+        commandLineHelper.createGraphs(files, output, 4, 150);
+    }
 }
+

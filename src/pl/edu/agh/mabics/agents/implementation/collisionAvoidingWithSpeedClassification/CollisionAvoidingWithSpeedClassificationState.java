@@ -105,4 +105,9 @@ public class CollisionAvoidingWithSpeedClassificationState {
     public Double[] getReducableState() {
         return new Double[]{(double) this.agentDistanceToCollisionPoint, (double) this.collisionAgentDistanceToCollisionPoint, (double) this.agentSpeed, (double) this.collisionAgentSpeed};
     }
+
+    public boolean isBeginningState() {
+        return this.agentDistanceToCollisionPoint == -1 && this.collisionAgentDistanceToCollisionPoint == -1 &&
+                this.agentSpeed == -1 && this.collisionAgentSpeed == -1;
+    }
 }

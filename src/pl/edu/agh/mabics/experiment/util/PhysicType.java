@@ -8,7 +8,8 @@ package pl.edu.agh.mabics.experiment.util;
  */
 public enum PhysicType {
 
-    StraightOnly("straight only", "straightOnlyPhysic.txt");
+    StraightOnly("straight only", "straightOnlyPhysic.txt"),
+    MyOwnPhysic("my own physic", "physic.txt");
 
     private String physicFile;
     private String description;

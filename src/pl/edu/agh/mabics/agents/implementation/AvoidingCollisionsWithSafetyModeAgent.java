@@ -31,25 +31,31 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
     private boolean firstCall = true;
     private MovesFilter movesFilter;
     private MyClassifier classifier;
-    private static final Integer CLASSIFIER_UPDATE_FREQUENCY = 30;
-    private Integer NEGATIVE_STATE_PRIORITY = 5;
+    private static final Integer CLASSIFIER_UPDATE_FREQUENCY = 100;
+    private Integer NEGATIVE_STATE_PRIORITY = 2;
     private Action GO_FASTER_ACTION = new ActionArray(1);
     private Action GO_SLOWER_ACTION = new ActionArray(-1);
+    private int gameCounter = 0;
 
 
     @Override
     public PlatformResponse getNextMove(PlatformRequest request) {
+        classifier.setComparator(new PositiveNegativeStateComparator(getNegativeStatePriority()));
         CollisionAvoidingWithSpeedClassificationState state = new CollisionAvoidingWithSpeedClassificationState(request,
                 0);
         classifier.addState(state.getReducableState()); //only adding as future training example
         PositiveNegativeReducedStates reducedState = null;
+//        if (state.isBeginningState()) {
+//            reducedState = PositiveNegativeReducedStates.POSITIVE;
+//        } else {
         try {
             reducedState = (PositiveNegativeReducedStates) classifier.reduce(state.getReducableState());
         } catch (MyClassifier.ClassifierException e) {
             reducedState = (PositiveNegativeReducedStates) EnumHelper
                     .getRandomValue(PositiveNegativeReducedStates.class);
         }
-        System.out.println(state.getReducableState());
+//        }
+        System.out.println(state.toString());
         System.out.println(reducedState);
         switch (reducedState) {
             case POSITIVE:
@@ -157,6 +163,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
         problemController.init();
         Thread controllerThread = new Thread(problemController);
         controllerThread.start();
+        gameCounter = 0;
         classifier = new MyClassifier(PositiveNegativeReducedStates.class, WekaClassifiers.C45,
                 new PositiveNegativeStateComparator(NEGATIVE_STATE_PRIORITY),
                 CollisionAvoidingWithSafetyModeState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE, CLASSIFIER_UPDATE_FREQUENCY);
@@ -170,5 +177,19 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
     @Autowired
     public void setMovesFilter(MovesFilter movesFilter) {
         this.movesFilter = movesFilter;
+    }
+
+    public double getNegativeStatePriority() {
+        if (gameCounter < 10) {
+            return 1;
+        } else if (gameCounter < 200) {
+            return 2;
+        } else if (gameCounter < 400) {
+            return 3;
+        } else if (gameCounter < 600) {
+            return 4;
+        } else {
+            return 5;
+        }
     }
 }

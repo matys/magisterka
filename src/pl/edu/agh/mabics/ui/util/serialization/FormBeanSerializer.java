@@ -15,7 +15,7 @@ import java.util.Map;
  * Time: 00:48
  */
 @Service
-public class FormBeanSerializer extends XMLSerializer {
+public class FormBeanSerializer extends XMLSerializer implements IFormBeanSerializer {
 
     private static final Map<String, Class> mapping = new HashMap<String, Class>();
 
@@ -31,10 +31,12 @@ public class FormBeanSerializer extends XMLSerializer {
         mapping.put("parameter", AlgorithmParameter.class);
     }
 
+    @Override
     public void serialize(final FormBean form, String filePath) {
         serializeObject(form, filePath);
     }
 
+    @Override
     public FormBean deserialize(String filePath) {
         return (FormBean) deserializeObject(filePath);
     }

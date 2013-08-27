@@ -226,4 +226,8 @@ public class MyClassifier {
         }
 
     }
+
+    public void setComparator(IStatesComparator comparator) {
+        this.statesComparator = comparator;
+    }
 }

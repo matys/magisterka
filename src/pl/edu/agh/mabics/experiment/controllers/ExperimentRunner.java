@@ -57,14 +57,19 @@ public class ExperimentRunner {
                 physic = new StraightOnlyPhysic(intersectionConfiguration.getMaxSpeed(),
                         intersectionConfiguration.getMaxSpeedChange());
                 break;
+            case MyOwnPhysic:
+
+                break;
         }
-        BufferedWriter writer = fileHelper.createBufferedWriter(PHYSIC_FILE_PATH + physicType.getPhysicFile());
-        try {
-            physic.writePhysicToFile(writer);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (physicType != PhysicType.MyOwnPhysic) {
+            BufferedWriter writer = fileHelper.createBufferedWriter(PHYSIC_FILE_PATH + physicType.getPhysicFile());
+            try {
+                physic.writePhysicToFile(writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            fileHelper.closeBufferedWriter(writer);
         }
-        fileHelper.closeBufferedWriter(writer);
     }
 
     private void waitForExternalPlatform() {
