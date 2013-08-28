@@ -36,6 +36,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
     private Action GO_FASTER_ACTION = new ActionArray(1);
     private Action GO_SLOWER_ACTION = new ActionArray(-1);
     private int gameCounter = 0;
+    private int stepCounter = 0;
 
 
     @Override
@@ -43,7 +44,12 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
         classifier.setComparator(new PositiveNegativeStateComparator(getNegativeStatePriority()));
         CollisionAvoidingWithSpeedClassificationState state = new CollisionAvoidingWithSpeedClassificationState(request,
                 0);
-        classifier.addState(state.getReducableState()); //only adding as future training example
+
+        if (stepCounter > 2) {
+            // because first state always the same - doesn't influence future
+            classifier.addState(state.getReducableState()); //only if not first state,
+        }
+        stepCounter++;
         PositiveNegativeReducedStates reducedState = null;
 //        if (state.isBeginningState()) {
 //            reducedState = PositiveNegativeReducedStates.POSITIVE;
@@ -55,6 +61,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
                     .getRandomValue(PositiveNegativeReducedStates.class);
         }
 //        }
+        System.out.println(super.getAgentId());
         System.out.println(state.toString());
         System.out.println(reducedState);
         switch (reducedState) {
@@ -142,6 +149,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
 
     @Override
     public void onComplete() {
+        stepCounter = 0;
         problemController.onAgentGetsToTarget();
         classifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
     }
@@ -154,6 +162,8 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
 
     @Override
     protected void onRestartBecausePlatformHanged() {
+        stepCounter = 0;
+        classifier.removeNotClassifiedExamples();
         problemController.resetExperienceFromLastGame();
     }
 
@@ -164,6 +174,7 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
         Thread controllerThread = new Thread(problemController);
         controllerThread.start();
         gameCounter = 0;
+        stepCounter = 0;
         classifier = new MyClassifier(PositiveNegativeReducedStates.class, WekaClassifiers.C45,
                 new PositiveNegativeStateComparator(NEGATIVE_STATE_PRIORITY),
                 CollisionAvoidingWithSafetyModeState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE, CLASSIFIER_UPDATE_FREQUENCY);
@@ -171,7 +182,8 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
 
     @Override
     protected void onNextGame() {
-        //this.firstCall = true;
+        this.firstCall = true;
+        stepCounter = 0;
     }
 
     @Autowired
@@ -180,16 +192,12 @@ public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
     }
 
     public double getNegativeStatePriority() {
-        if (gameCounter < 10) {
+        if (gameCounter < 100) {
             return 1;
-        } else if (gameCounter < 200) {
+        } else if (gameCounter < 300) {
             return 2;
-        } else if (gameCounter < 400) {
-            return 3;
-        } else if (gameCounter < 600) {
-            return 4;
         } else {
-            return 5;
+            return 3;
         }
     }
 }

@@ -307,4 +307,8 @@ public abstract class AbstractAgent extends AbstractHandler {
     public AgentSite getAgentSite() {
         return agentSite;
     }
+
+    public String getAgentId() {
+        return id;
+    }
 }

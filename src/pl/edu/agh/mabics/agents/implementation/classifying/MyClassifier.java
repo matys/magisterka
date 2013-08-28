@@ -71,6 +71,14 @@ public class MyClassifier {
     }
 
     public void usePreviousExamplesAs(IReducedStatesEnum className) {
+        if (className == PositiveNegativeReducedStates.POSITIVE) {
+            System.out.println("as positive: ");
+        } else {
+            System.out.println("as negative: ");
+        }
+        for (Double[] e : previousExamples) {
+            System.out.println("(" + e[0] + ", " + e[1] + ", " + e[2] + ", " + e[3] + ")");
+        }
         addPreviousExamplesToTrainingSet(className.getStringRepresentation());
     }
 
