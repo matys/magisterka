@@ -77,9 +77,19 @@ public class MyClassifier {
             System.out.println("as negative: ");
         }
         for (Double[] e : previousExamples) {
-            System.out.println("(" + e[0] + ", " + e[1] + ", " + e[2] + ", " + e[3] + ")");
+            System.out.println("(" + toString(e) + ")");
         }
         addPreviousExamplesToTrainingSet(className.getStringRepresentation());
+    }
+
+    private String toString(Double[] e) {
+        StringBuilder builder = new StringBuilder();
+        for (Double d : e) {
+            builder.append(d);
+            builder.append(",");
+        }
+        builder.delete(builder.length() - 1, builder.length());
+        return builder.toString();
     }
 
     private void addPreviousExamplesToTrainingSet(String classLabel) {

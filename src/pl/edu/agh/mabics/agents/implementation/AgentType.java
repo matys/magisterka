@@ -33,13 +33,29 @@ public enum AgentType {
             initAvoidingCollisionsWithSpeedClassificationParameters()
 
     ),
-
     AVOIDING_COLLISION_WITH_SAFETY_MODE(
             "Checks first if collision possible, if not RL is making decision, " + "slowing down otherwise",
-            "avoidingCollisionsWithSafetyModeAgent", initEmptyParametersList());
+            "avoidingCollisionsWithSafetyModeAgent", initEmptyParametersList()),
+    AVOIDING_COLLISION_WITH_SUPERVISION_BY_CLASSIFIER(
+            "make decision using RL, than checking if not dangerous using " + "classifier. If dangerous than classifier makes decision",
+            "avoidingCollisionsWithSupervisionByClassifierAgent",
+            initAvoidingCollisionsWithSupervisionByClassifierParameters());
 
     private static ArrayList<AlgorithmParameter> initEmptyParametersList() {
         return new ArrayList<AlgorithmParameter>();
+    }
+
+
+    private static List<AlgorithmParameter> initAvoidingCollisionsWithSupervisionByClassifierParameters() {
+        List<AlgorithmParameter> parameters = initEmptyParametersList();
+        parameters.add(new AlgorithmParameter("alpha", 0.45));
+        parameters.add(new AlgorithmParameter("gamma", 1.0));
+        parameters.add(new AlgorithmParameter("lambda", 0.9));
+        parameters.add(new AlgorithmParameter("epsilon", 0.2));
+        parameters.add(new AlgorithmParameter("gettingToTargetReward", 100d));
+        parameters.add(new AlgorithmParameter("collisionReward", -100d));
+        parameters.add(new AlgorithmParameter("stepReward", -20d));
+        return parameters;
     }
 
 

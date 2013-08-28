@@ -26,22 +26,28 @@ use spring conf to do that
 
 public class CollisionAvoidingWithSupervisionByClassifierProblem implements ProblemDiscreteAction {
 
-    public static final int UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES = 10;
+    public static final int UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES = 100;
     public static final Class<PositiveNegativeReducedStates> REDUCED_STATES_CLASS = PositiveNegativeReducedStates.class;
-    public static final int NEGATIVE_STATE_PRIORITY = 5;
     private Action currentAction;
     private TRStep currentStep;
     private CollisionAvoidingWithSupervisionByClassifierState currentState;
     public static int AGENT_RANGE; //if collision point is farther, we ignore it
     List<Action> actions = new ArrayList<Action>();
     private boolean endEpisode;
-    private MyClassifier classifier;
+    private MyClassifier SLClassifier;
+    private MyClassifier RLClassifier;
     private boolean collisionHappened = false;
+    private Integer gameCounter = 0;
 
     public CollisionAvoidingWithSupervisionByClassifierProblem(Integer agentRange, Integer maxSpeedChange) {
-        classifier = new MyClassifier(REDUCED_STATES_CLASS, WekaClassifiers.C45,
-                new PositiveNegativeStateComparator(NEGATIVE_STATE_PRIORITY),
+        SLClassifier = new MyClassifier(REDUCED_STATES_CLASS, WekaClassifiers.C45,
+                new PositiveNegativeStateComparator(getNegativeStatePriority(0)),
                 CollisionAvoidingWithSupervisionByClassifierState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE + 1,
+                //one for action
+                UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES);
+        RLClassifier = new MyClassifier(REDUCED_STATES_CLASS, WekaClassifiers.C45,
+                new PositiveNegativeStateComparator(getNegativeStatePriority(0)),
+                CollisionAvoidingWithSupervisionByClassifierState.NUMBER_OF_STATE_ATTRIBUTES_TO_REDUCE,
                 //one for action
                 UPDATE_FREQUENCY_IN_NBR_OF_EXAMPLES);
         this.AGENT_RANGE = agentRange;
@@ -64,18 +70,19 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
     @Override
     public TRStep initialize() {
         System.out.println("initialization of problem");
+        gameCounter = 0;
         return new TRStep(new double[]{currentState.getDistanceToTarget(), getReducedState()},
                 currentState.getReward());
-
     }
 
     @Override
     public TRStep step(Action action) {
+        SLClassifier.setComparator(new PositiveNegativeStateComparator(getNegativeStatePriority(gameCounter++)));
         this.currentAction = superviseAction(this.currentState, action); //can be set to null from outside after being
+        SLClassifier.addState(concatActionToState(currentState.getReducableState(), this.currentAction));
         this.currentState = null;
         System.out.println("Action chosen");
         // read.
-        classifier.addState(concatActionToState(currentState.getReducableState(), this.currentAction));
         while (this.currentState == null) {
             try {
 //                System.out.println("waiting for state");
@@ -84,6 +91,7 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
                 e.printStackTrace();
             }
         }
+        RLClassifier.addState(currentState.getReducableState());
         System.out.println("action and its state available");
         this.currentAction = null;
         //process current state, check reward
@@ -91,14 +99,16 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
         System.out.println("state " + currentState.toString());
 
         if (collisionHappened) {
-            classifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
+            SLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
+            RLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
             System.out.println("Teaching as negative examples on collision");
             collisionHappened = false;
         }
 
         if (endEpisode) {
             System.out.println("Teaching as positive examples on the end of game");
-            classifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
+            SLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
+            RLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
             forceEndEpisode();
         } else {
             currentStep = new TRStep(currentStep, action,
@@ -111,7 +121,7 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
     private Action superviseAction(CollisionAvoidingWithSupervisionByClassifierState currentState, Action action) {
         PositiveNegativeReducedStates supervisorDecision;
         try {
-            supervisorDecision = (PositiveNegativeReducedStates) classifier
+            supervisorDecision = (PositiveNegativeReducedStates) SLClassifier
                     .reduce(concatActionToState(currentState.getReducableState(), this.currentAction));
         } catch (MyClassifier.ClassifierException e) {
             supervisorDecision = PositiveNegativeReducedStates.POSITIVE;
@@ -133,7 +143,7 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
         }
         try {
             return new ActionArray(
-                    classifier.chooseTheBest(possibleDecisions, PositiveNegativeReducedStates.POSITIVE)[state
+                    SLClassifier.chooseTheBest(possibleDecisions, PositiveNegativeReducedStates.POSITIVE)[state
                             .getReducableState().length]);
         } catch (Exception e) {   //cannot happen because if we are here, we already had to use classifier
             e.printStackTrace();
@@ -146,7 +156,11 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
         for (int i = 0; i < state.length; i++) {
             stateWithAction[i] = state[i];
         }
-        stateWithAction[state.length] = ((ActionArray) currentAction).actions[0];
+        if (currentAction != null) {
+            stateWithAction[state.length] = ((ActionArray) currentAction).actions[0];
+        } else {
+            stateWithAction[state.length] = 0.0;
+        }
         return stateWithAction;
     }
 
@@ -154,7 +168,7 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
         Double[] reducableState = currentState.getReducableState();
         IReducedStatesEnum reducedState;
         try {
-            reducedState = classifier.reduce(reducableState);
+            reducedState = RLClassifier.reduce(reducableState);
             System.out.println(reducedState.getStringRepresentation());
         } catch (MyClassifier.ClassifierException e) {
             reducedState = EnumHelper.getRandomValue(REDUCED_STATES_CLASS);
@@ -229,7 +243,22 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
     }
 
     public void resetExperienceFromLastGame() {
-        classifier.removeNotClassifiedExamples();
+        SLClassifier.removeNotClassifiedExamples();
+    }
+
+
+    public double getNegativeStatePriority(Integer gameCounter) {
+        if (gameCounter < 10) {
+            return 1;
+        } else if (gameCounter < 200) {
+            return 2;
+        } else if (gameCounter < 400) {
+            return 3;
+        } else if (gameCounter < 600) {
+            return 4;
+        } else {
+            return 5;
+        }
     }
 }
 
