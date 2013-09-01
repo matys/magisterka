@@ -116,7 +116,11 @@ public class GameRunner implements IGameRunner {
     private void initCollisionController() {
         collisionController.init(agents.size());
         if (!collisionController.isAlive()) {
-            collisionController.start();
+            try {
+                collisionController.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

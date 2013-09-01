@@ -77,7 +77,7 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
 
     @Override
     public TRStep step(Action action) {
-        SLClassifier.setComparator(new PositiveNegativeStateComparator(getNegativeStatePriority(gameCounter++)));
+        SLClassifier.setComparator(new PositiveNegativeStateComparator(getNegativeStatePriority(gameCounter)));
         this.currentAction = superviseAction(this.currentState, action); //can be set to null from outside after being
         SLClassifier.addState(concatActionToState(currentState.getReducableState(), this.currentAction));
         this.currentState = null;
@@ -95,8 +95,6 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
         System.out.println("action and its state available");
         this.currentAction = null;
         //process current state, check reward
-        System.out.println("action " + action.toString());
-        System.out.println("state " + currentState.toString());
 
         if (collisionHappened) {
             SLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.NEGATIVE);
@@ -109,8 +107,11 @@ public class CollisionAvoidingWithSupervisionByClassifierProblem implements Prob
             System.out.println("Teaching as positive examples on the end of game");
             SLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
             RLClassifier.usePreviousExamplesAs(PositiveNegativeReducedStates.POSITIVE);
+            gameCounter++;
             forceEndEpisode();
         } else {
+            System.out.println("state " + currentState.toString());
+            System.out.println("action " + action.toString());
             currentStep = new TRStep(currentStep, action,
                     new double[]{currentState.getDistanceToTarget(), getReducedState()}, currentState.getReward());
         }

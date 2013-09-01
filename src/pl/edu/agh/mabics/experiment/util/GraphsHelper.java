@@ -38,21 +38,29 @@ public class GraphsHelper {
         return outputFilesNames;
     }
 
-    private void createHistogram(String outputDirName, Integer boxWidth, List<String> outputFilesNames,
+    private void createHistogram(String histogramOutputDirName, Integer boxWidth, List<String> outputFilesNames,
                                  String statisticFile) {
-        statisticFile = createHistogramFile(statisticFile, boxWidth, outputDirName);
+        createHistogram(histogramOutputDirName, boxWidth, outputFilesNames, statisticFile, histogramOutputDirName);
+    }
+
+    public void createHistogram(String histogramOutputDirName, Integer boxWidth, List<String> outputFilesNames,
+                                String statisticFile, String directory) {
+        statisticFile = createHistogramFile(statisticFile, boxWidth, directory, histogramOutputDirName);
         String outputFileName = fileHelper.removeExtension(statisticFile);
-        Map<String, String> parameters = createCommonParameters(outputDirName, statisticFile, outputFileName);
+        Map<String, String> parameters = createCommonParameters(histogramOutputDirName, statisticFile, outputFileName,
+                histogramOutputDirName);
         String command = "gnuplot -e " + toGnuplotCommand(parameters) + " plot_histograms.p";
         commandLineHelper.runCommand(new String[]{command}, false);
         outputFilesNames.add(outputFileName + "." + OUTPUT_FORMAT);
 
     }
 
-    private String createHistogramFile(String statisticFile, Integer boxWidth, String outputDir) {
-        BufferedReader reader = fileHelper.createBufferedReader(outputDir + "\\" + statisticFile);
+
+    private String createHistogramFile(String statisticFile, Integer boxWidth, String directory,
+                                       String histogramOutputDir) {
+        BufferedReader reader = fileHelper.createBufferedReader(directory + "\\" + statisticFile);
         String histogramFileName = buildHistogramFileName(statisticFile);
-        BufferedWriter writer = fileHelper.createBufferedWriter(outputDir + "\\" + histogramFileName);
+        BufferedWriter writer = fileHelper.createBufferedWriter(histogramOutputDir + "\\" + histogramFileName);
         String line;
         int lineCounter = 0;
         double boxSum = 0.0d;
@@ -88,7 +96,8 @@ public class GraphsHelper {
     private void createNormalGraph(String outputDirName, Integer samplingFrequency, List<String> outputFilesNames,
                                    String statisticFile) {
         String outputFileName = fileHelper.removeExtension(statisticFile);
-        Map<String, String> parameters = createCommonParameters(outputDirName, statisticFile, outputFileName);
+        Map<String, String> parameters = createCommonParameters(outputDirName, statisticFile, outputFileName,
+                outputDirName);
         parameters.put("frequency", samplingFrequency.toString());
         String command = "gnuplot -e " + toGnuplotCommand(parameters) + " plot_statistics.p";
         commandLineHelper.runCommand(new String[]{command}, false);
@@ -96,9 +105,10 @@ public class GraphsHelper {
     }
 
     private Map<String, String> createCommonParameters(String outputDirName, String statisticFile,
-                                                       String outputFileName) {
+                                                       String outputFileName, String inputDirName) {
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("folder", outputDirName);
+        parameters.put("outfolder", outputDirName);
+        parameters.put("infolder", inputDirName);
         parameters.put("fileName", statisticFile);
         parameters.put("format", OUTPUT_FORMAT);
         parameters.put("title", outputFileName);

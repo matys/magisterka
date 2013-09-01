@@ -23,7 +23,6 @@ import rlpark.plugin.rltoys.envio.actions.ActionArray;
  * Date: 25.03.13
  * Time: 09:53
  */
-//TODO add generalization for all 3 agents types using q-learnig
 @Service
 public class AvoidingCollisionsWithSafetyModeAgent extends AbstractAgent {
 

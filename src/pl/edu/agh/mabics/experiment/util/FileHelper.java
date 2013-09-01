@@ -64,9 +64,9 @@ public class FileHelper {
         return fileName.substring(0, fileName.length() - 4);
     }
 
-    public BufferedReader createBufferedReader(String file) {
+    public BufferedReader createBufferedReader(String filePath) {
         try {
-            FileReader reader = new FileReader(file);
+            FileReader reader = new FileReader(filePath);
             return new BufferedReader(reader);
         } catch (Exception e) {
             e.printStackTrace();
